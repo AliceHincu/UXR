@@ -11,12 +11,8 @@
             background-color: #f0f2f5;
             line-height: 1.4;
         }
-        
-        /* View containers */
         .view { display: none; padding: 20px; }
         .view.active { display: block; }
-        
-        /* Post card - same size for both views */
         .post-card {
             max-width: 500px;
             margin: 0 auto;
@@ -25,7 +21,6 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
             overflow: hidden;
         }
-
         .post-header {
             display: flex; align-items: center;
             padding: 12px 16px; gap: 10px;
@@ -48,8 +43,6 @@
         }
         .icon-button:hover, .icon-button:focus { background-color: #f0f2f5; }
         .icon-button:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
-        
-        /* Back button - inline with header */
         .back-button {
             background: none; border: none;
             font-size: 28px; cursor: pointer;
@@ -59,16 +52,9 @@
         }
         .back-button:hover, .back-button:focus { background-color: #f0f2f5; }
         .back-button:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
-        
-        /* Post text - focusable for tab navigation */
         .post-content { padding: 0 16px 12px; }
-        .post-text {
-            font-size: 15px; color: #050505;
-            border-radius: 4px;
-        }
+        .post-text { font-size: 15px; color: #050505; border-radius: 4px; }
         .post-text:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
-        
-        /* Truncated text in feed */
         .truncated-text { display: inline; }
         .see-more-btn {
             background: none; border: none; color: #65676b;
@@ -76,13 +62,10 @@
         }
         .see-more-btn:hover, .see-more-btn:focus { text-decoration: underline; }
         .see-more-btn:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
-        
-        /* Full text in detail view */
         .full-text p { margin-bottom: 1em; }
         .full-text p:last-child { margin-bottom: 0; }
         .hashtag, .mention { color: #385898; text-decoration: none; }
         .hashtag:hover, .mention:hover { text-decoration: underline; }
-
         .post-image { width: 100%; }
         .post-image img { width: 100%; height: auto; display: block; }
         .post-engagement {
@@ -103,7 +86,6 @@
         }
         .action-btn:hover, .action-btn:focus { background-color: #f0f2f5; }
         .action-btn:focus { outline: 2px solid #1877f2; outline-offset: -2px; }
-        
         .skip-link {
             position: absolute; top: -40px; left: 0;
             background: #1877f2; color: white; padding: 8px 16px;
@@ -144,12 +126,12 @@
                 <div class="post-content">
                     <p class="post-text" tabindex="0">
                         <span class="truncated-text">Keeping cats hydrated isn't optional it's es… </span>
-                        <button class="see-more-btn" id="see-more-btn" aria-label="See more, opens post detail">See more</button>
+                        <button class="see-more-btn" id="see-more-btn" aria-label="See more">See more</button>
                     </p>
                 </div>
                 <figure class="post-image">
                     <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&h=400&fit=crop" 
-                         alt="A cat water fountain with stainless steel design, showing fresh flowing water with a LOCK button visible."
+                         alt="A cat looking up with bright green eyes against a blue background."
                          loading="lazy">
                 </figure>
                 <div class="post-engagement">
@@ -203,7 +185,7 @@
                 </div>
                 <figure class="post-image">
                     <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&h=400&fit=crop" 
-                         alt="A cat water fountain with stainless steel design, showing fresh flowing water with a LOCK button visible."
+                         alt="A cat looking up with bright green eyes against a blue background."
                          loading="lazy">
                 </figure>
                 <div class="post-engagement">
@@ -228,6 +210,22 @@
         const detailView = document.getElementById('detail-view');
         const seeMoreBtn = document.getElementById('see-more-btn');
         const backBtn = document.getElementById('back-btn');
+        
+        // Get variant from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const variant = urlParams.get('variant');
+        const username = 'Opie and Melo';
+        
+        // Set aria-label based on variant
+        const ariaLabels = {
+            '1': 'See more',
+            '2': 'See more about this post',
+            '3': `See more about ${username}'s post`
+        };
+        
+        if (variant && ariaLabels[variant]) {
+            seeMoreBtn.setAttribute('aria-label', ariaLabels[variant]);
+        }
 
         seeMoreBtn.addEventListener('click', function() {
             feedView.classList.remove('active');
