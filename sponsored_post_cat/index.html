@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsored Post - Petkit US</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: #f0f2f5;
+            line-height: 1.4;
+        }
+        
+        /* View containers */
+        .view { display: none; padding: 20px; }
+        .view.active { display: block; }
+        
+        /* Post card - same size for both views */
+        .post-card {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .post-header {
+            display: flex; align-items: center;
+            padding: 12px 16px; gap: 10px;
+        }
+        .avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 14px;
+        }
+        .post-meta { flex: 1; }
+        .post-author { font-weight: 600; font-size: 15px; color: #050505; }
+        .post-author a { color: inherit; text-decoration: none; }
+        .post-author a:hover, .post-author a:focus { text-decoration: underline; }
+        .sponsored-label { font-size: 13px; color: #65676b; display: flex; align-items: center; gap: 4px; }
+        .header-actions { display: flex; gap: 8px; }
+        .icon-button {
+            background: none; border: none; padding: 8px;
+            cursor: pointer; border-radius: 50%; color: #65676b; font-size: 16px;
+        }
+        .icon-button:hover, .icon-button:focus { background-color: #f0f2f5; }
+        .icon-button:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+        
+        /* Back button - inline with header */
+        .back-button {
+            background: none; border: none;
+            font-size: 28px; cursor: pointer;
+            padding: 4px 8px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #050505;
+        }
+        .back-button:hover, .back-button:focus { background-color: #f0f2f5; }
+        .back-button:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+        
+        /* Post text - focusable for tab navigation */
+        .post-content { padding: 0 16px 12px; }
+        .post-text {
+            font-size: 15px; color: #050505;
+            border-radius: 4px;
+        }
+        .post-text:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+        
+        /* Truncated text in feed */
+        .truncated-text { display: inline; }
+        .see-more-btn {
+            background: none; border: none; color: #65676b;
+            font-size: 15px; cursor: pointer; padding: 0;
+        }
+        .see-more-btn:hover, .see-more-btn:focus { text-decoration: underline; }
+        .see-more-btn:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+        
+        /* Full text in detail view */
+        .full-text p { margin-bottom: 1em; }
+        .full-text p:last-child { margin-bottom: 0; }
+        .hashtag, .mention { color: #385898; text-decoration: none; }
+        .hashtag:hover, .mention:hover { text-decoration: underline; }
+
+        .post-image { width: 100%; }
+        .post-image img { width: 100%; height: auto; display: block; }
+        .post-engagement {
+            padding: 10px 16px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #dadde1;
+        }
+        .reactions { display: flex; align-items: center; gap: 4px; font-size: 15px; color: #65676b; }
+        .reaction-icon { font-size: 14px; }
+        .comments-count { font-size: 15px; color: #65676b; text-decoration: none; }
+        .comments-count:hover { text-decoration: underline; }
+        .comments-count:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+        .post-actions { display: flex; padding: 4px 16px; }
+        .action-btn {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px; background: none; border: none; cursor: pointer;
+            font-size: 15px; font-weight: 600; color: #65676b; border-radius: 4px;
+        }
+        .action-btn:hover, .action-btn:focus { background-color: #f0f2f5; }
+        .action-btn:focus { outline: 2px solid #1877f2; outline-offset: -2px; }
+        
+        .skip-link {
+            position: absolute; top: -40px; left: 0;
+            background: #1877f2; color: white; padding: 8px 16px;
+            text-decoration: none; z-index: 100;
+        }
+        .skip-link:focus { top: 0; }
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- FEED VIEW -->
+    <div class="view feed-view active" id="feed-view" role="main" aria-label="Feed">
+        <main id="main-content">
+            <article class="post-card" aria-labelledby="post-author-feed">
+                <header class="post-header">
+                    <div class="avatar" role="img" aria-label="Profile picture for Opie and Melo">OM</div>
+                    <div class="post-meta">
+                        <div class="post-author" id="post-author-feed">
+                            <a href="#">Opie and Melo</a> and <a href="#">Petkit US</a>
+                        </div>
+                        <div class="sponsored-label">
+                            <span>Sponsored</span>
+                            <span aria-hidden="true">·</span>
+                            <span aria-hidden="true">🌐</span>
+                            <span class="sr-only">Public post</span>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="icon-button" aria-label="More options">⋯</button>
+                        <button class="icon-button" aria-label="Close post">✕</button>
+                    </div>
+                </header>
+                <div class="post-content">
+                    <p class="post-text" tabindex="0">
+                        <span class="truncated-text">Keeping cats hydrated isn't optional it's es… </span>
+                        <button class="see-more-btn" id="see-more-btn" aria-label="See more, opens post detail">See more</button>
+                    </p>
+                </div>
+                <figure class="post-image">
+                    <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&h=400&fit=crop" 
+                         alt="A cat water fountain with stainless steel design, showing fresh flowing water with a LOCK button visible."
+                         loading="lazy">
+                </figure>
+                <div class="post-engagement">
+                    <div class="reactions">
+                        <span class="reaction-icon" aria-hidden="true">👍</span>
+                        <span>5</span>
+                        <span class="sr-only">reactions</span>
+                    </div>
+                    <a href="#" class="comments-count" aria-label="View 3 comments">3 comments</a>
+                </div>
+                <div class="post-actions" role="group" aria-label="Post actions">
+                    <button class="action-btn" aria-label="Like this post"><span aria-hidden="true">👍</span><span>Like</span></button>
+                    <button class="action-btn" aria-label="Comment on this post"><span aria-hidden="true">💬</span><span>Comment</span></button>
+                    <button class="action-btn" aria-label="Share this post"><span aria-hidden="true">↗️</span><span>Share</span></button>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <!-- DETAIL VIEW -->
+    <div class="view detail-view" id="detail-view" role="main" aria-label="Post detail">
+        <div class="detail-content">
+            <article class="post-card" aria-labelledby="post-author-detail">
+                <header class="post-header">
+                    <button class="back-button" id="back-btn" aria-label="Go back to feed">
+                        <span aria-hidden="true">‹</span>
+                    </button>
+                    <div class="avatar" role="img" aria-label="Profile picture for Opie and Melo">OM</div>
+                    <div class="post-meta">
+                        <div class="post-author" id="post-author-detail">
+                            <a href="#">Opie and Melo</a> and <a href="#">Petkit US</a>
+                        </div>
+                        <div class="sponsored-label">
+                            <span>Sponsored</span>
+                            <span aria-hidden="true">·</span>
+                            <span aria-hidden="true">🌐</span>
+                            <span class="sr-only">Public post</span>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="icon-button" aria-label="More options">⋯</button>
+                    </div>
+                </header>
+                <div class="post-content">
+                    <div class="post-text full-text" tabindex="0">
+                        <p>Keeping cats hydrated isn't optional it's essential.</p>
+                        <p>Did you know most cats prefer flowing water because, in the wild, running water signals freshness and safety?</p>
+                        <p>That's why the <a href="#" class="mention">@petkitus</a> Eversweet Max 2 has been a game-changer here. Fresh, filtered flow 24/7 so my crew never has to think twice about staying hydrated.</p>
+                        <p><a href="#" class="hashtag">#gifted</a></p>
+                    </div>
+                </div>
+                <figure class="post-image">
+                    <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=500&h=400&fit=crop" 
+                         alt="A cat water fountain with stainless steel design, showing fresh flowing water with a LOCK button visible."
+                         loading="lazy">
+                </figure>
+                <div class="post-engagement">
+                    <div class="reactions">
+                        <span class="reaction-icon" aria-hidden="true">👍</span>
+                        <span>5</span>
+                        <span class="sr-only">reactions</span>
+                    </div>
+                    <a href="#" class="comments-count" aria-label="View 3 comments">3 comments</a>
+                </div>
+                <div class="post-actions" role="group" aria-label="Post actions">
+                    <button class="action-btn" aria-label="Like this post"><span aria-hidden="true">👍</span><span>Like</span></button>
+                    <button class="action-btn" aria-label="Comment on this post"><span aria-hidden="true">💬</span><span>Comment</span></button>
+                    <button class="action-btn" aria-label="Share this post"><span aria-hidden="true">↗️</span><span>Share</span></button>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <script>
+        const feedView = document.getElementById('feed-view');
+        const detailView = document.getElementById('detail-view');
+        const seeMoreBtn = document.getElementById('see-more-btn');
+        const backBtn = document.getElementById('back-btn');
+
+        seeMoreBtn.addEventListener('click', function() {
+            feedView.classList.remove('active');
+            detailView.classList.add('active');
+            backBtn.focus();
+        });
+
+        backBtn.addEventListener('click', function() {
+            detailView.classList.remove('active');
+            feedView.classList.add('active');
+            seeMoreBtn.focus();
+        });
+    </script>
+</body>
+</html>
