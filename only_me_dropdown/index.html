@@ -78,7 +78,7 @@
             font-weight: 600;
         }
 
-        .privacy-dropdown {
+        .privacy-button {
             display: flex;
             align-items: center;
             gap: 6px;
@@ -90,8 +90,8 @@
             cursor: pointer;
         }
 
-        .privacy-dropdown:hover,
-        .privacy-dropdown:focus {
+        .privacy-button:hover,
+        .privacy-button:focus {
             background-color: #e0e0e0;
             outline: 2px solid #0066cc;
             outline-offset: 2px;
@@ -226,14 +226,21 @@
             <section class="section" aria-labelledby="social-links-heading" role="region">
                 <div class="section-header">
                     <h2 id="social-links-heading" tabindex="0">Social links</h2>
-                    <button class="privacy-dropdown" id="social-links-privacy" aria-label="Only me">
+                    <button 
+                        type="button"
+                        class="privacy-button" 
+                        id="social-links-privacy" 
+                        aria-label="Only me"
+                        aria-haspopup="menu"
+                        aria-expanded="false"
+                    >
                         <span aria-hidden="true">🔒</span>
                         <span>Only me</span>
                         <span aria-hidden="true">▼</span>
                     </button>
                 </div>
 
-                <button class="add-button" aria-label="Add social link">
+                <button class="add-button" type="button" aria-label="Add social link">
                     Add social link
                 </button>
 
@@ -245,7 +252,7 @@
                                 <p class="link-username">example</p>
                                 <p class="link-platform">X</p>
                             </div>
-                            <button class="remove-button" aria-label="Remove X account: example">Remove</button>
+                            <button class="remove-button" type="button" aria-label="Remove X account: example">Remove</button>
                         </div>
                     </li>
 
@@ -256,7 +263,7 @@
                                 <p class="link-username">fikfok</p>
                                 <p class="link-platform">TikTok</p>
                             </div>
-                            <button class="remove-button" aria-label="Remove TikTok account: fikfok">Remove</button>
+                            <button class="remove-button" type="button" aria-label="Remove TikTok account: fikfok">Remove</button>
                         </div>
                     </li>
 
@@ -267,7 +274,7 @@
                                 <p class="link-username">michaelriccardi1</p>
                                 <p class="link-platform">LinkedIn</p>
                             </div>
-                            <button class="remove-button" aria-label="Remove LinkedIn account: michaelriccardi1">Remove</button>
+                            <button class="remove-button" type="button" aria-label="Remove LinkedIn account: michaelriccardi1">Remove</button>
                         </div>
                     </li>
                 </ul>
@@ -276,14 +283,21 @@
             <section class="section" aria-labelledby="websites-heading" role="region">
                 <div class="section-header">
                     <h2 id="websites-heading" tabindex="0">Websites</h2>
-                    <button class="privacy-dropdown" id="websites-privacy" aria-label="Only me">
+                    <button 
+                        type="button"
+                        class="privacy-button" 
+                        id="websites-privacy" 
+                        aria-label="Only me"
+                        aria-haspopup="menu"
+                        aria-expanded="false"
+                    >
                         <span aria-hidden="true">🔒</span>
                         <span>Only me</span>
                         <span aria-hidden="true">▼</span>
                     </button>
                 </div>
 
-                <button class="add-button" aria-label="Add website">
+                <button class="add-button" type="button" aria-label="Add website">
                     Add website
                 </button>
 
@@ -295,7 +309,7 @@
                                 <p class="link-username">ggoooo</p>
                                 <p class="link-platform">Website</p>
                             </div>
-                            <button class="remove-button" aria-label="Remove website: ggoooo">Remove</button>
+                            <button class="remove-button" type="button" aria-label="Remove website: ggoooo">Remove</button>
                         </div>
                     </li>
                 </ul>
@@ -329,7 +343,7 @@
         // Get the current variant's labels (fallback to variant 1)
         const currentLabels = ariaLabels[variant] || ariaLabels[1];
 
-        // Apply aria-labels to dropdowns
+        // Apply aria-labels to buttons
         document.getElementById('social-links-privacy').setAttribute('aria-label', currentLabels.social);
         document.getElementById('websites-privacy').setAttribute('aria-label', currentLabels.websites);
 
