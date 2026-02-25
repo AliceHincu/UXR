@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .save-button {
+            background: none;
+            border: none;
+            color: #0066cc;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 12px;
+        }
+
+        .section {
+            padding: 20px 16px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .privacy-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .privacy-dropdown:hover,
+        .privacy-dropdown:focus {
+            background-color: #e0e0e0;
+            outline: 2px solid #0066cc;
+            outline-offset: 2px;
+        }
+
+        .add-button {
+            width: 100%;
+            padding: 14px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #1a1a1a;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+
+        .link-list {
+            list-style: none;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+        }
+
+        .link-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .link-icon.x-icon {
+            background: #000;
+            color: white;
+            font-weight: bold;
+        }
+
+        .link-icon.tiktok-icon {
+            background: #000;
+            color: white;
+        }
+
+        .link-icon.linkedin-icon {
+            background: #0077b5;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .link-icon.website-icon {
+            background: #666;
+            color: white;
+            font-size: 20px;
+        }
+
+        .link-content {
+            flex: 1;
+        }
+
+        .link-username {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .link-platform {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .remove-button {
+            width: 100%;
+            padding: 10px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #1a1a1a;
+            cursor: pointer;
+        }
+
+        .remove-button:hover {
+            background-color: #e8e8e8;
+        }
+
+        .variant-indicator {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* Focus styles for non-interactive elements */
+        h1:focus,
+        h2:focus,
+        .link-info:focus {
+            outline: 2px solid #0066cc;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .link-info {
+            padding: 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header" role="banner">
+            <button class="back-button" aria-label="Go back">
+                <span aria-hidden="true">‹</span>
+            </button>
+            <h1 tabindex="0">Edit links</h1>
+            <button class="save-button">Save</button>
+        </header>
+
+        <main role="main">
+            <section class="section" aria-labelledby="social-links-heading" role="region">
+                <div class="section-header">
+                    <h2 id="social-links-heading" tabindex="0">Social links</h2>
+                    <button class="privacy-dropdown" id="social-links-privacy" aria-label="Only me">
+                        <span aria-hidden="true">🔒</span>
+                        <span>Only me</span>
+                        <span aria-hidden="true">▼</span>
+                    </button>
+                </div>
+
+                <button class="add-button" aria-label="Add social link">
+                    Add social link
+                </button>
+
+                <ul class="link-list" role="list" aria-label="Your social links">
+                    <li class="link-item" role="listitem">
+                        <div class="link-icon x-icon" aria-hidden="true">𝕏</div>
+                        <div class="link-content">
+                            <div class="link-info" tabindex="0" aria-label="X account: example">
+                                <p class="link-username">example</p>
+                                <p class="link-platform">X</p>
+                            </div>
+                            <button class="remove-button" aria-label="Remove X account: example">Remove</button>
+                        </div>
+                    </li>
+
+                    <li class="link-item" role="listitem">
+                        <div class="link-icon tiktok-icon" aria-hidden="true">♪</div>
+                        <div class="link-content">
+                            <div class="link-info" tabindex="0" aria-label="TikTok account: fikfok">
+                                <p class="link-username">fikfok</p>
+                                <p class="link-platform">TikTok</p>
+                            </div>
+                            <button class="remove-button" aria-label="Remove TikTok account: fikfok">Remove</button>
+                        </div>
+                    </li>
+
+                    <li class="link-item" role="listitem">
+                        <div class="link-icon linkedin-icon" aria-hidden="true">in</div>
+                        <div class="link-content">
+                            <div class="link-info" tabindex="0" aria-label="LinkedIn account: michaelriccardi1">
+                                <p class="link-username">michaelriccardi1</p>
+                                <p class="link-platform">LinkedIn</p>
+                            </div>
+                            <button class="remove-button" aria-label="Remove LinkedIn account: michaelriccardi1">Remove</button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="section" aria-labelledby="websites-heading" role="region">
+                <div class="section-header">
+                    <h2 id="websites-heading" tabindex="0">Websites</h2>
+                    <button class="privacy-dropdown" id="websites-privacy" aria-label="Only me">
+                        <span aria-hidden="true">🔒</span>
+                        <span>Only me</span>
+                        <span aria-hidden="true">▼</span>
+                    </button>
+                </div>
+
+                <button class="add-button" aria-label="Add website">
+                    Add website
+                </button>
+
+                <ul class="link-list" role="list" aria-label="Your websites">
+                    <li class="link-item" role="listitem">
+                        <div class="link-icon website-icon" aria-hidden="true">🌐</div>
+                        <div class="link-content">
+                            <div class="link-info" tabindex="0" aria-label="Website: ggoooo">
+                                <p class="link-username">ggoooo</p>
+                                <p class="link-platform">Website</p>
+                            </div>
+                            <button class="remove-button" aria-label="Remove website: ggoooo">Remove</button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <div class="variant-indicator" id="variant-indicator" aria-hidden="true"></div>
+
+    <script>
+        // Get variant from URL parameter, default to 1
+        const urlParams = new URLSearchParams(window.location.search);
+        const variant = parseInt(urlParams.get('variant')) || 1;
+
+        // Define aria-labels for each variant
+        const ariaLabels = {
+            1: {
+                social: 'Only me',
+                websites: 'Only me'
+            },
+            2: {
+                social: 'Only me, privacy audience',
+                websites: 'Only me, privacy audience'
+            },
+            3: {
+                social: 'Only me, privacy audience for social links',
+                websites: 'Only me, privacy audience for websites'
+            }
+        };
+
+        // Get the current variant's labels (fallback to variant 1)
+        const currentLabels = ariaLabels[variant] || ariaLabels[1];
+
+        // Apply aria-labels to dropdowns
+        document.getElementById('social-links-privacy').setAttribute('aria-label', currentLabels.social);
+        document.getElementById('websites-privacy').setAttribute('aria-label', currentLabels.websites);
+
+        // Show current variant indicator
+        document.getElementById('variant-indicator').textContent = 'Variant: ' + (ariaLabels[variant] ? variant : '1 (default)');
+    </script>
+</body>
+</html>
