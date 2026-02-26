@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Profile</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#1877f2;--g1:#f0f2f5;--g2:#e4e6eb;--g3:#dadde1;--g5:#65676b;--g7:#3a3b3c;--w:#fff}
+body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;background:var(--g1);color:var(--g7);line-height:1.5}
+.skip{position:absolute;top:-40px;left:0;background:var(--blue);color:#fff;padding:8px 16px;z-index:1000;text-decoration:none}
+.skip:focus{top:0}
+*:focus{outline:2px solid var(--blue);outline-offset:2px}
+.container{max-width:500px;margin:0 auto;background:var(--w);min-height:100vh}
+.header{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--g2);position:sticky;top:0;background:var(--w);z-index:10}
+.header h1{flex:1;text-align:center;font-size:18px;font-weight:600}
+.btn{background:none;border:none;font-size:20px;cursor:pointer;padding:8px;border-radius:50%;min-width:40px;min-height:40px}
+.btn:hover{background:var(--g1)}
+.profile-sec{padding:20px 16px;display:flex;flex-direction:column;align-items:flex-start}
+.cover{width:100%;height:120px;background:var(--g2);border-radius:8px;position:relative}
+.cover-btn{position:absolute;bottom:8px;right:8px;background:var(--w);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.photo-wrap{position:relative;margin-top:-50px;margin-left:16px}
+.photo-btn{position:absolute;bottom:0;right:0;background:var(--g2);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.photo{width:100px;height:100px;border-radius:50%;background:var(--g3);border:4px solid var(--w)}
+.section{padding:0 16px;margin-bottom:8px}
+.sec-header{display:flex;justify-content:space-between;align-items:center;padding:12px 0}
+.sec-header h2{font-size:16px;font-weight:600}
+.toggle{background:none;border:none;cursor:pointer;padding:8px}
+.item{display:flex;align-items:center;padding:12px 0;gap:12px;border-radius:8px}
+.item-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.item-content{flex:1;display:flex;flex-direction:column}
+.item-label{font-size:15px}.item.disabled .item-label{color:var(--g5)}.item.disabled .item-icon{opacity:0.6}
+.item-sub{font-size:13px;color:var(--g5)}
+.edit-btn{background:none;border:none;color:var(--g5);padding:8px;cursor:pointer;font-size:16px;border-radius:50%;min-width:40px;min-height:40px}
+.edit-btn:hover{background:var(--g1)}
+.screen{display:none}
+.screen.active{display:block}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:13px;color:var(--g5);margin-bottom:4px}
+.form-input{width:100%;padding:12px;border:1px solid var(--g3);border-radius:8px;font-size:16px;background:var(--g1);color:var(--g5)}
+.form-input.input-disabled{cursor:not-allowed;opacity:0.7;pointer-events:none}
+.privacy-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border:1px solid var(--blue);border-radius:20px;background:none;cursor:pointer;font-size:14px;color:var(--blue);margin-bottom:16px}
+.privacy-btn:hover{background:rgba(24,119,242,0.1)}
+.edit-link{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-top:1px solid var(--g2);margin-top:16px;cursor:pointer;background:none;border-left:none;border-right:none;border-bottom:none;width:100%;text-align:left}
+.edit-link h3{font-size:15px;font-weight:600;margin-bottom:2px}
+.edit-link p{font-size:13px;color:var(--g5)}
+.spacer{flex:1;min-height:60px}
+.save-btn{width:calc(100% - 32px);margin:16px;padding:12px;background:var(--g2);border:none;border-radius:8px;font-size:16px;font-weight:600;color:var(--g5);cursor:not-allowed}
+.save-btn.active{background:var(--blue);color:#fff;cursor:pointer}
+.modal-bg{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:100;align-items:flex-end;justify-content:center}
+.modal-bg.active{display:flex}
+.modal{background:var(--w);border-radius:16px 16px 0 0;width:100%;max-width:500px;padding:16px;animation:slideUp 0.3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle-btn{width:100%;background:none;border:none;padding:8px 0 16px;cursor:pointer;display:flex;justify-content:center}.modal-handle-btn:hover .modal-handle{background:var(--g5)}.modal-handle{width:40px;height:4px;background:var(--g3);border-radius:2px}
+.modal h2{text-align:center;font-size:18px;font-weight:600;margin-bottom:8px}
+.modal-desc{text-align:center;font-size:14px;color:var(--g5);margin-bottom:16px}
+fieldset{border:none;padding:0;margin:0}
+.radio-list{list-style:none}
+.radio-opt{display:flex;align-items:center;padding:12px 0;gap:12px;cursor:pointer;border-radius:8px}
+.radio-opt:hover{background:var(--g1)}
+.radio-opt:focus{outline:2px solid var(--blue);outline-offset:2px}
+.radio-opt label{flex:1;display:flex;align-items:center;gap:12px;cursor:pointer}
+.radio-icon{width:40px;height:40px;background:var(--g2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.radio-text{flex:1;display:flex;flex-direction:column}
+.radio-title{font-size:15px;font-weight:500}
+.radio-sub{font-size:13px;color:var(--g5)}
+.radio-circle{width:20px;height:20px;border:2px solid var(--g3);border-radius:50%;flex-shrink:0;margin-left:auto}
+.radio-circle.checked{border:6px solid var(--blue)}
+.done-btn{width:100%;padding:12px;background:var(--blue);border:none;border-radius:8px;font-size:16px;font-weight:600;color:#fff;cursor:pointer;margin-top:16px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to main content</a>
+<div id="announce" class="sr-only" aria-live="polite"></div>
+<div class="container">
+<!-- Edit Profile Screen -->
+<div id="screen1" class="screen active" role="region" aria-label="Edit Profile">
+<header class="header">
+<button class="btn" aria-label="Go back">‹</button>
+<h1 tabindex="0">Edit profile</h1>
+<div style="width:40px"></div>
+</header>
+<main id="main">
+<section class="profile-sec" aria-label="Profile photos">
+<div class="cover" tabindex="0" role="img" aria-label="Cover photo, tap to edit"><button class="cover-btn" aria-label="Edit cover photo">📷</button></div>
+<div class="photo-wrap">
+<div class="photo" tabindex="0" role="img" aria-label="Profile photo, tap to edit"></div>
+<button class="photo-btn" aria-label="Edit profile photo">📷</button>
+</div>
+</section>
+<section class="section">
+<div class="sec-header"><h2 tabindex="0">Intro</h2><button class="toggle" aria-expanded="true" aria-controls="intro" aria-label="Toggle Intro section">▲</button></div>
+<div id="intro" role="list">
+<div class="item disabled" role="listitem"><span class="item-icon" aria-hidden="true">✎</span><span class="item-content" tabindex="0" aria-label="About you, not editable"><span class="item-label">About you</span></span></div>
+<div class="item" role="listitem"><span class="item-icon" aria-hidden="true">📌</span><span class="item-content" tabindex="0"><span class="item-label">Pinned details</span><span class="item-sub">Meta · WhatsApp</span></span><button class="edit-btn" aria-label="Edit Pinned details">✎</button></div>
+</div>
+</section>
+<section class="section">
+<div class="sec-header"><h2 tabindex="0">Personal details</h2><button class="toggle" aria-expanded="true" aria-controls="personal" aria-label="Toggle Personal details section">▲</button></div>
+<div id="personal" role="list">
+<div class="item disabled" role="listitem"><span class="item-icon" aria-hidden="true">📍</span><span class="item-content" tabindex="0" aria-label="Current city or town, not editable"><span class="item-label">Current city or town</span></span></div>
+<div class="item disabled" role="listitem"><span class="item-icon" aria-hidden="true">🏠</span><span class="item-content" tabindex="0" aria-label="Hometown, not editable"><span class="item-label">Hometown</span></span></div>
+<div class="item" role="listitem"><span class="item-icon" aria-hidden="true">🎂</span><span class="item-content" tabindex="0"><span class="item-label">June 8 🎉 1995 🎉</span></span><button class="edit-btn" id="bday-btn" aria-label="Edit Birthday">✎</button></div>
+<div class="item disabled" role="listitem"><span class="item-icon" aria-hidden="true">❤️</span><span class="item-content" tabindex="0" aria-label="Relationship status, not editable"><span class="item-label">Relationship status</span></span></div>
+<div class="item disabled" role="listitem"><span class="item-icon" aria-hidden="true">👨‍👩‍👧</span><span class="item-content" tabindex="0" aria-label="Family, not editable"><span class="item-label">Family</span></span></div>
+<div class="item" role="listitem"><span class="item-icon" aria-hidden="true">⚥</span><span class="item-content" tabindex="0"><span class="item-label">Male 🔒</span></span><button class="edit-btn" aria-label="Edit Gender">✎</button></div>
+<div class="item disabled" role="listitem"><span class="item-icon" aria-hidden="true">🗣️</span><span class="item-content" tabindex="0" aria-label="Languages, not editable"><span class="item-label">Languages</span></span></div>
+</div>
+</section>
+</main>
+</div>
+
+<!-- Birthday Screen -->
+<div id="screen2" class="screen" role="region" aria-label="Edit Birthday">
+<header class="header">
+<button class="btn" id="close-btn" aria-label="Close and go back">✕</button>
+<h1 tabindex="0">Birthday</h1>
+<div style="width:40px"></div>
+</header>
+<main style="display:flex;flex-direction:column;min-height:calc(100vh - 57px)">
+<div class="section" style="padding-top:16px">
+<button class="privacy-btn" id="privacy-btn" aria-haspopup="dialog" aria-expanded="false" aria-label="Birthday privacy: Friends of friends. Click to change."><span aria-hidden="true">👥</span> <span id="cur-privacy">Friends of friends</span> <span aria-hidden="true">▼</span></button>
+<form id="bday-form">
+<div class="form-group"><label for="month" class="form-label" tabindex="0">Month and day</label><input type="text" id="month" class="form-input input-disabled" value="June 8" readonly tabindex="0" aria-label="Month and day: June 8, disabled field"></div>
+<button type="button" class="privacy-btn" aria-label="Month and day privacy: Friends of friends"><span aria-hidden="true">👥</span> Friends of friends <span aria-hidden="true">▼</span></button>
+<div class="form-group"><label for="year" class="form-label" tabindex="0">Year</label><input type="text" id="year" class="form-input input-disabled" value="1995" readonly tabindex="0" aria-label="Year: 1995, disabled field"></div>
+<button type="button" class="edit-link" aria-label="Edit your birthday in Accounts Center"><div><h3>Edit your birthday</h3><p>You can edit your birthday in Accounts Center.</p></div><span aria-hidden="true">›</span></button>
+</form>
+</div>
+<div class="spacer"></div>
+<button class="save-btn" id="save-btn" tabindex="0" aria-disabled="true" aria-label="Save button, currently disabled">Save</button>
+</main>
+</div>
+</div>
+
+<!-- Modal (Bottom Sheet) -->
+<div class="modal-bg" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<div class="modal">
+<button class="modal-handle-btn" id="modal-close-handle" aria-label="Close dialog">
+<div class="modal-handle"></div>
+</button>
+<h2 id="modal-title" tabindex="0">June 8</h2>
+<p class="modal-desc" id="modal-desc" tabindex="0">Your birthday may show up in Feed, on your profile, in search results, and in Messenger</p>
+<div role="radiogroup" aria-label="Select who can see your birthday">
+<div class="radio-opt" role="radio" tabindex="0" aria-checked="false" data-value="public" aria-label="Public: Anyone on or off Facebook">
+<span class="radio-icon" aria-hidden="true">🌐</span>
+<span class="radio-text"><span class="radio-title">Public</span><span class="radio-sub">Anyone on or off Facebook</span></span>
+<span class="radio-circle" aria-hidden="true"></span>
+</div>
+<div class="radio-opt" role="radio" tabindex="0" aria-checked="true" data-value="fof" aria-label="Friends of friends: Your friends of friends">
+<span class="radio-icon" aria-hidden="true">👥</span>
+<span class="radio-text"><span class="radio-title">Friends of friends</span><span class="radio-sub">Your friends of friends</span></span>
+<span class="radio-circle checked" aria-hidden="true"></span>
+</div>
+<div class="radio-opt" role="radio" tabindex="0" aria-checked="false" data-value="friends" aria-label="Friends: Your friends on Facebook">
+<span class="radio-icon" aria-hidden="true">👤</span>
+<span class="radio-text"><span class="radio-title">Friends</span><span class="radio-sub">Your friends on Facebook</span></span>
+<span class="radio-circle" aria-hidden="true"></span>
+</div>
+<div class="radio-opt" role="radio" tabindex="0" aria-checked="false" data-value="me" aria-label="Only me">
+<span class="radio-icon" aria-hidden="true">🔒</span>
+<span class="radio-text"><span class="radio-title">Only me</span><span class="radio-sub">Only me</span></span>
+<span class="radio-circle" aria-hidden="true"></span>
+</div>
+</div>
+<button class="done-btn" id="done-btn">Done</button>
+</div>
+</div>
+<script>
+const s1=document.getElementById('screen1'),s2=document.getElementById('screen2'),modal=document.getElementById('modal'),ann=document.getElementById('announce'),container=document.querySelector('.container');
+
+// Get variant from URL parameter
+const urlParams = new URLSearchParams(window.location.search);
+const variant = urlParams.get('variant') || '1';
+
+// Set aria-label based on variant
+const privacyBtn = document.getElementById('privacy-btn');
+const variantLabels = {
+    '1': 'Friends of friends',
+    '2': 'Friends of friends',
+    '3': 'Friends of friends'
+};
+const variantLabel = variantLabels[variant] || variantLabels['1'];
+privacyBtn.setAttribute('aria-label', 'Birthday privacy: ' + variantLabel + '. Click to change.');
+
+function say(m){ann.textContent=m;setTimeout(()=>ann.textContent='',1000)}
+
+function openModal(){
+    modal.classList.add('active');
+    container.setAttribute('aria-hidden','true');
+    container.setAttribute('inert','');
+    privacyBtn.setAttribute('aria-expanded','true');
+    document.getElementById('modal-close-handle').focus();
+    say('Privacy options opened');
+}
+
+function closeModal(){
+    modal.classList.remove('active');
+    container.removeAttribute('aria-hidden');
+    container.removeAttribute('inert');
+    privacyBtn.setAttribute('aria-expanded','false');
+    privacyBtn.focus();
+    say('Dialog closed');
+}
+
+// Custom radio option selection
+const radioOpts = modal.querySelectorAll('.radio-opt[role="radio"]');
+radioOpts.forEach(opt => {
+    opt.addEventListener('click', () => selectRadio(opt));
+    opt.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectRadio(opt);
+        }
+    });
+});
+
+function selectRadio(opt) {
+    radioOpts.forEach(o => {
+        o.setAttribute('aria-checked', 'false');
+        o.querySelector('.radio-circle').classList.remove('checked');
+    });
+    opt.setAttribute('aria-checked', 'true');
+    opt.querySelector('.radio-circle').classList.add('checked');
+    say(opt.querySelector('.radio-title').textContent + ' selected');
+}
+
+document.getElementById('bday-btn').onclick=()=>{s1.classList.remove('active');s2.classList.add('active');document.getElementById('close-btn').focus();say('Birthday editor opened')};
+document.getElementById('close-btn').onclick=()=>{s2.classList.remove('active');s1.classList.add('active');document.getElementById('bday-btn').focus();say('Closed')};
+
+privacyBtn.onclick=openModal;
+document.getElementById('modal-close-handle').onclick=closeModal;
+
+document.getElementById('done-btn').onclick=()=>{
+    const selected = modal.querySelector('.radio-opt[aria-checked="true"]');
+    const t = selected.querySelector('.radio-title').textContent;
+    document.getElementById('cur-privacy').textContent=t;
+    closeModal();
+    say('Privacy set to '+t);
+};
+
+modal.onclick=e=>{if(e.target===modal)closeModal()};
+
+document.onkeydown=e=>{if(e.key==='Escape'&&modal.classList.contains('active'))closeModal()};
+
+modal.addEventListener('keydown',e=>{
+    if(e.key==='Tab'){
+        const focusable=modal.querySelectorAll('button,[tabindex="0"]');
+        const arr=Array.from(focusable);
+        const first=arr[0],last=arr[arr.length-1];
+        if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+        else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+    }
+});
+
+document.querySelectorAll('.toggle').forEach(t=>t.onclick=function(){const exp=this.getAttribute('aria-expanded')==='true';this.setAttribute('aria-expanded',!exp);document.getElementById(this.getAttribute('aria-controls')).style.display=exp?'none':'block';this.textContent=exp?'▼':'▲';say(exp?'Collapsed':'Expanded')});
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat with Bing Clawsby</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#000;--bg2:#1a1a1a;--bg3:#2a2a2a;--txt:#fff;--txt2:#a0a0a0;--accent:#0095f6}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.skip{position:absolute;top:-40px;left:0;background:var(--accent);color:#fff;padding:8px 16px;z-index:100}.skip:focus{top:10px}
+*:focus{outline:2px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.chat{width:100%;max-width:400px;background:var(--bg);border-radius:20px;border:1px solid var(--bg3)}
+.header{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--bg3)}
+.btn{background:none;border:none;color:var(--txt);font-size:20px;cursor:pointer;padding:8px;border-radius:50%}.btn:hover{background:var(--bg3)}
+.profile{display:flex;align-items:center;flex:1;margin-left:8px}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743);display:flex;align-items:center;justify-content:center;font-size:18px}
+.pinfo{margin-left:12px}.name{font-weight:600;font-size:16px}.status{font-size:12px;color:var(--txt2)}
+.actions{display:flex;gap:4px}
+.msgs{padding:16px;min-height:400px}
+.time{text-align:center;color:var(--txt2);font-size:12px;margin-bottom:12px}
+.msg{display:flex;align-items:flex-start;margin-bottom:12px}
+.msgav{width:28px;height:28px;border-radius:50%;background:linear-gradient(45deg,#f09433,#e6683c);display:flex;align-items:center;justify-content:center;font-size:14px;margin-right:8px}
+.msgc{position:relative}
+.vid{position:relative;border-radius:16px;overflow:hidden;width:180px;height:240px;cursor:pointer;transition:transform .2s;user-select:none}
+.vid.holding{transform:scale(.95);opacity:.8}
+.vidin{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:60px;pointer-events:none}
+.viduser{position:absolute;bottom:8px;left:8px;font-size:12px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);pointer-events:none}
+.msgbtns{position:absolute;right:-36px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;opacity:0}
+.msgc:hover .msgbtns,.msgc:focus-within .msgbtns{opacity:1}
+.msgbtn{background:none;border:none;color:var(--txt2);font-size:16px;cursor:pointer;padding:4px}.msgbtn:hover{color:var(--txt)}
+.inarea{display:flex;align-items:center;padding:12px 16px;border-top:1px solid var(--bg3);gap:12px}
+.cam{width:40px;height:40px;background:linear-gradient(45deg,#405de6,#833ab4,#c13584,#fd1d1d);border:none;border-radius:50%;color:#fff;font-size:18px;cursor:pointer}
+.inp{flex:1;background:none;border:none;color:var(--txt);font-size:16px;padding:8px 0}.inp::placeholder{color:var(--txt2)}.inp:focus{outline:none}
+.inbtns{display:flex;gap:4px}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;justify-content:center;align-items:center}.ov.active{display:flex}
+.menu{display:flex;flex-direction:column;align-items:center;gap:16px}
+.hint{color:var(--txt2);font-size:14px}
+.reacts{display:flex;background:var(--bg2);border-radius:24px;padding:8px 12px;gap:8px}
+.react{background:none;border:none;font-size:28px;cursor:pointer;padding:4px;border-radius:50%;transition:transform .2s}.react:hover,.react:focus{transform:scale(1.2)}
+.addreact{width:36px;height:36px;background:var(--bg3);border:none;border-radius:50%;color:var(--txt);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.preview{border-radius:16px;width:160px;height:200px;background:#333;display:flex;align-items:center;justify-content:center;font-size:50px;position:relative}
+.mlist{background:var(--bg2);border-radius:12px;overflow:hidden;min-width:200px;list-style:none;padding:0}
+.mitem{display:flex;align-items:center;gap:12px;padding:14px 16px;background:none;border:none;color:var(--txt);font-size:16px;cursor:pointer;width:100%;text-align:left}.mitem:hover,.mitem:focus{background:var(--bg3)}
+.icon{font-size:20px;width:24px;text-align:center}
+</style>
+</head>
+<body>
+<a href="#messages" class="skip">Skip to messages</a>
+<div id="live" class="sr-only" aria-live="polite"></div>
+<main class="chat" role="main" aria-label="Chat with Bing Clawsby">
+<header class="header">
+<button class="btn" aria-label="Go back">&#8249;</button>
+<div class="profile" role="group" aria-label="Contact information" tabindex="0">
+<div class="avatar" role="img" aria-label="Profile picture of Bing Clawsby">&#128049;</div>
+<div class="pinfo">
+<h1 class="name">Bing Clawsby...</h1>
+<p class="status">Active now</p>
+</div>
+</div>
+<nav class="actions" aria-label="Chat actions">
+<button class="btn" aria-label="Voice call">&#128222;</button>
+<button class="btn" aria-label="Video call">&#128249;</button>
+<button class="btn" aria-label="Chat info">&#8505;</button>
+</nav>
+</header>
+<section id="messages" class="msgs" role="log" aria-label="Message history">
+<p class="time"><time datetime="2024-01-15T16:54" tabindex="0">4:54 PM</time></p>
+<article class="msg" aria-label="Video message from Bing Clawsby">
+<div class="msgav" role="img" aria-label="Bing Clawsby">&#128049;</div>
+<div class="msgc">
+<div class="vid" style="background:linear-gradient(135deg,#4a5568,#2d3748)" tabindex="0" role="button" aria-label="Hold to react to video: Cat on couch">
+<div class="vidin">&#128049;</div><span class="viduser">bingclawsby...</span>
+</div>
+<div class="msgbtns"><button class="msgbtn" aria-label="React">&#10084;</button><button class="msgbtn" aria-label="Save">&#128278;</button></div>
+</div>
+</article>
+<article class="msg" aria-label="Video message from Bing Clawsby">
+<div class="msgav" role="img" aria-label="Bing Clawsby">&#128049;</div>
+<div class="msgc">
+<div class="vid" style="background:linear-gradient(135deg,#ed8936,#c53030)" tabindex="0" role="button" aria-label="Hold to react to video: Fluffy cat">
+<div class="vidin">&#128570;</div><span class="viduser">bingclawsby...</span>
+</div>
+<div class="msgbtns"><button class="msgbtn" aria-label="React">&#10084;</button><button class="msgbtn" aria-label="Save">&#128278;</button></div>
+</div>
+</article>
+</section>
+<footer class="inarea">
+<button class="cam" aria-label="Open camera">&#128247;</button>
+<label for="msginp" class="sr-only">Type a message</label>
+<input type="text" id="msginp" class="inp" placeholder="Message..." aria-label="Type a message">
+<div class="inbtns">
+<button class="btn" aria-label="Voice message">&#127908;</button>
+<button class="btn" aria-label="Send photo">&#128444;</button>
+<button class="btn" aria-label="Emoji">&#128522;</button>
+<button class="btn" aria-label="More options">&#10133;</button>
+</div>
+</footer>
+</main>
+<div id="menu" class="ov" role="dialog" aria-modal="true" aria-label="Message options">
+<div class="menu">
+<p class="hint">Tap and hold to super react</p>
+<nav class="reacts" role="toolbar" aria-label="Reactions">
+<button class="react" aria-label="Heart">&#10084;</button>
+<button class="react" aria-label="Laugh">&#128514;</button>
+<button class="react" aria-label="Wow">&#128558;</button>
+<button class="react" aria-label="Sad">&#128546;</button>
+<button class="react" aria-label="Angry">&#128544;</button>
+<button class="react" aria-label="Thumbs up">&#128077;</button>
+<button class="addreact" aria-label="More reactions">+</button>
+</nav>
+<div class="preview" aria-hidden="true">&#128570;<span class="viduser">bingclawsby...</span></div>
+<ul class="mlist" role="menu">
+<li><button class="mitem" role="menuitem" id="reply-btn" onclick="doAction('Reply')"><span class="icon">&#8617;</span>Reply</button></li>
+<li><button class="mitem" role="menuitem" onclick="doAction('Sticker')"><span class="icon">&#128522;</span>Add sticker</button></li>
+<li><button class="mitem" role="menuitem" onclick="doAction('Forward')"><span class="icon">&#8599;</span>Forward</button></li>
+<li><button class="mitem" role="menuitem" onclick="doAction('Pin')"><span class="icon">&#128204;</span>Pin</button></li>
+<li><button class="mitem" role="menuitem" onclick="doAction('Delete')"><span class="icon">&#128465;</span>Delete for you</button></li>
+</ul>
+</div>
+</div>
+<script>
+var t,d=500,h=false,el=null;
+function a(m){document.getElementById("live").textContent=m}
+function show(){if(el)el.classList.remove("holding");document.getElementById("menu").classList.add("active");a("Options opened");setTimeout(function(){document.querySelector(".react").focus()},100)}
+function hide(){document.getElementById("menu").classList.remove("active");a("Closed")}
+function doAction(x){a(x+" selected");hide()}
+function st(e){e.preventDefault();h=true;el=this;this.classList.add("holding");t=setTimeout(function(){if(h){if(navigator.vibrate)navigator.vibrate(30);show()}},d)}
+function en(){h=false;if(el)el.classList.remove("holding");if(t)clearTimeout(t)}
+document.querySelectorAll(".vid").forEach(function(v){v.onmousedown=st;v.onmouseup=en;v.onmouseleave=en;v.ontouchstart=st;v.ontouchend=en;v.ontouchcancel=en;v.oncontextmenu=function(e){e.preventDefault();show()};v.onkeydown=function(e){if(e.key==" "||e.key=="Enter"){e.preventDefault();show()}}});
+document.getElementById("menu").onclick=function(e){if(e.target==this)hide()};
+document.onkeydown=function(e){if(e.key=="Escape")hide()};
+document.getElementById("menu").onkeydown=function(e){if(e.key!="Tab")return;var b=this.querySelectorAll("button"),f=b[0],l=b[b.length-1];if(e.shiftKey&&document.activeElement==f){e.preventDefault();l.focus()}else if(!e.shiftKey&&document.activeElement==l){e.preventDefault();f.focus()}};
+// Handle URL variant parameter
+var params = new URLSearchParams(window.location.search);
+var variant = params.get('variant') || '1';
+var replyBtn = document.getElementById('reply-btn');
+var labels = {
+  '1': 'Reply to',
+  '2': 'Reply to story',
+  '3': 'Reply to Bing Clawsby\'s story'
+};
+replyBtn.setAttribute('aria-label', labels[variant] || labels['1']);
+</script>
+</body>
+</html>
