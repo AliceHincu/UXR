@@ -28,18 +28,10 @@
         .date-divider { text-align: center; margin: 16px 0; }
         .date-divider span { background: var(--wa-header-bg); padding: 6px 12px; border-radius: 8px; font-size: 12px; color: var(--wa-text-secondary); }
         .chat-container { padding: 8px 16px; min-height: 60vh; }
-        .message { max-width: 80%; padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; }
-        .message:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .message-incoming { background: var(--wa-bubble-incoming); border-top-left-radius: 0; }
-        .message-outgoing { background: var(--wa-bubble-outgoing); border-top-right-radius: 0; margin-left: auto; }
-        .message-text { font-size: 14px; line-height: 1.4; }
-        .message-time { font-size: 11px; color: var(--wa-text-secondary); text-align: right; margin-top: 4px; display: flex; justify-content: flex-end; align-items: center; gap: 4px; }
-        .message-outgoing .message-time { color: rgba(255,255,255,0.6); }
-        .read-receipt { color: #53bdeb; }
-        .messages-list { list-style: none; display: flex; flex-direction: column; }
         .input-area { background: var(--wa-dark-bg); padding: 8px 16px; display: flex; gap: 8px; align-items: center; position: sticky; bottom: 0; }
         .input-wrapper { flex: 1; display: flex; align-items: center; background: var(--wa-header-bg); border-radius: 24px; padding: 4px 8px 4px 16px; }
         .input-field { flex: 1; background: transparent; border: none; padding: 8px 0; color: var(--wa-text); font-size: 16px; outline: none; }
+        .input-field::placeholder { color: var(--wa-text-secondary); }
         .input-wrapper:focus-within { outline: 2px solid var(--wa-green); }
         .emoji-btn { background: none; border: none; color: var(--wa-text-secondary); font-size: 22px; padding: 8px; cursor: pointer; border-radius: 50%; }
         .icon-btn { background: none; border: none; color: var(--wa-text-secondary); font-size: 22px; padding: 8px; cursor: pointer; border-radius: 50%; }
@@ -59,14 +51,13 @@
         .bottom-sheet-title:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
         .bottom-sheet-description { text-align: center; color: var(--wa-text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
         .bottom-sheet-description:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .feature-list { list-style: none; margin-bottom: 24px; padding: 0; }
-        .feature-list li { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--wa-border); font-size: 15px; }
-        .feature-list li:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .feature-list li:last-child { border-bottom: none; }
+        .feature-item { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--wa-border); font-size: 15px; }
+        .feature-item:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
+        .feature-item:last-of-type { border-bottom: none; }
         .feature-icon { width: 28px; text-align: center; color: var(--wa-text-secondary); font-size: 20px; }
-        .learn-more-btn { display: block; width: 100%; background: transparent; border: 2px solid var(--wa-green); color: var(--wa-green); padding: 14px 24px; border-radius: 24px; font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; margin-top: 16px; }
+        .learn-more-btn { display: block; width: 100%; background: transparent; border: 2px solid var(--wa-green); color: var(--wa-green); padding: 14px 24px; border-radius: 24px; font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; margin-top: 16px; }
         .learn-more-btn:hover, .learn-more-btn:focus { background: var(--wa-green); color: white; outline: none; }
-        /* WhatsApp Webpage Modal */
+        .dismiss-btn { position: absolute; bottom: 0; left: 0; right: 0; background: transparent; border: none; color: transparent; height: 20px; cursor: pointer; }
         .wa-page-modal { position: fixed; inset: 0; background: #000; z-index: 70; transform: translateY(100%); transition: transform 0.4s ease-out; overflow-y: auto; max-width: 430px; margin: 0 auto; display: flex; flex-direction: column; }
         .wa-page-modal.active { transform: translateY(0); }
         .wa-app-header { background: #0b141a; padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #2a3942; }
@@ -110,88 +101,113 @@
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <header class="chat-header" role="banner">
-        <button class="back-button" aria-label="Go back, 3 unread chats">&#8249; 3</button>
+        <button class="back-button" aria-label="Back to chats">&#8249; 3</button>
+        
         <div class="contact-avatar" aria-hidden="true">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="" style="width:24px;height:24px;">
         </div>
+        
         <div class="contact-info">
-            <h1 class="contact-name" tabindex="0">+972 54-227-8499</h1>
+            <h1 class="contact-name" tabindex="0" role="heading" aria-level="1">+972 54-227-8499</h1>
         </div>
+        
         <div class="header-actions" role="group" aria-label="Call actions">
-            <button aria-label="Start video call">&#128249;</button>
-            <button aria-label="Start voice call">&#128222;</button>
+            <button aria-label="Start videocall with +972 54-227-8499">&#128249;</button>
+            <button aria-label="Start voicecall with +972 54-227-8499">&#128222;</button>
         </div>
     </header>
+    
     <main id="main-content">
-        <div class="encryption-banner" role="region" aria-label="Encryption notice">
-            <p tabindex="0" style="display:inline;"><span aria-hidden="true">&#128274;</span> Messages and calls are end-to-end encrypted. Only people in this chat can read, listen, or share them.</p>
-            <button class="learn-more-link" id="openBottomSheet" aria-haspopup="dialog" aria-expanded="false">Learn more</button>
+        <div class="encryption-banner" 
+             role="button" 
+             tabindex="0" 
+             aria-label="Messages and calls are end-to-end encrypted. Only people in this chat can read, listen, or share them. Learn more"
+             title="Tap for more information. Actions available."
+             id="encryptionBannerButton">
+            <p style="display:inline;" aria-hidden="true">
+                <span aria-hidden="true">&#128274;</span> 
+                Messages and calls are end-to-end encrypted. Only people in this chat can read, listen, or share them.
+            </p>
+            <span class="learn-more-link" aria-hidden="true">Learn more</span>
         </div>
-        <p class="date-divider" tabindex="0" role="text">
-            <span>Mar 17, 2023</span>
-        </p>
+        
+        <div class="date-divider" role="heading" aria-level="2" tabindex="0" aria-label="Today">
+            <span aria-hidden="true">Today</span>
+        </div>
+        
         <section class="chat-container" aria-label="Chat conversation">
             <h2 class="sr-only">Messages</h2>
             <div class="messages-list" role="log" aria-live="polite" aria-label="Message history">
-                <article class="message message-incoming" tabindex="0" aria-label="Message from contact at 1:40 PM">
-                    <p class="message-text">Hello Nathan and welcome to Israel. My name is Oren Or, I will guide you tomorrow. I will be at your place at 7:30am in the morning. Are you staying at Berdyczewski St 14, Tel Aviv-Yafo?</p>
-                    <p class="message-time" aria-hidden="true"><time datetime="2023-03-17T13:40">1:40 PM</time></p>
-                </article>
-                <article class="message message-outgoing" tabindex="0" aria-label="Your message at 1:41 PM, read">
-                    <p class="message-text">Hello Oren - thank you. Sounds good. I will see you at 7:30AM tomorrow. Yes, that is is where I am staying.</p>
-                    <p class="message-time" aria-hidden="true"><time datetime="2023-03-17T13:41">1:41 PM</time><span class="read-receipt">&#10003;&#10003;</span></p>
-                </article>
-                <article class="message message-outgoing" tabindex="0" aria-label="Your message: Thumbs up, at 1:41 PM, read">
-                    <p class="message-text" aria-hidden="true">&#128077;</p>
-                    <p class="message-time" aria-hidden="true"><time datetime="2023-03-17T13:41">1:41 PM</time><span class="read-receipt">&#10003;&#10003;</span></p>
-                </article>
+                <!-- Messages removed -->
             </div>
         </section>
+        
         <form class="input-area" aria-label="Message composition" onsubmit="return false;">
-            <button type="button" class="icon-btn" aria-label="Add attachment">+</button>
+            <button type="button" class="icon-btn" aria-label="Shared media">+</button>
+            
             <div class="input-wrapper">
-                <label for="messageInput" class="sr-only">Type a message</label>
-                <input type="text" id="messageInput" class="input-field" placeholder="Message">
-                <button type="button" class="emoji-btn" aria-label="Choose emoji">&#128522;</button>
+                <label for="messageInput" class="sr-only">Compose message</label>
+                <input type="text" 
+                       id="messageInput" 
+                       class="input-field" 
+                       placeholder=""
+                       aria-label="Compose message"
+                       aria-roledescription="text field"
+                       title="is editing, character mode, insertion point at start. Use the rotor to access misspelled words."
+                       autocomplete="off"
+                       spellcheck="true">
+                       
+                <button type="button" class="emoji-btn" aria-label="GIFs and stickers">&#128522;</button>
             </div>
-            <button type="button" class="icon-btn" aria-label="Open camera">&#128247;</button>
-            <button type="button" class="mic-btn" aria-label="Record voice message">&#127908;</button>
+            
+            <button type="button" 
+                    class="icon-btn" 
+                    aria-label="Camera"
+                    title="Double tap to open camera. Double tap and hold to record video note. Slide up to lock or slide left to cancel.">&#128247;</button>
+            
+            <button type="button" 
+                    class="mic-btn" 
+                    aria-label="Voice message"
+                    title="Double tap and hold to record. Release to send or slide left to cancel. Double tap or double tap and slide up to lock recording.">&#127908;</button>
         </form>
     </main>
+    
     <div class="overlay" id="overlay" aria-hidden="true"></div>
     
+    <!-- Bottom Sheet -->
     <div class="bottom-sheet" id="encryptionBottomSheet" role="dialog" aria-modal="true" aria-labelledby="bottomSheetTitle" hidden>
-        <button class="bottom-sheet-close" id="closeBottomSheet" aria-label="Close dialog">&#10005;</button>
         <div class="bottom-sheet-handle" aria-hidden="true"></div>
         <div class="encryption-icon" aria-hidden="true">
             <span class="lock-badge">&#128274;</span>
         </div>
+        
         <h2 id="bottomSheetTitle" class="bottom-sheet-title" tabindex="0">Your chats and calls are private</h2>
+        
         <p class="bottom-sheet-description" tabindex="0">End-to-end encryption keeps your personal messages and calls between you and the people you choose. No one outside of the chat, not even WhatsApp, can read, listen to, or share them. This includes your:</p>
-        <ul class="feature-list" role="list">
-            <li tabindex="0">
-                <span class="feature-icon" aria-hidden="true">&#128172;</span>
-                <span>Text and voice messages</span>
-            </li>
-            <li tabindex="0">
-                <span class="feature-icon" aria-hidden="true">&#127897;</span>
-                <span>Audio and video calls</span>
-            </li>
-            <li tabindex="0">
-                <span class="feature-icon" aria-hidden="true">&#128248;</span>
-                <span>Photos, videos and documents</span>
-            </li>
-            <li tabindex="0">
-                <span class="feature-icon" aria-hidden="true">&#128205;</span>
-                <span>Location sharing</span>
-            </li>
-            <li tabindex="0">
-                <span class="feature-icon" aria-hidden="true">&#9711;</span>
-                <span>Status updates</span>
-            </li>
-        </ul>
-        <button class="learn-more-btn" id="openAppStore" aria-haspopup="dialog">Learn more</button>
+        
+        <div class="feature-item" tabindex="0" role="none" aria-label="Text and voice messages">
+            <span aria-hidden="true">&#128172; Text and voice messages</span>
+        </div>
+        <div class="feature-item" tabindex="0" role="none" aria-label="Audio and video calls">
+            <span aria-hidden="true">&#127897; Audio and video calls</span>
+        </div>
+        <div class="feature-item" tabindex="0" role="none" aria-label="Photos, videos and documents">
+            <span aria-hidden="true">&#128248; Photos, videos and documents</span>
+        </div>
+        <div class="feature-item" tabindex="0" role="none" aria-label="Location sharing">
+            <span aria-hidden="true">&#128205; Location sharing</span>
+        </div>
+        <div class="feature-item" tabindex="0" role="none" aria-label="Status updates">
+            <span aria-hidden="true">&#9711; Status updates</span>
+        </div>
+        
+        <a href="#" class="learn-more-btn" id="openAppStore" role="link">Learn more</a>
+        
+        <button class="bottom-sheet-close" id="closeBottomSheet" aria-label="Cancel">&#10005;</button>
+        
+        <button class="dismiss-btn" id="dismissBottomSheet" aria-label="Dismiss bottom sheet">Dismiss</button>
     </div>
+    
     <div class="wa-page-modal" id="appStoreModal" role="dialog" aria-modal="true" aria-labelledby="waPageTitle" hidden>
         <header class="wa-app-header">
             <button id="closeAppStoreTop" class="bottom-sheet-close" aria-label="Close" style="position:absolute;top:12px;right:12px;z-index:10;">&#10005;</button>
@@ -244,20 +260,30 @@
             </div>
         </footer>
     </div>
+    
     <script>
-        const openBottomSheetBtn = document.getElementById('openBottomSheet');
+        const encryptionBannerButton = document.getElementById('encryptionBannerButton');
         const closeBottomSheetBtn = document.getElementById('closeBottomSheet');
+        const dismissBottomSheetBtn = document.getElementById('dismissBottomSheet');
         const bottomSheet = document.getElementById('encryptionBottomSheet');
+        const bottomSheetTitle = document.getElementById('bottomSheetTitle');
         const overlay = document.getElementById('overlay');
         const openAppStoreBtn = document.getElementById('openAppStore');
         const closeAppStoreBtn = document.getElementById('closeAppStore');
         const closeAppStoreTopBtn = document.getElementById('closeAppStoreTop');
         const appStoreModal = document.getElementById('appStoreModal');
+        const messageInput = document.getElementById('messageInput');
         
         let previouslyFocusedElement = null;
 
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                messageInput.focus();
+            }, 100);
+        });
+
         function trapFocus(dialog) {
-            const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+            const focusableSelector = 'button, [href], a, input, select, textarea, [tabindex]:not([tabindex="-1"])';
             dialog.addEventListener('keydown', function(e) {
                 if (e.key !== 'Tab') return;
                 const focusableElements = Array.from(dialog.querySelectorAll(focusableSelector)).filter(el => !el.closest('[hidden]'));
@@ -279,10 +305,9 @@
             bottomSheet.classList.add('active');
             overlay.classList.add('active');
             overlay.setAttribute('aria-hidden', 'false');
-            openBottomSheetBtn.setAttribute('aria-expanded', 'true');
             document.body.style.overflow = 'hidden';
             setTimeout(function() {
-                closeBottomSheetBtn.focus();
+                bottomSheetTitle.focus();
             }, 100);
         }
 
@@ -290,7 +315,6 @@
             bottomSheet.classList.remove('active');
             overlay.classList.remove('active');
             overlay.setAttribute('aria-hidden', 'true');
-            openBottomSheetBtn.setAttribute('aria-expanded', 'false');
             document.body.style.overflow = '';
             setTimeout(function() {
                 bottomSheet.setAttribute('hidden', '');
@@ -300,7 +324,8 @@
             }
         }
 
-        function openAppStore() {
+        function openAppStore(e) {
+            e.preventDefault();
             previouslyFocusedElement = document.activeElement;
             appStoreModal.removeAttribute('hidden');
             appStoreModal.classList.add('active');
@@ -319,8 +344,16 @@
             }
         }
 
-        openBottomSheetBtn.addEventListener('click', openBottomSheet);
+        encryptionBannerButton.addEventListener('click', openBottomSheet);
+        encryptionBannerButton.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openBottomSheet();
+            }
+        });
+        
         closeBottomSheetBtn.addEventListener('click', closeBottomSheet);
+        dismissBottomSheetBtn.addEventListener('click', closeBottomSheet);
         overlay.addEventListener('click', closeBottomSheet);
         openAppStoreBtn.addEventListener('click', openAppStore);
         closeAppStoreBtn.addEventListener('click', closeAppStore);
@@ -338,39 +371,6 @@
 
         trapFocus(bottomSheet);
         trapFocus(appStoreModal);
-
-        // Handle URL variants for the first "Learn more" button
-        function applyVariant() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const variant = urlParams.get('variant');
-            const learnMoreBtn = document.getElementById('openBottomSheet');
-            
-            if (!learnMoreBtn) return;
-            
-            switch(variant) {
-                case '1':
-                    // Link text "Learn more" + AX label "Learn more"
-                    learnMoreBtn.textContent = 'Learn more';
-                    learnMoreBtn.setAttribute('aria-label', 'Learn more');
-                    break;
-                case '2':
-                    // Link text "Learn more" + AX label "Learn more about end-to-end encrypted messages"
-                    learnMoreBtn.textContent = 'Learn more';
-                    learnMoreBtn.setAttribute('aria-label', 'Learn more about end-to-end encrypted messages');
-                    break;
-                case '3':
-                    // Link text & AX label "Learn more about end-to-end encrypted messages"
-                    learnMoreBtn.textContent = 'Learn more about end-to-end encrypted messages';
-                    learnMoreBtn.setAttribute('aria-label', 'Learn more about end-to-end encrypted messages');
-                    break;
-                default:
-                    // Default: same as variant 1
-                    learnMoreBtn.textContent = 'Learn more';
-                    learnMoreBtn.setAttribute('aria-label', 'Learn more');
-            }
-        }
-        
-        applyVariant();
     </script>
 </body>
 </html>
