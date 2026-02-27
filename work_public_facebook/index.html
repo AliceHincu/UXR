@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nathan Norton - About | Facebook</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Segoe UI, Helvetica, Arial, sans-serif; background: #f0f2f5; }
+
+/* Skip Link */
+.skip-link { position: absolute; top: -40px; left: 0; background: #1877f2; color: white; padding: 8px 16px; z-index: 1000; text-decoration: none; font-weight: 600; }
+.skip-link:focus { top: 0; }
+
+/* Focus styles */
+*:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+*:focus:not(:focus-visible) { outline: none; }
+*:focus-visible { outline: 2px solid #1877f2; outline-offset: 2px; }
+
+.header { background: #fff; height: 56px; display: flex; align-items: center; padding: 0 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+.fb-logo { width: 40px; height: 40px; background: #1877f2; border-radius: 50%; color: white; font-size: 28px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+.search { margin-left: 8px; background: #f0f2f5; border: none; border-radius: 50px; padding: 10px 16px; width: 240px; font-size: 15px; color: #050505; }
+.nav { display: flex; flex: 1; justify-content: center; gap: 8px; }
+.nav-item { width: 112px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; background: none; border: none; }
+.nav-item:hover, .nav-item:focus { background: #f0f2f5; }
+.nav-item svg { width: 24px; height: 24px; fill: #65676b; }
+.right-icons { display: flex; gap: 8px; }
+.icon-btn { width: 40px; height: 40px; background: #e4e6eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+.icon-btn:hover, .icon-btn:focus { background: #d8dadf; }
+.profile-bar { background: #fff; margin-top: 56px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #e4e6eb; }
+.profile-info { display: flex; align-items: center; gap: 10px; padding: 4px 8px; border-radius: 8px; }
+.profile-info:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+.avatar { width: 40px; height: 40px; background: #1c1e21; border-radius: 50%; }
+.name { font-weight: 600; font-size: 17px; }
+.dots { margin-left: auto; width: 36px; height: 36px; background: #e4e6eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+.dots:hover, .dots:focus { background: #d8dadf; }
+.container { max-width: 908px; margin: 16px auto; display: flex; flex-direction: column; gap: 16px; padding: 0 16px; }
+.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+.about-card { display: flex; }
+.sidebar { width: 220px; padding: 20px; border-right: 1px solid #e4e6eb; }
+.sidebar-heading { font-size: 20px; font-weight: 700; margin-bottom: 8px; padding: 4px; border-radius: 4px; }
+.sidebar-heading:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+.menu { list-style: none; }
+.menu li { margin: 0; }
+.menu-btn { width: 100%; padding: 10px 8px; font-size: 15px; color: #050505; border-radius: 8px; cursor: pointer; background: none; border: none; text-align: left; font-family: inherit; }
+.menu-btn:hover, .menu-btn:focus { background: #f0f2f5; }
+.menu-btn[aria-selected="true"] { background: #e7f3ff; color: #1877f2; font-weight: 600; }
+.content { flex: 1; padding: 20px; }
+.content-heading { font-size: 17px; font-weight: 600; margin-bottom: 16px; padding: 4px; border-radius: 4px; display: inline-block; }
+.content-heading:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+.work-entry { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding: 8px; border-radius: 8px; }
+.work-entry:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+.meta-icon { width: 48px; height: 48px; flex-shrink: 0; }
+.meta-icon svg { width: 48px; height: 48px; }
+.work-text h4 { font-size: 15px; font-weight: 600; }
+.work-text p { font-size: 13px; color: #65676b; }
+.work-btns { margin-left: auto; display: flex; gap: 4px; }
+.work-btn { width: 36px; height: 36px; border: none; background: none; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.work-btn:hover, .work-btn:focus { background: #f0f2f5; }
+.work-btn svg { width: 20px; height: 20px; fill: #65676b; }
+.add-work { display: flex; align-items: center; gap: 12px; color: #65676b; cursor: pointer; padding: 8px; background: none; border: none; font-family: inherit; font-size: 15px; width: 100%; border-radius: 8px; }
+.add-work:hover, .add-work:focus { background: #f0f2f5; }
+.add-work-icon { width: 36px; height: 36px; background: #e4e6eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.add-work-icon svg { width: 20px; height: 20px; fill: #65676b; }
+.friends-card { background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+.friends-heading { font-size: 20px; font-weight: 700; padding: 4px; border-radius: 4px; }
+.friends-heading:focus { outline: 2px solid #1877f2; outline-offset: 2px; }
+.friends-header { display: flex; justify-content: space-between; align-items: center; padding: 16px; }
+.friends-links { display: flex; gap: 12px; align-items: center; }
+.friends-links a { color: #1877f2; text-decoration: none; font-size: 15px; }
+.friends-links a:hover, .friends-links a:focus { text-decoration: underline; }
+.friends-more { background: none; border: none; cursor: pointer; padding: 8px; border-radius: 4px; }
+.friends-more:hover, .friends-more:focus { background: #f0f2f5; }
+.tabs { padding: 0 16px; border-bottom: 1px solid #e4e6eb; }
+.tab { display: inline-block; padding: 16px; color: #1877f2; font-weight: 600; border-bottom: 3px solid #1877f2; background: none; border-top: none; border-left: none; border-right: none; cursor: pointer; font-family: inherit; font-size: 15px; }
+.tab:focus { outline-offset: -2px; }
+.friends-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 16px; list-style: none; }
+.friend { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 8px; }
+.friend-link { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; flex: 1; padding: 4px; border-radius: 8px; }
+.friend-link:hover, .friend-link:focus { background: #f0f2f5; }
+.friend img { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; background: #ddd; }
+.friend-info h4 { font-size: 15px; font-weight: 500; color: #050505; }
+.friend-info p { font-size: 13px; color: #65676b; }
+.friend-dots { color: #65676b; cursor: pointer; background: none; border: none; padding: 8px; border-radius: 50%; }
+.friend-dots:hover, .friend-dots:focus { background: #e4e6eb; }
+
+/* Edit Form Styles */
+.edit-form { display: none; }
+.edit-form.active { display: block; }
+.view-mode.hidden { display: none; }
+.public-badge { display: inline-flex; align-items: center; gap: 6px; background: #e4e6eb; padding: 8px 12px; border-radius: 6px; font-size: 15px; font-weight: 500; margin-bottom: 20px; cursor: pointer; border: none; font-family: inherit; }
+.public-badge:hover, .public-badge:focus { background: #d8dadf; }
+.public-badge svg { width: 16px; height: 16px; fill: #050505; }
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 12px; color: #65676b; margin-bottom: 4px; display: block; }
+.form-label-required { font-size: 12px; color: #65676b; margin-bottom: 2px; display: block; }
+.form-input { width: 100%; padding: 16px; border: 1px solid #ccd0d5; border-radius: 6px; font-size: 17px; font-family: inherit; background: #fff; }
+.form-input:focus { border-color: #1877f2; box-shadow: 0 0 0 2px #e7f3ff; }
+.form-input::placeholder { color: #8a8d91; }
+.time-section { margin-bottom: 16px; border: none; padding: 0; }
+.time-legend { font-size: 15px; font-weight: 600; margin-bottom: 8px; display: block; }
+.time-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.time-row label { font-size: 15px; }
+.year-select { padding: 10px 16px; border: 1px solid #ccd0d5; border-radius: 6px; font-size: 15px; background: #fff; cursor: pointer; font-family: inherit; }
+.year-select:focus { border-color: #1877f2; box-shadow: 0 0 0 2px #e7f3ff; }
+.checkbox-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.checkbox { width: 20px; height: 20px; accent-color: #1877f2; cursor: pointer; }
+.checkbox-label { font-size: 15px; cursor: pointer; }
+.form-textarea { width: 100%; padding: 16px; border: 1px solid #ccd0d5; border-radius: 6px; font-size: 17px; font-family: inherit; min-height: 100px; resize: vertical; }
+.form-textarea:focus { border-color: #1877f2; box-shadow: 0 0 0 2px #e7f3ff; }
+.button-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid #e4e6eb; }
+.remove-btn { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border: none; background: #e4e6eb; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.remove-btn:hover, .remove-btn:focus { background: #d8dadf; }
+.remove-btn svg { width: 16px; height: 16px; }
+.action-btns { display: flex; gap: 8px; }
+.cancel-btn { padding: 10px 20px; border: none; background: #e4e6eb; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.cancel-btn:hover, .cancel-btn:focus { background: #d8dadf; }
+.save-btn { padding: 10px 32px; border: none; background: #e4e6eb; border-radius: 6px; font-size: 15px; font-weight: 600; color: #bec3c9; cursor: not-allowed; font-family: inherit; }
+.save-btn.active { background: #1877f2; color: #fff; cursor: pointer; }
+.save-btn.active:hover, .save-btn.active:focus { background: #166fe5; }
+
+/* Variant indicator */
+.variant-indicator { position: fixed; bottom: 16px; right: 16px; background: #1877f2; color: white; padding: 8px 16px; border-radius: 8px; font-size: 14px; z-index: 1000; }
+
+/* Screen reader only */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="header" role="banner">
+  <div class="fb-logo" role="img" aria-label="Facebook logo" tabindex="0">f</div>
+  <label for="search" class="sr-only">Search Facebook</label>
+  <input type="search" id="search" class="search" placeholder="Search Facebook">
+  
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <button class="nav-item" aria-label="Home" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.464 1.286C10.294.803 11.092.5 12 .5c.908 0 1.707.303 2.537.786.795.462 1.7 1.142 2.815 1.977l2.232 1.675c1.391 1.042 2.359 1.766 2.888 2.826.53 1.059.53 2.268.528 4.006v4.3c0 1.355 0 2.471-.119 3.355-.124.928-.396 1.747-1.052 2.403-.657.657-1.476.928-2.404 1.053-.884.119-2 .119-3.354.119H7.93c-1.354 0-2.471 0-3.355-.119-.928-.125-1.747-.396-2.403-1.053-.656-.656-.928-1.475-1.053-2.403C1 18.541 1 17.425 1 16.07v-4.3c0-1.738-.002-2.947.528-4.006.53-1.06 1.497-1.784 2.888-2.826L6.65 3.263c1.114-.835 2.02-1.515 2.815-1.977zM10.5 13A1.5 1.5 0 0112 11.5a1.5 1.5 0 011.5 1.5v6h-3v-6z"/></svg>
+    </button>
+    <button class="nav-item" aria-label="Friends" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5a4 4 0 100 8 4 4 0 000-8zm-2 4a2 2 0 114 0 2 2 0 01-4 0z"/><path d="M12 .5C5.649.5.5 5.649.5 12S5.649 23.5 12 23.5 23.5 18.351 23.5 12 18.351.5 12 .5zM2.5 12c0-2.59 1.04-4.936 2.724-6.652A13.93 13.93 0 0112 7.5c2.627 0 5.073-.74 6.776-2.152A9.454 9.454 0 0121.5 12c0 2.063-.66 3.97-1.78 5.527A13.92 13.92 0 0012 15.5a13.92 13.92 0 00-7.72 2.027A9.454 9.454 0 012.5 12z"/></svg>
+    </button>
+    <button class="nav-item" aria-label="Watch" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.996 8.132A1 1 0 009.5 9v6a1 1 0 001.496.868l4.5-3a1 1 0 000-1.736l-4.5-3z"/><path d="M1 4.75C1 3.784 1.784 3 2.75 3h18.5c.966 0 1.75.784 1.75 1.75v14.5A1.75 1.75 0 0121.25 21H2.75A1.75 1.75 0 011 19.25V4.75zm20.5 11.5V6H2.5v10.25c0 .138.112.25.25.25h18.5a.25.25 0 00.25-.25z"/></svg>
+    </button>
+    <button class="nav-item" aria-label="Marketplace" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.5 4.75C1.5 3.784 2.284 3 3.25 3h17.5c.966 0 1.75.784 1.75 1.75v10.5a1.75 1.75 0 01-1.75 1.75H3.25a1.75 1.75 0 01-1.75-1.75V4.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h17.5a.25.25 0 00.25-.25V4.75a.25.25 0 00-.25-.25H3.25z"/><path d="M.5 19.25a.75.75 0 01.75-.75h21.5a.75.75 0 010 1.5H1.25a.75.75 0 01-.75-.75z"/></svg>
+    </button>
+    <button class="nav-item" aria-label="Gaming" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8a4 4 0 118 0v1h1.5A1.5 1.5 0 0119 10.5v9a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 015 19.5v-9A1.5 1.5 0 016.5 9H8V8zm2 0v1h4V8a2 2 0 00-4 0zm-3 3v8h10v-8H7z"/></svg>
+    </button>
+  </nav>
+
+  <div class="right-icons">
+    <button class="icon-btn" aria-label="Menu" type="button">
+      <svg width="20" height="20" viewBox="0 0 44 44" aria-hidden="true"><circle cx="7" cy="7" r="6"/><circle cx="22" cy="7" r="6"/><circle cx="37" cy="7" r="6"/><circle cx="7" cy="22" r="6"/><circle cx="22" cy="22" r="6"/><circle cx="37" cy="22" r="6"/><circle cx="7" cy="37" r="6"/><circle cx="22" cy="37" r="6"/><circle cx="37" cy="37" r="6"/></svg>
+    </button>
+    <button class="icon-btn" aria-label="Messenger" type="button">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1c6.075 0 11 4.925 11 11s-4.925 11-11 11c-1.76 0-3.42-.41-4.9-1.14l-4.34 1.45a1 1 0 01-1.27-1.27l1.45-4.34A10.93 10.93 0 011 12C1 5.925 5.925 1 12 1z"/></svg>
+    </button>
+    <button class="icon-btn" aria-label="Notifications" type="button">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 017 7v4l1.7 3.4a1 1 0 01-.9 1.6H4.2a1 1 0 01-.9-1.6L5 13V9a7 7 0 017-7zm0 20a3 3 0 01-3-3h6a3 3 0 01-3 3z"/></svg>
+    </button>
+    <button class="icon-btn" aria-label="Your profile">
+      <div class="avatar" style="width:28px;height:28px" aria-hidden="true"></div>
+    </button>
+  </div>
+</header>
+
+<div class="profile-bar">
+  <div class="profile-info" tabindex="0" role="group" aria-label="Profile: Nathan Norton">
+    <div class="avatar" role="img" aria-label="Nathan Norton's profile picture"></div>
+    <span class="name">Nathan Norton</span>
+  </div>
+  <button class="dots" aria-label="More options for Nathan Norton's profile" type="button">...</button>
+</div>
+
+<main id="main-content" class="container" role="main">
+  <article class="card about-card" aria-labelledby="about-heading">
+    <aside class="sidebar" role="complementary" aria-label="About navigation">
+      <h2 id="about-heading" class="sidebar-heading" tabindex="0">About</h2>
+      <nav aria-label="About sections">
+        <ul class="menu" role="tablist" aria-label="About sections">
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" type="button">Intro</button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" type="button">Personal details</button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="true" aria-current="true" type="button">Work</button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" type="button">Education</button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" type="button">Hobbies</button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" type="button">Interests</button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" type="button">Travel</button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" type="button">Links</button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" type="button">Contact info</button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" type="button">Names</button></li>
+          <li role="presentation"><button class="menu-btn" role="tab" aria-selected="false" type="button">Details about you</button></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <section class="content" role="tabpanel" aria-labelledby="work-heading">
+      <h3 id="work-heading" class="content-heading" tabindex="0">Work</h3>
+      
+      <!-- View Mode -->
+      <div id="viewMode" class="view-mode">
+        <div class="work-entry" tabindex="0" role="group" aria-label="Work experience: Meta, position cd">
+          <div class="meta-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8.7 32C6.5 28.7 5.2 24.5 5.2 20c0-8.5 6.1-15.6 14.1-17.1l2.5 4.3c-5.7.9-10 5.8-10 11.7 0 2.5.8 4.9 2.1 6.8L8.7 32z" fill="#0866FF"/>
+              <path d="M20.2 37.1c-4.5 0-8.6-1.5-11.9-4.1l5.4-6.2c1.9 1.2 4.1 1.9 6.5 1.9 6.5 0 11.8-5.3 11.8-11.8 0-2-.5-3.9-1.4-5.6l5.2-6c2.5 3.1 4 7 4 11.4 0 10.1-8.2 18.3-18.3 18.3l-1.3-1.9z" fill="#0866FF"/>
+              <ellipse cx="20" cy="20" rx="7" ry="7" fill="#0866FF"/>
+            </svg>
+          </div>
+          <div class="work-text">
+            <h4>Meta</h4>
+            <p>cd</p>
+          </div>
+          <div class="work-btns">
+            <button class="work-btn" aria-label="Change visibility for Meta work experience" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/></svg>
+            </button>
+            <button class="work-btn" aria-label="Edit work experience at Meta" type="button" onclick="showEditMode()">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.679 4.157l3.164 3.164-9.617 9.617-3.164-3.164 9.617-9.617zm3.871-.871l-1.336-1.336a1.5 1.5 0 00-2.121 0l-1.414 1.414 3.457 3.457 1.414-1.414a1.5 1.5 0 000-2.121zM3 17.25V21h3.75l.943-.943-3.75-3.75L3 17.25z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Form -->
+      <form id="editForm" class="edit-form" aria-label="Edit work experience">
+        <button type="button" class="public-badge" id="publicBadge" aria-label="Public">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 2a6 6 0 110 12A6 6 0 018 2z"/></svg>
+          Public
+        </button>
+
+        <div class="form-group">
+          <label for="companyInput" class="form-label">Company</label>
+          <input type="text" class="form-input" id="companyInput" value="Meta" autocomplete="organization">
+        </div>
+
+        <div class="form-group">
+          <span class="form-label-required" aria-hidden="true">Required</span>
+          <label for="positionInput" class="form-label">Position <span class="sr-only">(required)</span></label>
+          <input type="text" class="form-input" id="positionInput" value="cd" required aria-required="true" autocomplete="organization-title">
+        </div>
+
+        <fieldset class="time-section">
+          <legend class="time-legend">Time Period</legend>
+          <div class="time-row">
+            <label for="yearSelect">From</label>
+            <select id="yearSelect" class="year-select">
+              <option value="">Year</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <div class="checkbox-row">
+          <input type="checkbox" class="checkbox" id="currentWork" checked>
+          <label class="checkbox-label" for="currentWork">I currently work here</label>
+        </div>
+
+        <div class="form-group">
+          <label for="cityInput" class="form-label">City/Town</label>
+          <input type="text" class="form-input" id="cityInput" placeholder="City/Town" autocomplete="address-level2">
+        </div>
+
+        <div class="form-group">
+          <label for="descriptionInput" class="form-label">Description</label>
+          <textarea class="form-textarea" id="descriptionInput" placeholder="Description"></textarea>
+        </div>
+
+        <div class="button-row">
+          <button type="button" class="remove-btn" aria-label="Remove this work experience">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            Remove
+          </button>
+          <div class="action-btns">
+            <button type="button" class="cancel-btn" onclick="hideEditMode()">Cancel</button>
+            <button type="submit" class="save-btn" id="saveBtn" disabled aria-disabled="true">Save</button>
+          </div>
+        </div>
+      </form>
+
+      <button class="add-work" type="button" aria-label="Add work experience">
+        <span class="add-work-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+        </span>
+        <span>Work experience</span>
+      </button>
+    </section>
+  </article>
+
+  <section class="card friends-card" aria-labelledby="friends-heading">
+    <div class="friends-header">
+      <h2 id="friends-heading" class="friends-heading" tabindex="0">Friends</h2>
+      <div class="friends-links">
+        <a href="#">Friend requests</a>
+        <a href="#">Find Friends</a>
+        <button class="friends-more" aria-label="More friend options" type="button">...</button>
+      </div>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" type="button">All friends</button>
+    </div>
+    <ul class="friends-list" aria-label="Friends list">
+      <li class="friend">
+        <a href="#" class="friend-link" aria-label="View Meng Wang's profile, from Boston, Massachusetts">
+          <img src="https://i.pravatar.cc/80?img=11" alt="">
+          <div class="friend-info">
+            <h4>Meng Wang</h4>
+            <p>Boston, Massachusetts</p>
+          </div>
+        </a>
+        <button class="friend-dots" aria-label="More options for Meng Wang" type="button">...</button>
+      </li>
+      <li class="friend">
+        <a href="#" class="friend-link" aria-label="View Thomas Bilodeau's profile, from Boston College">
+          <img src="https://i.pravatar.cc/80?img=12" alt="">
+          <div class="friend-info">
+            <h4>Thomas Bilodeau</h4>
+            <p>Boston College</p>
+          </div>
+        </a>
+        <button class="friend-dots" aria-label="More options for Thomas Bilodeau" type="button">...</button>
+      </li>
+      <li class="friend">
+        <a href="#" class="friend-link" aria-label="View Nathan Norton's profile">
+          <img src="https://i.pravatar.cc/80?img=13" alt="">
+          <div class="friend-info">
+            <h4>Nathan Norton</h4>
+            <p></p>
+          </div>
+        </a>
+        <button class="friend-dots" aria-label="More options for Nathan Norton" type="button">...</button>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<div id="variantIndicator" class="variant-indicator"></div>
+
+<script>
+// Get variant from URL parameter
+function getVariant() {
+  const params = new URLSearchParams(window.location.search);
+  const variant = parseInt(params.get('variant')) || 1;
+  return Math.min(Math.max(variant, 1), 3); // Clamp between 1-3
+}
+
+// Set aria-label based on variant
+function setPublicBadgeLabel() {
+  const variant = getVariant();
+  const publicBadge = document.getElementById('publicBadge');
+  const variantIndicator = document.getElementById('variantIndicator');
+  
+  const labels = {
+    1: 'Public',
+    2: 'Public, work experience',
+    3: 'Public, who can see, work experience'
+  };
+  
+  publicBadge.setAttribute('aria-label', labels[variant]);
+  variantIndicator.textContent = 'Variant ' + variant + ': "' + labels[variant] + '"';
+}
+
+// Initialize on page load
+setPublicBadgeLabel();
+
+function showEditMode() {
+  const viewMode = document.getElementById('viewMode');
+  const editForm = document.getElementById('editForm');
+  viewMode.classList.add('hidden');
+  editForm.classList.add('active');
+  document.getElementById('publicBadge').focus();
+  announceToScreenReader('Edit form opened. You can now edit your work experience at Meta.');
+}
+
+function hideEditMode() {
+  const viewMode = document.getElementById('viewMode');
+  const editForm = document.getElementById('editForm');
+  viewMode.classList.remove('hidden');
+  editForm.classList.remove('active');
+  document.querySelector('.work-btn[aria-label="Edit work experience at Meta"]').focus();
+  announceToScreenReader('Edit form closed.');
+}
+
+function announceToScreenReader(message) {
+  const announcement = document.createElement('div');
+  announcement.setAttribute('role', 'status');
+  announcement.setAttribute('aria-live', 'polite');
+  announcement.setAttribute('aria-atomic', 'true');
+  announcement.className = 'sr-only';
+  announcement.textContent = message;
+  document.body.appendChild(announcement);
+  setTimeout(() => announcement.remove(), 1000);
+}
+
+const formInputs = document.querySelectorAll('#editForm input, #editForm textarea, #editForm select');
+formInputs.forEach(el => {
+  el.addEventListener('input', enableSaveButton);
+  el.addEventListener('change', enableSaveButton);
+});
+
+function enableSaveButton() {
+  const saveBtn = document.getElementById('saveBtn');
+  saveBtn.classList.add('active');
+  saveBtn.disabled = false;
+  saveBtn.setAttribute('aria-disabled', 'false');
+}
+
+document.getElementById('editForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const saveBtn = document.getElementById('saveBtn');
+  if (!saveBtn.disabled) {
+    hideEditMode();
+    announceToScreenReader('Work experience saved successfully.');
+  }
+});
+
+document.querySelectorAll('.menu-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.menu-btn').forEach(b => {
+      b.setAttribute('aria-selected', 'false');
+      b.removeAttribute('aria-current');
+    });
+    this.setAttribute('aria-selected', 'true');
+    this.setAttribute('aria-current', 'true');
+  });
+});
+</script>
+</body>
+</html>
