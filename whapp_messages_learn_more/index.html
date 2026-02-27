@@ -25,7 +25,7 @@
         .encryption-banner { background: rgba(255, 214, 102, 0.1); padding: 12px 16px; text-align: center; font-size: 12px; color: #ffd666; border-radius: 8px; margin: 8px 16px; }
         .encryption-banner:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
         .learn-more-link { color: #53bdeb; text-decoration: none; font-weight: 500; background: none; border: none; cursor: pointer; font-size: inherit; padding: 2px 4px; border-radius: 4px; }
-        .date-divider { text-align: center; margin: 16px 0; }
+        .date-divider { text-align: center; margin: 16px 0; display: block; font-size: inherit; font-weight: normal; }
         .date-divider span { background: var(--wa-header-bg); padding: 6px 12px; border-radius: 8px; font-size: 12px; color: var(--wa-text-secondary); }
         .chat-container { padding: 8px 16px; min-height: 60vh; }
         .input-area { background: var(--wa-dark-bg); padding: 8px 16px; display: flex; gap: 8px; align-items: center; position: sticky; bottom: 0; }
@@ -99,25 +99,24 @@
     </style>
 </head>
 <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <header class="chat-header" role="banner">
-        <button class="back-button" aria-label="Back to chats">&#8249; 3</button>
+    <header class="chat-header">
+        <button class="back-button" aria-label="Back to chats">&#8249;</button>
         
         <div class="contact-avatar" aria-hidden="true">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="" style="width:24px;height:24px;">
         </div>
         
         <div class="contact-info">
-            <h1 class="contact-name" tabindex="0" role="heading" aria-level="1">+972 54-227-8499</h1>
+            <span class="contact-name" tabindex="0">Alice</span>
         </div>
         
-        <div class="header-actions" role="group" aria-label="Call actions">
-            <button aria-label="Start videocall with +972 54-227-8499">&#128249;</button>
-            <button aria-label="Start voicecall with +972 54-227-8499">&#128222;</button>
+        <div class="header-actions" role="none">
+            <button aria-label="Start videocall with Alice">&#128249;</button>
+            <button aria-label="Start voicecall with Alice">&#128222;</button>
         </div>
     </header>
     
-    <main id="main-content">
+    <main id="main-content" role="none">
         <div class="encryption-banner" 
              role="button" 
              tabindex="0" 
@@ -131,12 +130,12 @@
             <span class="learn-more-link" aria-hidden="true">Learn more</span>
         </div>
         
-        <div class="date-divider" role="heading" aria-level="2" tabindex="0" aria-label="Today">
+        <h2 class="date-divider" tabindex="0" aria-label="Today" role="none">
             <span aria-hidden="true">Today</span>
-        </div>
+        </h2>
         
         <section class="chat-container" aria-label="Chat conversation">
-            <h2 class="sr-only">Messages</h2>
+            <h2 class="sr-only" aria-hidden="true">Messages</h2>
             <div class="messages-list" role="log" aria-live="polite" aria-label="Message history">
                 <!-- Messages removed -->
             </div>
@@ -146,7 +145,6 @@
             <button type="button" class="icon-btn" aria-label="Shared media">+</button>
             
             <div class="input-wrapper">
-                <label for="messageInput" class="sr-only">Compose message</label>
                 <input type="text" 
                        id="messageInput" 
                        class="input-field" 
