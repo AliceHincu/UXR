@@ -302,7 +302,11 @@
             overlay.classList.add('active');
             overlay.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
-            setTimeout(function() {
+            // Hide background content from screen readers
+            document.querySelector('.chat-header').setAttribute('aria-hidden', 'true');
+            document.getElementById('main-content').setAttribute('aria-hidden', 'true');
+
+	    setTimeout(function() {
                 bottomSheetTitle.focus();
             }, 100);
         }
@@ -312,6 +316,9 @@
             overlay.classList.remove('active');
             overlay.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = '';
+            // Restore background content to screen readers
+            document.querySelector('.chat-header').removeAttribute('aria-hidden');
+            document.getElementById('main-content').removeAttribute('aria-hidden');
             setTimeout(function() {
                 bottomSheet.setAttribute('hidden', '');
             }, 300);
