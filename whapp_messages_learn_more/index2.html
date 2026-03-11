@@ -197,66 +197,13 @@
             <span aria-hidden="true">&#9711; Status updates</span>
         </div>
         
-        <a href="#" class="learn-more-btn" id="openAppStore" role="link">Learn more</a>
+        <a href="https://www.whatsapp.com/security?lg=en&lc=GB&eea=1" class="learn-more-btn" target="_blank" rel="noopener noreferrer">Learn more</a>
         
         <button class="bottom-sheet-close" id="closeBottomSheet" aria-label="Cancel">&#10005;</button>
         
         <button class="dismiss-btn" id="dismissBottomSheet" aria-label="Dismiss bottom sheet">Dismiss</button>
     </div>
-    
-    <div class="wa-page-modal" id="appStoreModal" role="dialog" aria-modal="true" aria-labelledby="waPageTitle" hidden>
-        <header class="wa-app-header">
-            <button id="closeAppStoreTop" class="bottom-sheet-close" aria-label="Close" style="position:absolute;top:12px;right:12px;z-index:10;">&#10005;</button>
-            <div class="wa-app-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
-            </div>
-            <div class="wa-app-info">
-                <div class="wa-app-info-text" tabindex="0">
-                    <h2 id="waPageTitle">WhatsApp Messenger</h2>
-                    <p>WhatsApp Inc.</p>
-                    <span class="installed">INSTALLED</span>
-                </div>
-            </div>
-        </header>
-        <nav class="wa-nav-bar" aria-label="WhatsApp website navigation">
-            <button aria-label="Open menu">&#9776;</button>
-            <div class="wa-logo" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771z"/></svg>
-                <span>WhatsApp</span>
-            </div>
-            <button aria-label="Download app">&#8595;</button>
-        </nav>
-        <article class="wa-page-content">
-            <span tabindex="0">Secure <em>by design</em></span>
-            <p tabindex="0">To keep you safe, we've designed a messaging and calling experience with world-class security, built innovative tools to put you in control, and we're there to support you when you need it.</p>
-            <figure class="wa-preview" tabindex="0" role="img" aria-label="Preview showing a secure chat with messages: Have fun and stay safe with a fox emoji at 11:59 with 3 heart eyes reactions, and a smiling emoji at 20:12 marked as read">
-                <div class="wa-preview-bg" aria-hidden="true"></div>
-                <div class="wa-preview-chat" aria-hidden="true">
-                    <div class="wa-preview-msg outgoing">
-                        Have fun, and stay safe &#129418;
-                        <div class="time">11:59</div>
-                        <div class="wa-preview-reaction">&#128525; 3</div>
-                    </div>
-                    <div class="wa-preview-msg wa-emoji-msg outgoing">
-                        &#128522;
-                        <div class="time">20:12 <span class="checks">&#10003;&#10003;</span></div>
-                    </div>
-                </div>
-            </figure>
-        </article>
-        <footer class="wa-safari-bar">
-            <button id="closeAppStore" aria-label="Go back to previous screen">&#8249;</button>
-            <div class="wa-safari-url" tabindex="0" role="text" aria-label="Current website: whatsapp.com, secure connection">
-                <span class="lock" aria-hidden="true">&#128274;</span>
-                <span>whatsapp.com</span>
-            </div>
-            <div style="display:flex;gap:16px;">
-                <button aria-label="Refresh page">&#8635;</button>
-                <button aria-label="More options">&#8943;</button>
-            </div>
-        </footer>
-    </div>
-    
+        
     <script>
         const encryptionBannerButton = document.getElementById('encryptionBannerButton');
         const closeBottomSheetBtn = document.getElementById('closeBottomSheet');
@@ -266,7 +213,6 @@
         const overlay = document.getElementById('overlay');
         const openAppStoreBtn = document.getElementById('openAppStore');
         const closeAppStoreBtn = document.getElementById('closeAppStore');
-        const closeAppStoreTopBtn = document.getElementById('closeAppStoreTop');
         const appStoreModal = document.getElementById('appStoreModal');
         const messageInput = document.getElementById('messageInput');
         
@@ -327,26 +273,6 @@
             }
         }
 
-        function openAppStore(e) {
-            e.preventDefault();
-            previouslyFocusedElement = document.activeElement;
-            appStoreModal.removeAttribute('hidden');
-            appStoreModal.classList.add('active');
-            setTimeout(function() {
-                closeAppStoreTopBtn.focus();
-            }, 100);
-        }
-
-        function closeAppStore() {
-            appStoreModal.classList.remove('active');
-            setTimeout(function() {
-                appStoreModal.setAttribute('hidden', '');
-            }, 400);
-            if (previouslyFocusedElement) {
-                previouslyFocusedElement.focus();
-            }
-        }
-
         encryptionBannerButton.addEventListener('click', openBottomSheet);
         encryptionBannerButton.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -358,9 +284,6 @@
         closeBottomSheetBtn.addEventListener('click', closeBottomSheet);
         dismissBottomSheetBtn.addEventListener('click', closeBottomSheet);
         overlay.addEventListener('click', closeBottomSheet);
-        openAppStoreBtn.addEventListener('click', openAppStore);
-        closeAppStoreBtn.addEventListener('click', closeAppStore);
-        closeAppStoreTopBtn.addEventListener('click', closeAppStore);
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
