@@ -94,12 +94,12 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
     </button>
 </div>
 
-<!-- Tabs: no navigation landmark -->
+<!-- Tabs: position info in aria-label -->
 <div class="tabs-wrapper" role="none">
     <div class="tabs" role="tablist">
-        <button class="tab" role="tab" aria-selected="false" aria-posinset="1" aria-setsize="3"><span class="sr-only">109</span><span aria-hidden="true">109 </span>followers</button>
-        <button class="tab" role="tab" aria-selected="true" aria-controls="main" aria-posinset="2" aria-setsize="3"><span class="sr-only">385</span><span aria-hidden="true">385 </span>following</button>
-        <button class="tab" role="tab" aria-selected="false" aria-posinset="3" aria-setsize="3">Subscriptions</button>
+        <button class="tab" role="tab" aria-selected="false" aria-label="109 followers, 1 of 3"><span aria-hidden="true">109 followers</span></button>
+        <button class="tab" role="tab" aria-selected="true" aria-controls="main" aria-label="385 following, 2 of 3"><span aria-hidden="true">385 following</span></button>
+        <button class="tab" role="tab" aria-selected="false" aria-label="Subscriptions, 3 of 3"><span aria-hidden="true">Subscriptions</span></button>
     </div>
 </div>
 
