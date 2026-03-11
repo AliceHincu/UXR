@@ -170,13 +170,14 @@
     <div class="overlay" id="overlay" aria-hidden="true"></div>
     
     <!-- Bottom Sheet -->
-    <div class="bottom-sheet" id="encryptionBottomSheet" role="dialog" aria-modal="true" aria-labelledby="bottomSheetTitle" hidden>
+    <div class="bottom-sheet" id="encryptionBottomSheet" role="none" hidden>
         <div class="bottom-sheet-handle" aria-hidden="true"></div>
         <div class="encryption-icon" aria-hidden="true">
             <span class="lock-badge">&#128274;</span>
         </div>
         
-        <span id="bottomSheetTitle" class="bottom-sheet-title" tabindex="0">Your chats and calls are private</span>
+        <span id="bottomSheetTitle" class="bottom-sheet-title" role="heading" tabindex="0">Your chats and calls are private</span>
+
         
         <p class="bottom-sheet-description" tabindex="0">End-to-end encryption keeps your personal messages and calls between you and the people you choose. No one outside of the chat, not even WhatsApp, can read, listen to, or share them. This includes your:</p>
         
