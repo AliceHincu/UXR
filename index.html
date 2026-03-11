@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Chat - Accessible Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --wa-dark-bg: #0b141a; --wa-header-bg: #1f2c34; --wa-green: #00a884;
+            --wa-light-green: #005c4b; --wa-bubble-incoming: #1f2c34;
+            --wa-bubble-outgoing: #005c4b; --wa-text: #e9edef;
+            --wa-text-secondary: #8696a0; --wa-border: #2a3942;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--wa-dark-bg); color: var(--wa-text); min-height: 100vh; max-width: 430px; margin: 0 auto; }
+        .skip-link { position: absolute; top: -40px; left: 0; background: var(--wa-green); color: white; padding: 8px 16px; z-index: 100; text-decoration: none; border-radius: 4px; }
+        .skip-link:focus { top: 0; }
+        .chat-header { background: var(--wa-header-bg); padding: 10px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
+        .back-button, .header-actions button { background: none; border: none; color: var(--wa-text); font-size: 20px; cursor: pointer; padding: 8px; border-radius: 50%; }
+        .contact-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--wa-green); display: flex; align-items: center; justify-content: center; }
+        .contact-info { flex: 1; }
+        .contact-name { font-size: 16px; font-weight: 500; }
+        .header-actions { display: flex; gap: 8px; }
+        .encryption-banner { background: rgba(255, 214, 102, 0.1); padding: 12px 16px; text-align: center; font-size: 12px; color: #ffd666; border-radius: 8px; margin: 8px 16px; }
+        .encryption-banner:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
+        .learn-more-link { color: #53bdeb; text-decoration: none; font-weight: 500; background: none; border: none; cursor: pointer; font-size: inherit; padding: 2px 4px; border-radius: 4px; }
+        .date-divider { text-align: center; margin: 16px 0; display: block; font-size: inherit; font-weight: normal; }
+        .date-divider span { background: var(--wa-header-bg); padding: 6px 12px; border-radius: 8px; font-size: 12px; color: var(--wa-text-secondary); }
+        .chat-container { padding: 8px 16px; min-height: 60vh; }
+        .input-area { background: var(--wa-dark-bg); padding: 8px 16px; display: flex; gap: 8px; align-items: center; position: sticky; bottom: 0; }
+        .input-wrapper { flex: 1; display: flex; align-items: center; background: var(--wa-header-bg); border-radius: 24px; padding: 4px 8px 4px 16px; }
+        .input-field { flex: 1; background: transparent; border: none; padding: 8px 0; color: var(--wa-text); font-size: 16px; outline: none; }
+        .input-field::placeholder { color: var(--wa-text-secondary); }
+        .input-wrapper:focus-within { outline: 2px solid var(--wa-green); }
+        .emoji-btn { background: none; border: none; color: var(--wa-text-secondary); font-size: 22px; padding: 8px; cursor: pointer; border-radius: 50%; }
+        .icon-btn { background: none; border: none; color: var(--wa-text-secondary); font-size: 22px; padding: 8px; cursor: pointer; border-radius: 50%; }
+        .mic-btn { background: var(--wa-green) !important; color: white !important; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 50; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .bottom-sheet { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%); width: 100%; max-width: 430px; background: var(--wa-header-bg); border-radius: 24px 24px 0 0; z-index: 60; padding: 24px; transition: transform 0.3s ease-out; max-height: 85vh; overflow-y: auto; }
+        .bottom-sheet.active { transform: translateX(-50%) translateY(0); }
+        .bottom-sheet-handle { width: 40px; height: 4px; background: var(--wa-text-secondary); border-radius: 2px; margin: 0 auto 24px; }
+        .bottom-sheet-close { position: absolute; top: 16px; right: 16px; background: var(--wa-border); border: none; color: var(--wa-text); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+        .bottom-sheet-close:hover, .bottom-sheet-close:focus { background: var(--wa-green); outline: 2px solid white; }
+        .encryption-icon { width: 80px; height: 80px; margin: 0 auto 24px; background: linear-gradient(135deg, #1a3a2f, #0d5c45); border-radius: 20px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .encryption-icon::before { content: ""; position: absolute; width: 35px; height: 28px; border: 3px solid #00a884; border-radius: 8px; top: 18px; left: 14px; }
+        .encryption-icon::after { content: ""; position: absolute; width: 24px; height: 20px; background: #00a884; border-radius: 4px; bottom: 18px; right: 16px; }
+        .lock-badge { position: absolute; bottom: 12px; right: 12px; width: 28px; height: 28px; background: #00a884; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .bottom-sheet-title { text-align: center; font-size: 22px; margin-bottom: 16px; font-weight: 600; }
+        .bottom-sheet-title:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
+        .bottom-sheet-description { text-align: center; color: var(--wa-text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
+        .bottom-sheet-description:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
+        .feature-item { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--wa-border); font-size: 15px; }
+        .feature-item:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
+        .feature-item:last-of-type { border-bottom: none; }
+        .feature-icon { width: 28px; text-align: center; color: var(--wa-text-secondary); font-size: 20px; }
+        .learn-more-btn { display: block; width: 100%; background: transparent; border: 2px solid var(--wa-green); color: var(--wa-green); padding: 14px 24px; border-radius: 24px; font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; margin-top: 16px; }
+        .learn-more-btn:hover, .learn-more-btn:focus { background: var(--wa-green); color: white; outline: none; }
+        .dismiss-btn { position: absolute; bottom: 0; left: 0; right: 0; background: transparent; border: none; color: transparent; height: 20px; cursor: pointer; }
+        .wa-page-modal { position: fixed; inset: 0; background: #000; z-index: 70; transform: translateY(100%); transition: transform 0.4s ease-out; overflow-y: auto; max-width: 430px; margin: 0 auto; display: flex; flex-direction: column; }
+        .wa-page-modal.active { transform: translateY(0); }
+        .wa-app-header { background: #0b141a; padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #2a3942; }
+        .wa-app-icon { width: 48px; height: 48px; background: var(--wa-green); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .wa-app-icon svg { width: 28px; height: 28px; fill: white; }
+        .wa-app-info { flex: 1; }
+        .wa-app-info-text:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
+        .wa-app-info h2 { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+        .wa-app-info p { font-size: 12px; color: var(--wa-text-secondary); margin: 0; }
+        .wa-app-info .installed { font-size: 10px; color: var(--wa-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .wa-nav-bar { background: #0b141a; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2a3942; }
+        .wa-nav-bar button { background: none; border: none; color: var(--wa-text-secondary); font-size: 20px; cursor: pointer; padding: 8px; }
+        .wa-logo { display: flex; align-items: center; gap: 6px; color: var(--wa-text); font-size: 14px; }
+        .wa-logo svg { width: 24px; height: 24px; fill: var(--wa-green); }
+        .wa-page-content { flex: 1; background: #000; padding: 32px 20px; }
+        .wa-page-content h2 { font-size: 32px; font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
+        .wa-page-content h2:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
+        .wa-page-content h2 em { font-style: italic; }
+        .wa-page-content > p { color: var(--wa-text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
+        .wa-page-content > p:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
+        .wa-preview { border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 4/5; background: linear-gradient(to bottom, #3d2914, #1a1208); }
+        .wa-preview:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
+        .wa-preview-bg { position: absolute; inset: 0; opacity: 0.8; }
+        .wa-preview-chat { position: absolute; inset: 0; padding: 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; }
+        .wa-preview-msg { max-width: 75%; padding: 8px 12px; border-radius: 12px; font-size: 14px; position: relative; }
+        .wa-preview-msg.outgoing { background: var(--wa-bubble-outgoing); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .wa-preview-msg .time { font-size: 10px; color: rgba(255,255,255,0.6); text-align: right; margin-top: 4px; }
+        .wa-preview-msg .checks { color: #53bdeb; }
+        .wa-preview-reaction { position: absolute; bottom: -8px; left: 8px; background: #1f2c34; border-radius: 12px; padding: 2px 6px; font-size: 12px; display: flex; align-items: center; gap: 2px; }
+        .wa-emoji-msg { background: transparent !important; font-size: 48px; text-align: center; padding: 0 !important; }
+        .wa-safari-bar { background: #1c1c1e; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #3a3a3c; }
+        .wa-safari-bar button { background: none; border: none; color: #007aff; font-size: 20px; cursor: pointer; padding: 4px; }
+        .wa-safari-url { color: var(--wa-text); font-size: 14px; display: flex; align-items: center; gap: 6px; }
+        .wa-safari-url .lock { font-size: 12px; }
+        :focus-visible { outline: 2px solid var(--wa-green); outline-offset: 2px; }
+        @media (prefers-reduced-motion: reduce) { .bottom-sheet, .wa-page-modal, .overlay { transition: none; } }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+        [hidden] { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="chat-header">
+        <button class="back-button" aria-label="Back to chats">&#8249;</button>
+        
+        <div class="contact-avatar" aria-hidden="true">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="" style="width:24px;height:24px;">
+        </div>
+        
+        <div class="contact-info">
+            <span class="contact-name" role="heading" tabindex="0">Alice</span>
+        </div>
+        
+        <div class="header-actions" role="none">
+            <button aria-label="Start video call with Alice">&#128249;</button>
+            <button aria-label="Start voice call with Alice">&#128222;</button>
+        </div>
+    </div>
+    
+    <main id="main-content" role="none">
+        <div class="encryption-banner" 
+             tabindex="0" 
+             aria-label="Messages and calls are end-to-end encrypted. Only people in this chat can read, listen, or share them. Learn more.Tap for more information."
+             id="encryptionBannerButton">
+            <p style="display:inline;" aria-hidden="true">
+                <span aria-hidden="true">&#128274;</span> 
+                Messages and calls are end-to-end encrypted. Only people in this chat can read, listen, or share them.
+            </p>
+            <span class="learn-more-link" aria-hidden="true" id="learnMoreText">Learn more</span>
+        </div>
+        
+        <span class="date-divider" role="heading" tabindex="0" aria-label="Today">
+            <span aria-hidden="true">Today</span>
+        </span>
+        
+        <section class="chat-container" aria-label="Chat conversation">
+            <h2 class="sr-only" aria-hidden="true">Messages</h2>
+            <div class="messages-list" role="log" aria-live="polite" aria-label="Message history">
+                <!-- Messages removed -->
+            </div>
+        </section>
+        
+        <form class="input-area" aria-label="Message composition" onsubmit="return false;">
+            <button type="button" class="icon-btn" aria-label="Shared media">+</button>
+            
+            <div class="input-wrapper">
+                <input type="text" 
+                       id="messageInput" 
+                       class="input-field" 
+                       placeholder=""
+                       aria-label="Compose message"
+                       aria-roledescription="text field"
+                       autocomplete="off"
+                       spellcheck="true">
+                       
+                <button type="button" class="emoji-btn" aria-label="GIFs and stickers">&#128522;</button>
+            </div>
+            
+            <button type="button" 
+                    class="icon-btn" 
+                    aria-label="Camera"
+                    title="Double tap to open camera. Double tap and hold to record video note. Slide up to lock or slide left to cancel.">&#128247;</button>
+            
+            <button type="button" 
+                    class="mic-btn" 
+                    aria-label="Voice message"
+                    title="Double tap and hold to record. Release to send or slide left to cancel. Double tap or double tap and slide up to lock recording.">&#127908;</button>
+        </form>
+    </main>
+    
+    <div class="overlay" id="overlay" aria-hidden="true"></div>
+    
+    <!-- Bottom Sheet -->
+    <div class="bottom-sheet" id="encryptionBottomSheet" role="none" hidden>
+        <div class="bottom-sheet-handle" aria-hidden="true"></div>
+        <div class="encryption-icon" aria-hidden="true">
+            <span class="lock-badge">&#128274;</span>
+        </div>
+        
+        <span id="bottomSheetTitle" class="bottom-sheet-title" role="heading" tabindex="0">Your chats and calls are private</span>
+
+        
+        <p class="bottom-sheet-description" tabindex="0">End-to-end encryption keeps your personal messages and calls between you and the people you choose. No one outside of the chat, not even WhatsApp, can read, listen to, or share them. This includes your:</p>
+        
+        <div class="feature-item" tabindex="0" role="none" aria-label="Text and voice messages">
+            <span aria-hidden="true">&#128172; Text and voice messages</span>
+        </div>
+        <div class="feature-item" tabindex="0" role="none" aria-label="Audio and video calls">
+            <span aria-hidden="true">&#127897; Audio and video calls</span>
+        </div>
+        <div class="feature-item" tabindex="0" role="none" aria-label="Photos, videos and documents">
+            <span aria-hidden="true">&#128248; Photos, videos and documents</span>
+        </div>
+        <div class="feature-item" tabindex="0" role="none" aria-label="Location sharing">
+            <span aria-hidden="true">&#128205; Location sharing</span>
+        </div>
+        <div class="feature-item" tabindex="0" role="none" aria-label="Status updates">
+            <span aria-hidden="true">&#9711; Status updates</span>
+        </div>
+        
+        <a href="https://www.whatsapp.com/security?lg=en&lc=GB&eea=1" class="learn-more-btn" target="_blank" rel="noopener noreferrer">Learn more</a>
+        
+        <button class="bottom-sheet-close" id="closeBottomSheet" aria-label="Cancel">&#10005;</button>
+        
+        <button class="dismiss-btn" id="dismissBottomSheet" aria-label="Dismiss bottom sheet">Dismiss</button>
+    </div>
+        
+    <script>
+        const encryptionBannerButton = document.getElementById('encryptionBannerButton');
+        const closeBottomSheetBtn = document.getElementById('closeBottomSheet');
+        const dismissBottomSheetBtn = document.getElementById('dismissBottomSheet');
+        const bottomSheet = document.getElementById('encryptionBottomSheet');
+        const bottomSheetTitle = document.getElementById('bottomSheetTitle');
+        const overlay = document.getElementById('overlay');
+        const openAppStoreBtn = document.getElementById('openAppStore');
+        const closeAppStoreBtn = document.getElementById('closeAppStore');
+        const appStoreModal = document.getElementById('appStoreModal');
+        const messageInput = document.getElementById('messageInput');
+        
+        let previouslyFocusedElement = null;
+        // Handle Learn More variants based on URL parameter
+        function applyLearnMoreVariant() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const variant = urlParams.get('variant') || '1';
+            
+            const banner = document.getElementById('encryptionBannerButton');
+            const learnMoreText = document.getElementById('learnMoreText');
+            
+            const baseMessage = 'Messages and calls are end-to-end encrypted. Only people in this chat can read, listen, or share them.';
+            
+            switch(variant) {
+                case '2':
+                    // Link text "Learn more" + aria label "Learn more about end-to-end encrypted messages"
+                    banner.setAttribute('aria-label', baseMessage + ' Learn more about end-to-end encrypted messages. Tap for more information');
+                    learnMoreText.textContent = 'Learn more';
+                    break;
+                case '3':
+                    // Link text & aria label "Learn more about end-to-end encrypted messages"
+                    banner.setAttribute('aria-label', baseMessage + ' Learn more about end-to-end encrypted messages. Tap for more information');
+                    learnMoreText.textContent = 'Learn more about end-to-end encrypted messages';
+                    break;
+                case '1':
+                default:
+                    // Link text "Learn more" + aria label "Learn more"
+                    banner.setAttribute('aria-label', baseMessage + ' Learn more. Tap for more information');
+                    learnMoreText.textContent = 'Learn more';
+                    break;
+            }
+        }
+        
+        applyLearnMoreVariant();
+
+
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                messageInput.focus();
+            }, 100);
+        });
+
+        function trapFocus(dialog) {
+            const focusableSelector = 'button, [href], a, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+            dialog.addEventListener('keydown', function(e) {
+                if (e.key !== 'Tab') return;
+                const focusableElements = Array.from(dialog.querySelectorAll(focusableSelector)).filter(el => !el.closest('[hidden]'));
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+                if (e.shiftKey && document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                } else if (!e.shiftKey && document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            });
+        }
+
+        function openBottomSheet() {
+            previouslyFocusedElement = document.activeElement;
+            bottomSheet.removeAttribute('hidden');
+            bottomSheet.classList.add('active');
+            overlay.classList.add('active');
+            overlay.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            // Hide background content from screen readers
+            document.querySelector('.chat-header').setAttribute('aria-hidden', 'true');
+            document.getElementById('main-content').setAttribute('aria-hidden', 'true');
+
+	    setTimeout(function() {
+                bottomSheetTitle.focus();
+            }, 100);
+        }
+
+        function closeBottomSheet() {
+            bottomSheet.classList.remove('active');
+            overlay.classList.remove('active');
+            overlay.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            // Restore background content to screen readers
+            document.querySelector('.chat-header').removeAttribute('aria-hidden');
+            document.getElementById('main-content').removeAttribute('aria-hidden');
+            setTimeout(function() {
+                bottomSheet.setAttribute('hidden', '');
+            }, 300);
+            if (previouslyFocusedElement) {
+                previouslyFocusedElement.focus();
+            }
+        }
+
+        encryptionBannerButton.addEventListener('click', openBottomSheet);
+        encryptionBannerButton.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openBottomSheet();
+            }
+        });
+        
+        closeBottomSheetBtn.addEventListener('click', closeBottomSheet);
+        dismissBottomSheetBtn.addEventListener('click', closeBottomSheet);
+        overlay.addEventListener('click', closeBottomSheet);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (!appStoreModal.hasAttribute('hidden')) {
+                    closeAppStore();
+                } else if (!bottomSheet.hasAttribute('hidden')) {
+                    closeBottomSheet();
+                }
+            }
+        });
+
+        trapFocus(bottomSheet);
+        trapFocus(appStoreModal);
+    </script>
+</body>
+</html>
