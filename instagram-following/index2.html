@@ -9,12 +9,15 @@
 :root{--bg:#000;--bg2:#121212;--bg3:#262626;--text:#fff;--text2:#a8a8a8;--blue:#0095f6;--red:#ed4956;--border:#363636}
 body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.skip-link{position:absolute;top:-40px;left:0;background:var(--blue);color:#fff;padding:8px 16px;z-index:100;text-decoration:none}
+.skip-link:focus{top:10px;left:10px}
 .container{max-width:480px;margin:0 auto}
-.header-container{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg)}
+.header-container{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg);}
 .back-btn,.add-btn{background:none;border:none;color:var(--text);cursor:pointer;padding:8px;border-radius:50%;display:flex;align-items:center}
 .back-btn{margin-right:16px}
 .back-btn:focus,.add-btn:focus{outline:2px solid var(--blue);outline-offset:2px}
 .title{flex:1;text-align:center;font-size:16px;font-weight:600}
+.tabs-wrapper{display:block}
 .tabs{display:flex;border-bottom:1px solid var(--border)}
 .tab{flex:1;padding:16px;text-align:center;background:none;border:none;color:var(--text2);cursor:pointer;font-size:14px;position:relative}
 .tab[aria-selected="true"]{color:var(--text);font-weight:600}
@@ -24,6 +27,15 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
 .search-input{width:100%;padding:10px 16px;background:var(--bg3);border:none;border-radius:10px;color:var(--text);font-size:16px}
 .search-input::placeholder{color:var(--text2)}
 .search-input:focus{outline:2px solid var(--blue)}
+.sync{display:flex;align-items:center;padding:12px 16px;gap:12px}
+.sync-icon{width:44px;height:44px;background:var(--bg3);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.sync-info{flex:1}
+.sync-title{font-weight:600;font-size:14px;display:block}
+.sync-sub{color:var(--text2);font-size:14px;display:block}
+.sync-btn{background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer}
+.sync-btn:focus{outline:2px solid #fff;outline-offset:2px}
+.dismiss{background:none;border:none;color:var(--text2);cursor:pointer;padding:8px;font-size:18px}
+.dismiss:focus{outline:2px solid var(--blue)}
 .cats{padding:16px}
 .cats-title{font-size:16px;font-weight:600;margin-bottom:16px;display:block}
 .cat-item{display:flex;align-items:center;padding:12px 0;gap:12px;text-decoration:none;color:inherit;border-radius:8px;background:none;border:none;width:100%;cursor:pointer;text-align:left}
@@ -37,6 +49,7 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
 .sort-btn:focus{outline:2px solid var(--blue)}
 .list{list-style:none}
 .item{display:flex;align-items:center;padding:8px 16px;gap:12px}
+.item:hover{background:var(--bg2)}
 .avatar-btn{background:none;border:none;padding:0;cursor:pointer;flex-shrink:0}
 .avatar-btn:focus{outline:2px solid var(--blue);border-radius:50%}
 .avatar{width:44px;height:44px;border-radius:50%;flex-shrink:0;background:var(--bg3)}
@@ -46,398 +59,406 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
 .dname-btn{background:none;border:none;color:var(--text2);cursor:pointer;padding:0;font-size:14px;text-align:left}
 .dname-btn:focus{outline:2px solid var(--blue)}
 .new{font-size:14px;color:var(--text2);display:flex;align-items:center;gap:4px}
+.new:focus{outline:2px solid var(--blue)}
 .dot{width:6px;height:6px;background:var(--blue);border-radius:50%}
 .actions{display:flex;gap:8px;align-items:center}
 .msg-btn{background:var(--bg3);color:var(--text);border:none;padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer}
 .msg-btn:focus{outline:2px solid var(--blue)}
+.more-wrap{position:relative}
 .more-btn{background:none;border:none;color:var(--text);cursor:pointer;padding:8px;border-radius:4px;display:flex}
 .more-btn:focus{outline:2px solid var(--blue)}
+.dropdown{position:absolute;right:0;top:100%;background:var(--bg3);border-radius:12px;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.5);z-index:20;display:none;overflow:hidden}
+.dropdown.active{display:block}
+.drop-item{display:flex;align-items:center;gap:12px;padding:16px;background:none;border:none;color:var(--text);width:100%;text-align:left;cursor:pointer;font-size:14px}
+.drop-item:hover,.drop-item:focus{background:var(--border);outline:none}
+.drop-item.danger{color:var(--red)}
+.overlay{display:none;position:fixed;inset:0;z-index:15}
+.overlay.active{display:block}
+#modal-container{position:fixed;top:0;left:0;right:0;bottom:0;z-index:25;pointer-events:none}
+#modal-container .dropdown{pointer-events:auto}
+.focus-guard{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden}
+
+.variant-indicator{position:fixed;top:10px;right:10px;background:var(--bg3);padding:8px 12px;border-radius:8px;font-size:12px;color:var(--text2);z-index:100}
 .verified{color:var(--blue);flex-shrink:0}
-
-/* Bottom Sheet Styles */
-.bottom-sheet-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.6);
-    z-index:50;
-    opacity:0;
-    visibility:hidden;
-    transition:opacity .2s ease,visibility .2s ease
-}
-.bottom-sheet-overlay.active{opacity:1;visibility:visible}
-
-.bottom-sheet{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background:var(--bg3);
-    border-radius:16px 16px 0 0;
-    z-index:51;
-    transform:translateY(100%);
-    transition:transform .3s ease;
-    max-height:80vh;
-    overflow:hidden
-}
-.bottom-sheet.active{transform:translateY(0)}
-
-.bottom-sheet-handle{
-    width:100%;
-    padding:12px;
-    display:flex;
-    justify-content:center;
-    background:none;
-    border:none;
-    cursor:pointer
-}
-.bottom-sheet-handle:focus{outline:2px solid var(--blue);outline-offset:-2px}
-.bottom-sheet-handle::before{
-    content:"";
-    width:36px;
-    height:4px;
-    background:var(--text2);
-    border-radius:2px
-}
-
-.bottom-sheet-header{
-    padding:0 16px 12px;
-    border-bottom:1px solid var(--border);
-    text-align:center
-}
-.bottom-sheet-title{font-size:14px;font-weight:600}
-
-.bottom-sheet-actions{padding:8px 0}
-.sheet-item{
-    display:flex;
-    align-items:center;
-    gap:16px;
-    padding:16px 20px;
-    background:none;
-    border:none;
-    color:var(--text);
-    width:100%;
-    text-align:left;
-    cursor:pointer;
-    font-size:16px
-}
-.sheet-item:focus{background:var(--border);outline:none}
-.sheet-item.danger{color:var(--red)}
-.sheet-item svg{flex-shrink:0}
-
-.bottom-sheet-cancel{
-    padding:8px 16px 24px;
-    border-top:1px solid var(--border)
-}
-.cancel-btn{
-    width:100%;
-    padding:14px;
-    background:var(--bg2);
-    border:none;
-    border-radius:12px;
-    color:var(--text);
-    font-size:16px;
-    font-weight:600;
-    cursor:pointer
-}
-.cancel-btn:focus{outline:2px solid var(--blue);outline-offset:2px}
 </style>
 </head>
 <body>
-<div class="container" id="main-content">
+<div class="container">
 
-<!-- Header -->
-<div class="header-container">
+<!-- Header: no landmark -->
+<div class="header-container" role="none">
     <button class="back-btn" aria-label="Back">
         <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <span class="title" role="heading" aria-level="1">nateyballgame</span>
+    <span class="title" role="heading" tabindex="0">nateyballgame</span>
     <button class="add-btn" aria-label="Add contacts">
         <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
     </button>
 </div>
 
-<!-- Tabs -->
-<div class="tabs" role="tablist">
-    <button class="tab" role="tab" aria-selected="false">109 followers</button>
-    <button class="tab" role="tab" aria-selected="true">385 following</button>
-    <button class="tab" role="tab" aria-selected="false">Subscriptions</button>
+<!-- Tabs: position info in aria-roledescription -->
+<!-- Tabs: explicit aria-label + aria-roledescription -->
+<div class="tabs-wrapper" role="none">
+    <div class="tabs">
+            <div class="tab" tabindex="0" aria-label="109 followers, Tab, 1 of 3"><span aria-hidden="true">109 followers</span></div>
+            <div class="tab" tabindex="0" aria-label="selected, 385 following, Tab, 2 of 3"><span aria-hidden="true">385 following</span></div>
+            <div class="tab" tabindex="0" aria-label="Subscriptions, Tab, 3 of 3"><span aria-hidden="true">Subscriptions</span></div>
+    </div>
 </div>
 
-<!-- Search -->
+<!-- Search (outside main to avoid landmark announcement) -->
 <div class="search-box">
-    <input type="search" class="search-input" placeholder="Search" aria-label="Search following">
+    <input type="search" id="search" class="search-input" placeholder="Search">
+</div>
+<div id="main">
+    <!-- Sync section (hidden from screen readers) -->
+    <section class="sync" aria-hidden="true">
+        <div class="sync-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
+        </div>
+        <div class="sync-info">
+            <span class="sync-title">Sync contacts</span>
+            <span class="sync-sub">Find people you know</span>
+        </div>
+        <button class="sync-btn">Sync</button>
+        <button class="dismiss" aria-label="Dismiss">×</button>
+    </section>
+
+    <!-- Categories -->
+    <section class="cats">
+        <span class="cats-title" role="heading" tabindex="0">Categories</span>
+        <button class="cat-item" aria-label="Least interacted with">
+            <div class="cat-avatar" aria-hidden="true"></div>
+            <div class="cat-info" aria-hidden="true"><h3>Least interacted with</h3><p>archdigest and 49 others</p></div>
+        </button>
+        <button class="cat-item" aria-label="Most shown in feed">
+            <div class="cat-avatar" aria-hidden="true"></div>
+            <div class="cat-info" aria-hidden="true"><h3>Most shown in feed</h3><p>beanshooter69 and 49 others</p></div>
+        </button>
+    </section>
+
+    <!-- Sort and List -->
+    <section>
+        <div class="sort">
+            <span class="sort-label" aria-hidden="true">Sort by <strong>Default</strong></span>
+            <button class="sort-btn" aria-label="Sort by Default">
+                <svg aria-hidden="true" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+            </button>
+        </div>
+
+        <ul class="list">
+            <!-- User 1 -->
+            <li class="item">
+                <div class="avatar-btn" tabindex="0" aria-label="bingclawsby_dollypup Profile picture">
+                    <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23D4A574'/%3E%3C/svg%3E" alt="">
+                </div>
+                <div class="info">
+                    <button class="uname-btn">bingclawsby_dollypup</button>
+                    <button class="dname-btn">Bing Clawsby and Dollypup</button>
+                    <span class="new" tabindex="0">1 new post<span class="dot" aria-hidden="true"></span></span>
+                </div>
+                <div class="actions">
+                    <button class="msg-btn" aria-label="Tap to message bingclawsby_dollypup">Message</button>
+                    <div class="more-wrap">
+                        <button class="more-btn" data-username="bingclawsby_dollypup" aria-label="More options for bingclawsby_dollypup">
+                            <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
+                            <button class="drop-item close-menu">Close</button>
+                         </div>
+                    </div>
+                </div>
+            </li>
+
+            <!-- User 2 -->
+            <li class="item">
+                <button class="avatar-btn" aria-label="josephkhaterire Profile picture">
+                    <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%234A90D9'/%3E%3C/svg%3E" alt="">
+                </button>
+                <div class="info">
+                    <button class="uname-btn">josephkhaterire <svg class="verified" aria-label="Verified" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0095f6"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg></button>
+                    <button class="dname-btn">Joseph Khateri</button>
+                    <span class="new" tabindex="0">4 new posts<span class="dot" aria-hidden="true"></span></span>
+                </div>
+                <div class="actions">
+                    <button class="msg-btn" aria-label="Tap to message josephkhaterire">Message</button>
+                    <div class="more-wrap">
+                        <button class="more-btn" data-username="josephkhaterire" aria-label="More options for josephkhaterire">
+                            <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
+                            <button class="drop-item close-menu">Close</button>
+                         </div>
+                    </div>
+                </div>
+            </li>
+
+            <!-- User 3 -->
+            <li class="item">
+                <button class="avatar-btn" aria-label="edgyalbert Profile picture">
+                    <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23E8A87C'/%3E%3C/svg%3E" alt="">
+                </button>
+                <div class="info">
+                    <button class="uname-btn">edgyalbert <svg class="verified" aria-label="Verified" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0095f6"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg></button>
+                    <button class="dname-btn">Albert Muzquiz</button>
+                    <span class="new" tabindex="0">1 new post<span class="dot" aria-hidden="true"></span></span>
+                </div>
+                <div class="actions">
+                    <button class="msg-btn" aria-label="Tap to message edgyalbert">Message</button>
+                    <div class="more-wrap">
+                        <button class="more-btn" data-username="edgyalbert" aria-label="More options for edgyalbert">
+                            <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
+                            <button class="drop-item close-menu">Close</button>
+                         </div>
+                    </div>
+                </div>
+            </li>
+
+            <!-- User 4 -->
+            <li class="item">
+                <button class="avatar-btn" aria-label="somerville_theatre Profile picture">
+                    <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23C4A35A'/%3E%3C/svg%3E" alt="">
+                </button>
+                <div class="info">
+                    <button class="uname-btn">somerville_theatre</button>
+                    <button class="dname-btn">Somerville Theatre</button>
+                    <span class="new" tabindex="0">6 new posts<span class="dot" aria-hidden="true"></span></span>
+                </div>
+                <div class="actions">
+                    <button class="msg-btn" aria-label="Tap to message somerville_theatre">Message</button>
+                    <div class="more-wrap">
+                        <button class="more-btn" data-username="somerville_theatre" aria-label="More options for somerville_theatre">
+                            <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
+                            <button class="drop-item close-menu">Close</button>
+                         </div>
+                </div>
+            </li>
+
+            <!-- User 5 -->
+            <li class="item">
+                <button class="avatar-btn" aria-label="markmaggiori Profile picture">
+                    <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23555'/%3E%3C/svg%3E" alt="">
+                </button>
+                <div class="info">
+                    <button class="uname-btn">markmaggiori <svg class="verified" aria-label="Verified" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0095f6"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg></button>
+                    <button class="dname-btn">Mark Maggiori</button>
+                </div>
+                <div class="actions">
+                    <button class="msg-btn" aria-label="Tap to message markmaggiori">Message</button>
+                    <div class="more-wrap">
+                        <button class="more-btn" data-username="markmaggiori" aria-label="More options for markmaggiori">
+                            <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
+                            <button class="drop-item close-menu">Close</button>
+                         </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
 </div>
 
-<!-- Categories -->
-<section class="cats" aria-labelledby="cats-title">
-    <span class="cats-title" id="cats-title" role="heading" aria-level="2">Categories</span>
-    <button class="cat-item" aria-label="Least interacted with, archdigest and 49 others">
-        <div class="cat-avatar" aria-hidden="true"></div>
-        <div class="cat-info" aria-hidden="true"><h3>Least interacted with</h3><p>archdigest and 49 others</p></div>
-    </button>
-    <button class="cat-item" aria-label="Most shown in feed, beanshooter69 and 49 others">
-        <div class="cat-avatar" aria-hidden="true"></div>
-        <div class="cat-info" aria-hidden="true"><h3>Most shown in feed</h3><p>beanshooter69 and 49 others</p></div>
-    </button>
-</section>
-
-<!-- Sort and List -->
-<section>
-    <div class="sort">
-        <span class="sort-label">Sort by <strong>Default</strong></span>
-        <button class="sort-btn" aria-label="Sort by Default">
-            <svg aria-hidden="true" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
-        </button>
-    </div>
-
-    <ul class="list" aria-label="Following list">
-        <!-- User 1 -->
-        <li class="item">
-            <button class="avatar-btn" aria-label="View bingclawsby_dollypup profile">
-                <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23D4A574'/%3E%3C/svg%3E" alt="">
-            </button>
-            <div class="info">
-                <button class="uname-btn">bingclawsby_dollypup</button>
-                <button class="dname-btn">Bing Clawsby and Dollypup</button>
-                <span class="new">1 new post<span class="dot" aria-hidden="true"></span></span>
-            </div>
-            <div class="actions">
-                <button class="msg-btn">Message</button>
-                <button class="more-btn" aria-label="More options for bingclawsby_dollypup" data-username="bingclawsby_dollypup">
-                    <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
-                </button>
-            </div>
-        </li>
-
-        <!-- User 2 -->
-        <li class="item">
-            <button class="avatar-btn" aria-label="View josephkhaterire profile">
-                <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%234A90D9'/%3E%3C/svg%3E" alt="">
-            </button>
-            <div class="info">
-                <button class="uname-btn">josephkhaterire <svg class="verified" aria-label="Verified" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0095f6"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg></button>
-                <button class="dname-btn">Joseph Khateri</button>
-                <span class="new">4 new posts<span class="dot" aria-hidden="true"></span></span>
-            </div>
-            <div class="actions">
-                <button class="msg-btn">Message</button>
-                <button class="more-btn" aria-label="More options for josephkhaterire" data-username="josephkhaterire">
-                    <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
-                </button>
-            </div>
-        </li>
-
-        <!-- User 3 -->
-        <li class="item">
-            <button class="avatar-btn" aria-label="View edgyalbert profile">
-                <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23E8A87C'/%3E%3C/svg%3E" alt="">
-            </button>
-            <div class="info">
-                <button class="uname-btn">edgyalbert <svg class="verified" aria-label="Verified" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0095f6"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg></button>
-                <button class="dname-btn">Albert Muzquiz</button>
-                <span class="new">1 new post<span class="dot" aria-hidden="true"></span></span>
-            </div>
-            <div class="actions">
-                <button class="msg-btn">Message</button>
-                <button class="more-btn" aria-label="More options for edgyalbert" data-username="edgyalbert">
-                    <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
-                </button>
-            </div>
-        </li>
-
-        <!-- User 4 -->
-        <li class="item">
-            <button class="avatar-btn" aria-label="View somerville_theatre profile">
-                <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23C4A35A'/%3E%3C/svg%3E" alt="">
-            </button>
-            <div class="info">
-                <button class="uname-btn">somerville_theatre</button>
-                <button class="dname-btn">Somerville Theatre</button>
-                <span class="new">6 new posts<span class="dot" aria-hidden="true"></span></span>
-            </div>
-            <div class="actions">
-                <button class="msg-btn">Message</button>
-                <button class="more-btn" aria-label="More options for somerville_theatre" data-username="somerville_theatre">
-                    <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
-                </button>
-            </div>
-        </li>
-
-        <!-- User 5 -->
-        <li class="item">
-            <button class="avatar-btn" aria-label="View markmaggiori profile">
-                <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23555'/%3E%3C/svg%3E" alt="">
-            </button>
-            <div class="info">
-                <button class="uname-btn">markmaggiori <svg class="verified" aria-label="Verified" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0095f6"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg></button>
-                <button class="dname-btn">Mark Maggiori</button>
-            </div>
-            <div class="actions">
-                <button class="msg-btn">Message</button>
-                <button class="more-btn" aria-label="More options for markmaggiori" data-username="markmaggiori">
-                    <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
-                </button>
-            </div>
-        </li>
-    </ul>
-</section>
-
 </div>
 
-<!-- Bottom Sheet Overlay -->
-<div class="bottom-sheet-overlay" id="sheet-overlay" aria-hidden="true"></div>
-
-<!-- Bottom Sheet -->
-<div class="bottom-sheet" id="bottom-sheet" role="dialog" aria-modal="true" aria-label="User options" aria-hidden="true">
-    <button class="bottom-sheet-handle" aria-label="Dismiss menu" id="sheet-handle">
-        <span class="sr-only">Drag handle</span>
-    </button>
-    <div class="bottom-sheet-header">
-        <span class="bottom-sheet-title" id="sheet-title"></span>
-    </div>
-    <div class="bottom-sheet-actions" role="group" aria-label="Actions">
-        <button class="sheet-item danger" data-action="unfollow">
-            <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>
-            Unfollow
-        </button>
-        <button class="sheet-item" data-action="activity">
-            <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-            See shared activity
-        </button>
-        <button class="sheet-item" data-action="mute">
-            <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-            Mute
-        </button>
-    </div>
-    <div class="bottom-sheet-cancel">
-        <button class="cancel-btn" id="sheet-cancel">Cancel</button>
-    </div>
+<div class="overlay" id="overlay"></div>
+<div id="modal-container" aria-hidden="true">
+    <div class="focus-guard focus-guard-start" tabindex="0" role="button" aria-label="Menu start"></div>
+    <div id="menu-slot"></div>
+    <div class="focus-guard focus-guard-end" tabindex="0" role="button" aria-label="Menu end"></div>
 </div>
-
-<!-- Live region for announcements -->
-<div aria-live="polite" class="sr-only" id="live-region"></div>
 
 <script>
-const mainContent = document.getElementById('main-content');
-const overlay = document.getElementById('sheet-overlay');
-const sheet = document.getElementById('bottom-sheet');
-const sheetTitle = document.getElementById('sheet-title');
-const sheetHandle = document.getElementById('sheet-handle');
-const sheetCancel = document.getElementById('sheet-cancel');
-const liveRegion = document.getElementById('live-region');
-const sheetItems = sheet.querySelectorAll('.sheet-item');
-const firstFocusable = sheetHandle;
-const lastFocusable = sheetCancel;
+const urlParams = new URLSearchParams(window.location.search);
+const variant = parseInt(urlParams.get('variant')) || 1;
+document.querySelectorAll(".more-btn").forEach(btn => {
+    const username = btn.getAttribute("data-username");
+    let label;
+    switch(variant) {
+        case 1:
+            label = "More options";
+            break;
+        case 2:
+            label = "More options for user";
+            break;
+        case 3:
+        default:
+            label = "More options for " + username;
+            break;
+    }
+    btn.setAttribute("aria-label", label);
+});
 
-let currentUsername = '';
-let triggerButton = null;
 
-function openSheet(username, button) {
-    currentUsername = username;
-    triggerButton = button;
-    sheetTitle.textContent = username;
-    sheet.setAttribute('aria-label', `Options for ${username}`);
+document.querySelectorAll(".more-btn").forEach(btn => {
+    const wrap = btn.closest(".more-wrap");
+    const menu = wrap.querySelector(".dropdown");
+    const items = menu.querySelectorAll(".drop-item");
+    const overlay = document.getElementById("overlay");
+    const modalContainer = document.getElementById("modal-container");
+    const container = document.querySelector(".container");
+    let originalParent = null;
+
+function openMenu() {
+     originalParent = menu.parentElement;
+     
+     // Get button position relative to document (not viewport)
+     const btnRect = btn.getBoundingClientRect();
+     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+     
+     // Create focus guards visible to VoiceOver
+     const guardStart = document.createElement('div');
+     guardStart.className = 'menu-focus-guard-start';
+     guardStart.setAttribute('tabindex', '0');
+     guardStart.setAttribute('role', 'button');
+     guardStart.setAttribute('aria-label', 'Return to menu end');
+     guardStart.addEventListener('focus', () => items[items.length - 1].focus());
+     
+     const guardEnd = document.createElement('div');
+     guardEnd.className = 'menu-focus-guard-end';
+     guardEnd.setAttribute('tabindex', '0');
+     guardEnd.setAttribute('role', 'button');
+     guardEnd.setAttribute('aria-label', 'Return to menu start');
+     guardEnd.addEventListener('focus', () => items[0].focus());
+     
+     // Move menu outside container with focus guards
+     document.body.appendChild(guardStart);
+     document.body.appendChild(menu);
+     document.body.appendChild(guardEnd);
+     
+     // Position with absolute (scrolls with page)
+     menu.style.position = 'absolute';
+     menu.style.top = (btnRect.bottom + scrollTop + 4) + 'px';
+     menu.style.right = (document.documentElement.clientWidth - btnRect.right - scrollLeft) + 'px';
+     menu.style.left = 'auto';
+     
+     // Make container inert AND aria-hidden to fully hide from VoiceOver
+     container.setAttribute("inert", "");
+     container.setAttribute("aria-hidden", "true");
+     
+     menu.classList.add("active");
+     menu.setAttribute("aria-hidden", "false");
+     menu.setAttribute("role", "dialog");
+     menu.setAttribute("aria-modal", "true");
+     overlay.classList.add("active");
+     items[0].focus();
+ }
+
+function closeMenu() {
+    // Remove focus guards
+    const guardStart = document.querySelector('.menu-focus-guard-start');
+    const guardEnd = document.querySelector('.menu-focus-guard-end');
+    if (guardStart) guardStart.remove();
+    if (guardEnd) guardEnd.remove();
     
-    // Hide main content from assistive tech
-    mainContent.setAttribute('inert', '');
-    mainContent.setAttribute('aria-hidden', 'true');
+    // Move menu back to original location
+    if (originalParent) {
+        originalParent.appendChild(menu);
+    }
     
-    // Show sheet
-    overlay.classList.add('active');
-    overlay.setAttribute('aria-hidden', 'false');
-    sheet.classList.add('active');
-    sheet.setAttribute('aria-hidden', 'false');
+    // Reset positioning
+    menu.style.position = '';
+    menu.style.top = '';
+    menu.style.right = '';
+    menu.style.left = '';
+
+    menu.classList.remove("active");
+    menu.setAttribute("aria-hidden", "true");
+    menu.removeAttribute("role");
+    menu.removeAttribute("aria-modal");
+    overlay.classList.remove("active");
     
-    // Focus first action after animation
-    setTimeout(() => {
-        sheetItems[0].focus();
-    }, 100);
+    // Remove inert and focus with delay for VoiceOver to recalculate
+    requestAnimationFrame(() => {
+        container.removeAttribute("inert");
+        btn.focus();
+    });
 }
+    // Focus guards - wrap navigation
+    menu.querySelector(".close-menu").addEventListener("click", closeMenu);
 
-function closeSheet(returnFocus = true) {
-    // Hide sheet
-    overlay.classList.remove('active');
-    overlay.setAttribute('aria-hidden', 'true');
-    sheet.classList.remove('active');
-    sheet.setAttribute('aria-hidden', 'true');
-    
-    // Restore main content
-    mainContent.removeAttribute('inert');
-    mainContent.removeAttribute('aria-hidden');
-    
-    // Return focus to trigger button
-    if (returnFocus && triggerButton) {
-        triggerButton.focus();
-    }
-    
-    currentUsername = '';
-    triggerButton = null;
-}
 
-// Open sheet when more button clicked
-document.querySelectorAll('.more-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const username = btn.getAttribute('data-username');
-        openSheet(username, btn);
+    btn.addEventListener("click", e => {
+        e.stopPropagation();
+        document.querySelectorAll('.dropdown.active').forEach(m => m.classList.remove("active"));
+        menu.classList.contains("active") ? closeMenu() : openMenu();
+    });
+
+    menu.addEventListener("keydown", e => {
+        const idx = Array.from(items).indexOf(document.activeElement);
+        if (e.key === "Escape") closeMenu();
+        else if (e.key === "ArrowDown") { e.preventDefault(); items[(idx + 1) % items.length].focus(); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); items[(idx - 1 + items.length) % items.length].focus(); }
+        else if (e.key === "Tab") { e.preventDefault(); closeMenu(); }
+    });
+
+    overlay.addEventListener("click", () => {
+        document.querySelectorAll('.dropdown.active').forEach(m => m.classList.remove("active"));
+        overlay.classList.remove("active");
     });
 });
 
-// Close handlers
-overlay.addEventListener('click', () => closeSheet());
-sheetHandle.addEventListener('click', () => closeSheet());
-sheetCancel.addEventListener('click', () => closeSheet());
-
-// Action handlers
-sheetItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const action = item.getAttribute('data-action');
-        const actionText = item.textContent.trim();
-        
-        // Announce action
-        liveRegion.textContent = `${actionText} ${currentUsername}`;
-        
-        closeSheet();
-    });
-});
-
-// Keyboard handling
-sheet.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-        e.preventDefault();
-        closeSheet();
-    }
-    
-    // Trap focus within sheet
-    if (e.key === 'Tab') {
-        if (e.shiftKey && document.activeElement === firstFocusable) {
-            e.preventDefault();
-            lastFocusable.focus();
-        } else if (!e.shiftKey && document.activeElement === lastFocusable) {
-            e.preventDefault();
-            firstFocusable.focus();
-        }
+// Focus guard handlers (add after the forEach loop)
+document.querySelector('.focus-guard-start').addEventListener('focus', () => {
+    const activeMenu = document.querySelector('#menu-slot .dropdown.active');
+    if (activeMenu) {
+        const items = activeMenu.querySelectorAll('.drop-item');
+        items[items.length - 1].focus();
     }
 });
 
-// Tab navigation
-document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', 'false'));
-        tab.setAttribute('aria-selected', 'true');
+document.querySelector('.focus-guard-end').addEventListener('focus', () => {
+    const activeMenu = document.querySelector('#menu-slot .dropdown.active');
+    if (activeMenu) {
+        const items = activeMenu.querySelectorAll('.drop-item');
+        items[0].focus();
+    }
+});
+
+document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", "false"));
+        tab.setAttribute("aria-selected", "true");
     });
-    
-    tab.addEventListener('keydown', e => {
-        const tabs = Array.from(document.querySelectorAll('.tab'));
+    tab.addEventListener("keydown", e => {
+        const tabs = Array.from(document.querySelectorAll(".tab"));
         const idx = tabs.indexOf(tab);
-        if (e.key === 'ArrowRight') {
-            e.preventDefault();
-            tabs[(idx + 1) % tabs.length].focus();
-            tabs[(idx + 1) % tabs.length].click();
-        } else if (e.key === 'ArrowLeft') {
-            e.preventDefault();
-            tabs[(idx - 1 + tabs.length) % tabs.length].focus();
-            tabs[(idx - 1 + tabs.length) % tabs.length].click();
-        }
+        if (e.key === "ArrowRight") { e.preventDefault(); tabs[(idx + 1) % tabs.length].focus(); tabs[(idx + 1) % tabs.length].click(); }
+        else if (e.key === "ArrowLeft") { e.preventDefault(); tabs[(idx - 1 + tabs.length) % tabs.length].focus(); tabs[(idx - 1 + tabs.length) % tabs.length].click(); }
+    });
+});
+
+const live = document.createElement("div");
+live.setAttribute("aria-live", "polite");
+live.classList.add("sr-only");
+document.body.appendChild(live);
+
+document.querySelectorAll(".drop-item").forEach(item => {
+    item.addEventListener("click", () => {
+        const action = item.textContent.trim();
+        const userBtn = item.closest(".item").querySelector(".uname-btn");
+        const user = userBtn.textContent.trim().split(" ")[0];
+        live.textContent = action + " for " + user;
     });
 });
 </script>
