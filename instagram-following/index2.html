@@ -74,8 +74,8 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
 .drop-item.danger{color:var(--red)}
 .overlay{display:none;position:fixed;inset:0;z-index:15}
 .overlay.active{display:block}
-#modal-container{position:fixed;top:0;right:0;z-index:25}
-#modal-container .dropdown{position:relative;right:16px;top:100px}
+#modal-container{position:fixed;top:0;left:0;right:0;bottom:0;z-index:25;pointer-events:none}
+#modal-container .dropdown{pointer-events:auto}
 .focus-guard{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden}
 
 .variant-indicator{position:fixed;top:10px;right:10px;background:var(--bg3);padding:8px 12px;border-radius:8px;font-size:12px;color:var(--text2);z-index:100}
@@ -320,6 +320,15 @@ document.querySelectorAll(".more-btn").forEach(btn => {
 
      function openMenu() {
          originalParent = menu.parentElement;
+	 
+         // Position menu below the three dots button
+         const btnRect = btn.getBoundingClientRect();
+         menu.style.position = 'fixed';
+         menu.style.top = (btnRect.bottom + 4) + 'px';
+         menu.style.right = (window.innerWidth - btnRect.right) + 'px';
+         menu.style.left = 'auto';
+
+
          document.getElementById('menu-slot').appendChild(menu);
          modalContainer.setAttribute("aria-hidden", "false");
          
@@ -336,6 +345,12 @@ document.querySelectorAll(".more-btn").forEach(btn => {
         if (originalParent) {
             originalParent.appendChild(menu);
         }
+        // Reset positioning
+        menu.style.position = '';
+        menu.style.top = '';
+        menu.style.right = '';
+        menu.style.left = '';
+
         modalContainer.setAttribute("aria-hidden", "true");
 
         // Restore page visibility
