@@ -301,7 +301,10 @@ document.querySelectorAll(".more-btn").forEach(btn => {
         originalParent = menu.parentElement;
         modalContainer.appendChild(menu);
         modalContainer.setAttribute("aria-hidden", "false");
-        
+        modalContainer.setAttribute("role", "dialog");
+        modalContainer.setAttribute("aria-modal", "true");
+        modalContainer.setAttribute("aria-label", "Options");
+
         // Hide the rest of the page from VoiceOver
         container.setAttribute("aria-hidden", "true");
 
@@ -318,7 +321,10 @@ document.querySelectorAll(".more-btn").forEach(btn => {
             originalParent.appendChild(menu);
         }
         modalContainer.setAttribute("aria-hidden", "true");
-        
+        modalContainer.removeAttribute("role");
+        modalContainer.removeAttribute("aria-modal");
+        modalContainer.removeAttribute("aria-label");
+
         // Restore page visibility
         container.removeAttribute("aria-hidden");
 
