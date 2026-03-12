@@ -76,7 +76,7 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
 .overlay.active{display:block}
 #modal-container{position:fixed;top:0;right:0;z-index:25}
 #modal-container .dropdown{position:relative;right:16px;top:100px}
-.focus-guard{position:absolute;width:1px;height:1px;overflow:hidden}
+.focus-guard{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden}
 
 .variant-indicator{position:fixed;top:10px;right:10px;background:var(--bg3);padding:8px 12px;border-radius:8px;font-size:12px;color:var(--text2);z-index:100}
 .verified{color:var(--blue);flex-shrink:0}
@@ -283,8 +283,9 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
 
 <div class="overlay" id="overlay"></div>
 <div id="modal-container" aria-hidden="true">
-    <div class="focus-guard focus-guard-start" tabindex="0" aria-label=" "></div>
-    <div class="focus-guard focus-guard-end" tabindex="0" aria-label=" "></div>
+    <div class="focus-guard focus-guard-start" tabindex="0" role="button" aria-label="Menu start"></div>
+    <div id="menu-slot"></div>
+    <div class="focus-guard focus-guard-end" tabindex="0" role="button" aria-label="Menu end"></div>
 </div>
 
 <script>
@@ -301,23 +302,18 @@ document.querySelectorAll(".more-btn").forEach(btn => {
     const container = document.querySelector(".container");
     let originalParent = null;
 
-    function openMenu() {
-        // Store original parent and move menu to modal container
-        originalParent = menu.parentElement;
-        modalContainer.appendChild(menu);
-        // Insert menu between the focus guards
-        modalContainer.insertBefore(menu, modalContainer.querySelector('.focus-guard-end'));
-        modalContainer.setAttribute("aria-hidden", "false");
-
-        // Hide the rest of the page from VoiceOver
-        container.setAttribute("aria-hidden", "true");
-
-        menu.classList.add("active");
-        menu.setAttribute("aria-hidden", "false");
-        overlay.classList.add("active");
-        document.querySelectorAll('.header-container, .search-box, main').forEach(el => el.setAttribute("aria-hidden", "true"));
-        items[0].focus();
-    }
+     function openMenu() {
+         originalParent = menu.parentElement;
+         document.getElementById('menu-slot').appendChild(menu);
+         modalContainer.setAttribute("aria-hidden", "false");
+         
+         container.setAttribute("aria-hidden", "true");
+         
+         menu.classList.add("active");
+         menu.setAttribute("aria-hidden", "false");
+         overlay.classList.add("active");
+         items[0].focus();
+     }
 
     function closeMenu() {
         // Move menu back to original location
@@ -336,15 +332,6 @@ document.querySelectorAll(".more-btn").forEach(btn => {
         btn.focus();
     }
     // Focus guards - wrap navigation
-    modalContainer.querySelector('.focus-guard-start').addEventListener('focus', () => {
-        const menuItems = menu.querySelectorAll('.drop-item');
-        menuItems[menuItems.length - 1].focus();
-    });
-    
-    modalContainer.querySelector('.focus-guard-end').addEventListener('focus', () => {
-        const menuItems = menu.querySelectorAll('.drop-item');
-        menuItems[0].focus();
-    });
     menu.querySelector(".close-menu").addEventListener("click", closeMenu);
 
 
@@ -366,6 +353,23 @@ document.querySelectorAll(".more-btn").forEach(btn => {
         document.querySelectorAll('.dropdown.active').forEach(m => m.classList.remove("active"));
         overlay.classList.remove("active");
     });
+});
+
+// Focus guard handlers (add after the forEach loop)
+document.querySelector('.focus-guard-start').addEventListener('focus', () => {
+    const activeMenu = document.querySelector('#menu-slot .dropdown.active');
+    if (activeMenu) {
+        const items = activeMenu.querySelectorAll('.drop-item');
+        items[items.length - 1].focus();
+    }
+});
+
+document.querySelector('.focus-guard-end').addEventListener('focus', () => {
+    const activeMenu = document.querySelector('#menu-slot .dropdown.active');
+    if (activeMenu) {
+        const items = activeMenu.querySelectorAll('.drop-item');
+        items[0].focus();
+    }
 });
 
 document.querySelectorAll(".tab").forEach(tab => {
