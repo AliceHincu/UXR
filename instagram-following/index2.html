@@ -326,8 +326,21 @@ function openMenu() {
      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
      
-     // Move menu outside container (as sibling) so it's not affected by inert
+     // Create focus guards to trap VoiceOver navigation
+     const guardStart = document.createElement('div');
+     guardStart.className = 'menu-focus-guard-start';
+     guardStart.setAttribute('tabindex', '0');
+     guardStart.addEventListener('focus', () => items[items.length - 1].focus());
+     
+     const guardEnd = document.createElement('div');
+     guardEnd.className = 'menu-focus-guard-end';
+     guardEnd.setAttribute('tabindex', '0');
+     guardEnd.addEventListener('focus', () => items[0].focus());
+     
+     // Move menu outside container with focus guards
+     document.body.appendChild(guardStart);
      document.body.appendChild(menu);
+     document.body.appendChild(guardEnd);
      
      // Position with absolute (scrolls with page)
      menu.style.position = 'absolute';
@@ -344,9 +357,15 @@ function openMenu() {
      menu.setAttribute("aria-modal", "true");
      overlay.classList.add("active");
      items[0].focus();
- }
+ } 
 
 function closeMenu() {
+    // Remove focus guards
+    const guardStart = document.querySelector('.menu-focus-guard-start');
+    const guardEnd = document.querySelector('.menu-focus-guard-end');
+    if (guardStart) guardStart.remove();
+    if (guardEnd) guardEnd.remove();
+    
     // Move menu back to original location
     if (originalParent) {
         originalParent.appendChild(menu);
