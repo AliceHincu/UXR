@@ -357,18 +357,19 @@ function closeMenu() {
     menu.style.top = '';
     menu.style.right = '';
     menu.style.left = '';
-    
-    // Remove inert to restore interactivity
-    container.removeAttribute("inert");
 
     menu.classList.remove("active");
     menu.setAttribute("aria-hidden", "true");
     menu.removeAttribute("role");
     menu.removeAttribute("aria-modal");
     overlay.classList.remove("active");
-    btn.focus();
+    
+    // Remove inert and focus with delay for VoiceOver to recalculate
+    requestAnimationFrame(() => {
+        container.removeAttribute("inert");
+        btn.focus();
+    });
 }
-
     // Focus guards - wrap navigation
     menu.querySelector(".close-menu").addEventListener("click", closeMenu);
 
