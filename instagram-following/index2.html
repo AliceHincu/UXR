@@ -83,7 +83,6 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
 </style>
 </head>
 <body>
-<div class="variant-indicator" aria-hidden="true">Variant: <span id="variant-display">1</span></div>
 <div class="container">
 
 <!-- Header: no landmark -->
@@ -291,7 +290,24 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
 <script>
 const urlParams = new URLSearchParams(window.location.search);
 const variant = parseInt(urlParams.get('variant')) || 1;
-document.getElementById('variant-display').textContent = variant;
+document.querySelectorAll(".more-btn").forEach(btn => {
+    const username = btn.getAttribute("data-username");
+    let label;
+    switch(variant) {
+        case 1:
+            label = "More options";
+            break;
+        case 2:
+            label = "More options for user";
+            break;
+        case 3:
+        default:
+            label = "More options for " + username;
+            break;
+    }
+    btn.setAttribute("aria-label", label);
+});
+
 
 document.querySelectorAll(".more-btn").forEach(btn => {
     const wrap = btn.closest(".more-wrap");
