@@ -1,372 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Chat - Accessible Demo</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --wa-dark-bg: #0b141a; --wa-header-bg: #1f2c34; --wa-green: #00a884;
-            --wa-light-green: #005c4b; --wa-bubble-incoming: #1f2c34;
-            --wa-bubble-outgoing: #005c4b; --wa-text: #e9edef;
-            --wa-text-secondary: #8696a0; --wa-border: #2a3942;
-        }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--wa-dark-bg); color: var(--wa-text); min-height: 100vh; max-width: 430px; margin: 0 auto; }
-        .skip-link { position: absolute; top: -40px; left: 0; background: var(--wa-green); color: white; padding: 8px 16px; z-index: 100; text-decoration: none; border-radius: 4px; }
-        .skip-link:focus { top: 0; }
-        .chat-header { background: var(--wa-header-bg); padding: 10px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
-        .back-button, .header-actions button { background: none; border: none; color: var(--wa-text); font-size: 20px; cursor: pointer; padding: 8px; border-radius: 50%; }
-        .contact-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--wa-green); display: flex; align-items: center; justify-content: center; }
-        .contact-info { flex: 1; }
-        .contact-name { font-size: 16px; font-weight: 500; }
-        .header-actions { display: flex; gap: 8px; }
-        .encryption-banner { background: rgba(255, 214, 102, 0.1); padding: 12px 16px; text-align: center; font-size: 12px; color: #ffd666; border-radius: 8px; margin: 8px 16px; }
-        .encryption-banner:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .learn-more-link { color: #53bdeb; text-decoration: none; font-weight: 500; background: none; border: none; cursor: pointer; font-size: inherit; padding: 2px 4px; border-radius: 4px; }
-        .date-divider { text-align: center; margin: 16px 0; display: block; font-size: inherit; font-weight: normal; }
-        .date-divider span { background: var(--wa-header-bg); padding: 6px 12px; border-radius: 8px; font-size: 12px; color: var(--wa-text-secondary); }
-        .chat-container { padding: 8px 16px; min-height: 60vh; }
-        .input-area { background: var(--wa-dark-bg); padding: 8px 16px; display: flex; gap: 8px; align-items: center; position: sticky; bottom: 0; }
-        .input-wrapper { flex: 1; display: flex; align-items: center; background: var(--wa-header-bg); border-radius: 24px; padding: 4px 8px 4px 16px; }
-        .input-field { flex: 1; background: transparent; border: none; padding: 8px 0; color: var(--wa-text); font-size: 16px; outline: none; }
-        .input-field::placeholder { color: var(--wa-text-secondary); }
-        .input-wrapper:focus-within { outline: 2px solid var(--wa-green); }
-        .emoji-btn { background: none; border: none; color: var(--wa-text-secondary); font-size: 22px; padding: 8px; cursor: pointer; border-radius: 50%; }
-        .icon-btn { background: none; border: none; color: var(--wa-text-secondary); font-size: 22px; padding: 8px; cursor: pointer; border-radius: 50%; }
-        .mic-btn { background: var(--wa-green) !important; color: white !important; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 50; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
-        .overlay.active { opacity: 1; visibility: visible; }
-        .bottom-sheet { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%); width: 100%; max-width: 430px; background: var(--wa-header-bg); border-radius: 24px 24px 0 0; z-index: 60; padding: 24px; transition: transform 0.3s ease-out; max-height: 85vh; overflow-y: auto; }
-        .bottom-sheet.active { transform: translateX(-50%) translateY(0); }
-        .bottom-sheet-handle { width: 40px; height: 4px; background: var(--wa-text-secondary); border-radius: 2px; margin: 0 auto 24px; }
-        .bottom-sheet-close { position: absolute; top: 16px; right: 16px; background: var(--wa-border); border: none; color: var(--wa-text); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-        .bottom-sheet-close:hover, .bottom-sheet-close:focus { background: var(--wa-green); outline: 2px solid white; }
-        .encryption-icon { width: 80px; height: 80px; margin: 0 auto 24px; background: linear-gradient(135deg, #1a3a2f, #0d5c45); border-radius: 20px; display: flex; align-items: center; justify-content: center; position: relative; }
-        .encryption-icon::before { content: ""; position: absolute; width: 35px; height: 28px; border: 3px solid #00a884; border-radius: 8px; top: 18px; left: 14px; }
-        .encryption-icon::after { content: ""; position: absolute; width: 24px; height: 20px; background: #00a884; border-radius: 4px; bottom: 18px; right: 16px; }
-        .lock-badge { position: absolute; bottom: 12px; right: 12px; width: 28px; height: 28px; background: #00a884; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .bottom-sheet-title { text-align: center; font-size: 22px; margin-bottom: 16px; font-weight: 600; }
-        .bottom-sheet-title:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .bottom-sheet-description { text-align: center; color: var(--wa-text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
-        .bottom-sheet-description:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .feature-item { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--wa-border); font-size: 15px; }
-        .feature-item:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .feature-item:last-of-type { border-bottom: none; }
-        .feature-icon { width: 28px; text-align: center; color: var(--wa-text-secondary); font-size: 20px; }
-        .learn-more-btn { display: block; width: 100%; background: transparent; border: 2px solid var(--wa-green); color: var(--wa-green); padding: 14px 24px; border-radius: 24px; font-size: 16px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; margin-top: 16px; }
-        .learn-more-btn:hover, .learn-more-btn:focus { background: var(--wa-green); color: white; outline: none; }
-        .dismiss-btn { position: absolute; bottom: 0; left: 0; right: 0; background: transparent; border: none; color: transparent; height: 20px; cursor: pointer; }
-        .wa-page-modal { position: fixed; inset: 0; background: #000; z-index: 70; transform: translateY(100%); transition: transform 0.4s ease-out; overflow-y: auto; max-width: 430px; margin: 0 auto; display: flex; flex-direction: column; }
-        .wa-page-modal.active { transform: translateY(0); }
-        .wa-app-header { background: #0b141a; padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #2a3942; }
-        .wa-app-icon { width: 48px; height: 48px; background: var(--wa-green); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-        .wa-app-icon svg { width: 28px; height: 28px; fill: white; }
-        .wa-app-info { flex: 1; }
-        .wa-app-info-text:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .wa-app-info h2 { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
-        .wa-app-info p { font-size: 12px; color: var(--wa-text-secondary); margin: 0; }
-        .wa-app-info .installed { font-size: 10px; color: var(--wa-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
-        .wa-nav-bar { background: #0b141a; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2a3942; }
-        .wa-nav-bar button { background: none; border: none; color: var(--wa-text-secondary); font-size: 20px; cursor: pointer; padding: 8px; }
-        .wa-logo { display: flex; align-items: center; gap: 6px; color: var(--wa-text); font-size: 14px; }
-        .wa-logo svg { width: 24px; height: 24px; fill: var(--wa-green); }
-        .wa-page-content { flex: 1; background: #000; padding: 32px 20px; }
-        .wa-page-content h2 { font-size: 32px; font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
-        .wa-page-content h2:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .wa-page-content h2 em { font-style: italic; }
-        .wa-page-content > p { color: var(--wa-text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
-        .wa-page-content > p:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .wa-preview { border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 4/5; background: linear-gradient(to bottom, #3d2914, #1a1208); }
-        .wa-preview:focus { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        .wa-preview-bg { position: absolute; inset: 0; opacity: 0.8; }
-        .wa-preview-chat { position: absolute; inset: 0; padding: 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; }
-        .wa-preview-msg { max-width: 75%; padding: 8px 12px; border-radius: 12px; font-size: 14px; position: relative; }
-        .wa-preview-msg.outgoing { background: var(--wa-bubble-outgoing); align-self: flex-end; border-bottom-right-radius: 4px; }
-        .wa-preview-msg .time { font-size: 10px; color: rgba(255,255,255,0.6); text-align: right; margin-top: 4px; }
-        .wa-preview-msg .checks { color: #53bdeb; }
-        .wa-preview-reaction { position: absolute; bottom: -8px; left: 8px; background: #1f2c34; border-radius: 12px; padding: 2px 6px; font-size: 12px; display: flex; align-items: center; gap: 2px; }
-        .wa-emoji-msg { background: transparent !important; font-size: 48px; text-align: center; padding: 0 !important; }
-        .wa-safari-bar { background: #1c1c1e; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #3a3a3c; }
-        .wa-safari-bar button { background: none; border: none; color: #007aff; font-size: 20px; cursor: pointer; padding: 4px; }
-        .wa-safari-url { color: var(--wa-text); font-size: 14px; display: flex; align-items: center; gap: 6px; }
-        .wa-safari-url .lock { font-size: 12px; }
-        :focus-visible { outline: 2px solid var(--wa-green); outline-offset: 2px; }
-        @media (prefers-reduced-motion: reduce) { .bottom-sheet, .wa-page-modal, .overlay { transition: none; } }
-        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-        [hidden] { display: none !important; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Following - nateyballgame</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#000;--bg2:#121212;--bg3:#262626;--text:#fff;--text2:#a8a8a8;--blue:#0095f6;--red:#ed4956;--border:#363636}
+body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.skip-link{position:absolute;top:-40px;left:0;background:var(--blue);color:#fff;padding:8px 16px;z-index:100;text-decoration:none}
+.skip-link:focus{top:10px;left:10px}
+.container{max-width:480px;margin:0 auto}
+.header-container{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg);}
+.back-btn,.add-btn{background:none;border:none;color:var(--text);cursor:pointer;padding:8px;border-radius:50%;display:flex;align-items:center}
+.back-btn{margin-right:16px}
+.back-btn:focus,.add-btn:focus{outline:2px solid var(--blue);outline-offset:2px}
+.title{flex:1;text-align:center;font-size:16px;font-weight:600}
+.tabs-wrapper{display:block}
+.tabs{display:flex;border-bottom:1px solid var(--border)}
+.tab{flex:1;padding:16px;text-align:center;background:none;border:none;color:var(--text2);cursor:pointer;font-size:14px;position:relative}
+.tab[aria-selected="true"]{color:var(--text);font-weight:600}
+.tab[aria-selected="true"]::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--text)}
+.tab:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.search-box{padding:12px 16px}
+.search-input{width:100%;padding:10px 16px;background:var(--bg3);border:none;border-radius:10px;color:var(--text);font-size:16px}
+.search-input::placeholder{color:var(--text2)}
+.search-input:focus{outline:2px solid var(--blue)}
+.sync{display:flex;align-items:center;padding:12px 16px;gap:12px}
+.sync-icon{width:44px;height:44px;background:var(--bg3);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.sync-info{flex:1}
+.sync-title{font-weight:600;font-size:14px;display:block}
+.sync-sub{color:var(--text2);font-size:14px;display:block}
+.sync-btn{background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer}
+.sync-btn:focus{outline:2px solid #fff;outline-offset:2px}
+.dismiss{background:none;border:none;color:var(--text2);cursor:pointer;padding:8px;font-size:18px}
+.dismiss:focus{outline:2px solid var(--blue)}
+.cats{padding:16px}
+.cats-title{font-size:16px;font-weight:600;margin-bottom:16px;display:block}
+.cat-item{display:flex;align-items:center;padding:12px 0;gap:12px;text-decoration:none;color:inherit;border-radius:8px;background:none;border:none;width:100%;cursor:pointer;text-align:left}
+.cat-item:focus{outline:2px solid var(--blue)}
+.cat-avatar{width:56px;height:56px;border-radius:50%;background:var(--bg3)}
+.cat-info h3{font-size:14px;font-weight:600}
+.cat-info p{font-size:14px;color:var(--text2)}
+.sort{display:flex;justify-content:space-between;align-items:center;padding:8px 16px}
+.sort-label{font-size:14px}
+.sort-btn{background:none;border:none;color:var(--text);cursor:pointer;padding:8px;display:flex}
+.sort-btn:focus{outline:2px solid var(--blue)}
+.list{list-style:none}
+.item{display:flex;align-items:center;padding:8px 16px;gap:12px}
+.item:hover{background:var(--bg2)}
+.avatar-btn{background:none;border:none;padding:0;cursor:pointer;flex-shrink:0}
+.avatar-btn:focus{outline:2px solid var(--blue);border-radius:50%}
+.avatar{width:44px;height:44px;border-radius:50%;flex-shrink:0;background:var(--bg3)}
+.info{min-width:0;flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.uname-btn{background:none;border:none;color:var(--text);cursor:pointer;padding:0;font-size:14px;font-weight:600;text-align:left;display:flex;align-items:center;gap:4px}
+.uname-btn:focus{outline:2px solid var(--blue)}
+.dname-btn{background:none;border:none;color:var(--text2);cursor:pointer;padding:0;font-size:14px;text-align:left}
+.dname-btn:focus{outline:2px solid var(--blue)}
+.new{font-size:14px;color:var(--text2);display:flex;align-items:center;gap:4px}
+.new:focus{outline:2px solid var(--blue)}
+.dot{width:6px;height:6px;background:var(--blue);border-radius:50%}
+.actions{display:flex;gap:8px;align-items:center}
+.msg-btn{background:var(--bg3);color:var(--text);border:none;padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer}
+.msg-btn:focus{outline:2px solid var(--blue)}
+.more-wrap{position:relative}
+.more-btn{background:none;border:none;color:var(--text);cursor:pointer;padding:8px;border-radius:4px;display:flex}
+.more-btn:focus{outline:2px solid var(--blue)}
+.dropdown{position:absolute;right:0;top:100%;background:var(--bg3);border-radius:12px;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.5);z-index:20;display:none;overflow:hidden}
+.dropdown.active{display:block}
+.drop-item{display:flex;align-items:center;gap:12px;padding:16px;background:none;border:none;color:var(--text);width:100%;text-align:left;cursor:pointer;font-size:14px}
+.drop-item:hover,.drop-item:focus{background:var(--border);outline:none}
+.drop-item.danger{color:var(--red)}
+.overlay{display:none;position:fixed;inset:0;z-index:15}
+.overlay.active{display:block}
+#modal-container{position:fixed;top:0;left:0;right:0;bottom:0;z-index:25;pointer-events:none}
+#modal-container .dropdown{pointer-events:auto}
+.focus-guard{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden}
+
+.variant-indicator{position:fixed;top:10px;right:10px;background:var(--bg3);padding:8px 12px;border-radius:8px;font-size:12px;color:var(--text2);z-index:100}
+.verified{color:var(--blue);flex-shrink:0}
+</style>
 </head>
 <body>
-    <div class="chat-header">
-        <button class="back-button" aria-label="Back to chats">&#8249;</button>
-        
-        <div class="contact-avatar" aria-hidden="true">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="" style="width:24px;height:24px;">
-        </div>
-        
-        <div class="contact-info">
-            <h1 class="contact-name" tabindex="0">Alice</h1>
-        </div>
-        
-        <div class="header-actions" role="none">
-            <button aria-label="Start video call with Alice">&#128249;</button>
-            <button aria-label="Start voice call with Alice">&#128222;</button>
-        </div>
+<div class="container">
+
+<!-- Header: no landmark -->
+<div class="header-container" role="none">
+    <button class="back-btn" aria-label="Back">
+        <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <span class="title" role="heading" tabindex="0">nateyballgame</span>
+    <button class="add-btn" aria-label="Add contacts">
+        <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+    </button>
+</div>
+
+<!-- Tabs: position info in aria-roledescription -->
+<!-- Tabs: explicit aria-label + aria-roledescription -->
+<div class="tabs-wrapper" role="none">
+    <div class="tabs">
+            <div class="tab" tabindex="0" aria-label="109 followers, Tab, 1 of 3"><span aria-hidden="true">109 followers</span></div>
+            <div class="tab" tabindex="0" aria-label="selected, 385 following, Tab, 2 of 3"><span aria-hidden="true">385 following</span></div>
+            <div class="tab" tabindex="0" aria-label="Subscriptions, Tab, 3 of 3"><span aria-hidden="true">Subscriptions</span></div>
     </div>
-    
-    <main id="main-content" role="none">
-        <div class="encryption-banner" 
-             tabindex="0" 
-             aria-label="Messages and calls are end-to-end encrypted. Only people in this chat can read, listen, or share them. Learn more.Tap for more information."
-             id="encryptionBannerButton">
-            <p style="display:inline;" aria-hidden="true">
-                <span aria-hidden="true">&#128274;</span> 
-                Messages and calls are end-to-end encrypted. Only people in this chat can read, listen, or share them.
-            </p>
-            <span class="learn-more-link" aria-hidden="true">Learn more</span>
+</div>
+
+<!-- Search (outside main to avoid landmark announcement) -->
+<div class="search-box">
+    <input type="search" id="search" class="search-input" placeholder="Search">
+</div>
+<div id="main">
+    <!-- Sync section (hidden from screen readers) -->
+    <section class="sync" aria-hidden="true">
+        <div class="sync-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
         </div>
-        
-        <h2 class="date-divider" tabindex="0" aria-label="Today">
-            <span aria-hidden="true">Today</span>
-        </h2>
-        
-        <section class="chat-container" aria-label="Chat conversation">
-            <h2 class="sr-only" aria-hidden="true">Messages</h2>
-            <div class="messages-list" role="log" aria-live="polite" aria-label="Message history">
-                <!-- Messages removed -->
-            </div>
-        </section>
-        
-        <form class="input-area" aria-label="Message composition" onsubmit="return false;">
-            <button type="button" class="icon-btn" aria-label="Shared media">+</button>
-            
-            <div class="input-wrapper">
-                <input type="text" 
-                       id="messageInput" 
-                       class="input-field" 
-                       placeholder=""
-                       aria-label="Compose message"
-                       aria-roledescription="text field"
-                       title="is editing, character mode, insertion point at start. Use the rotor to access misspelled words."
-                       autocomplete="off"
-                       spellcheck="true">
-                       
-                <button type="button" class="emoji-btn" aria-label="GIFs and stickers">&#128522;</button>
-            </div>
-            
-            <button type="button" 
-                    class="icon-btn" 
-                    aria-label="Camera"
-                    title="Double tap to open camera. Double tap and hold to record video note. Slide up to lock or slide left to cancel.">&#128247;</button>
-            
-            <button type="button" 
-                    class="mic-btn" 
-                    aria-label="Voice message"
-                    title="Double tap and hold to record. Release to send or slide left to cancel. Double tap or double tap and slide up to lock recording.">&#127908;</button>
-        </form>
-    </main>
-    
-    <div class="overlay" id="overlay" aria-hidden="true"></div>
-    
-    <!-- Bottom Sheet -->
-    <div class="bottom-sheet" id="encryptionBottomSheet" role="dialog" aria-modal="true" aria-labelledby="bottomSheetTitle" hidden>
-        <div class="bottom-sheet-handle" aria-hidden="true"></div>
-        <div class="encryption-icon" aria-hidden="true">
-            <span class="lock-badge">&#128274;</span>
+        <div class="sync-info">
+            <span class="sync-title">Sync contacts</span>
+            <span class="sync-sub">Find people you know</span>
         </div>
-        
-        <span id="bottomSheetTitle" class="bottom-sheet-title" tabindex="0">Your chats and calls are private</span>
-        
-        <p class="bottom-sheet-description" tabindex="0">End-to-end encryption keeps your personal messages and calls between you and the people you choose. No one outside of the chat, not even WhatsApp, can read, listen to, or share them. This includes your:</p>
-        
-        <div class="feature-item" tabindex="0" role="none" aria-label="Text and voice messages">
-            <span aria-hidden="true">&#128172; Text and voice messages</span>
+        <button class="sync-btn">Sync</button>
+        <button class="dismiss" aria-label="Dismiss">×</button>
+    </section>
+
+    <!-- Categories -->
+    <section class="cats">
+        <span class="cats-title" role="heading" tabindex="0">Categories</span>
+        <button class="cat-item" aria-label="Least interacted with">
+            <div class="cat-avatar" aria-hidden="true"></div>
+            <div class="cat-info" aria-hidden="true"><h3>Least interacted with</h3><p>archdigest and 49 others</p></div>
+        </button>
+        <button class="cat-item" aria-label="Most shown in feed">
+            <div class="cat-avatar" aria-hidden="true"></div>
+            <div class="cat-info" aria-hidden="true"><h3>Most shown in feed</h3><p>beanshooter69 and 49 others</p></div>
+        </button>
+    </section>
+
+    <!-- Sort and List -->
+    <section>
+        <div class="sort">
+            <span class="sort-label" aria-hidden="true">Sort by <strong>Default</strong></span>
+            <button class="sort-btn" aria-label="Sort by Default">
+                <svg aria-hidden="true" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+            </button>
         </div>
-        <div class="feature-item" tabindex="0" role="none" aria-label="Audio and video calls">
-            <span aria-hidden="true">&#127897; Audio and video calls</span>
-        </div>
-        <div class="feature-item" tabindex="0" role="none" aria-label="Photos, videos and documents">
-            <span aria-hidden="true">&#128248; Photos, videos and documents</span>
-        </div>
-        <div class="feature-item" tabindex="0" role="none" aria-label="Location sharing">
-            <span aria-hidden="true">&#128205; Location sharing</span>
-        </div>
-        <div class="feature-item" tabindex="0" role="none" aria-label="Status updates">
-            <span aria-hidden="true">&#9711; Status updates</span>
-        </div>
-        
-        <a href="#" class="learn-more-btn" id="openAppStore" role="link">Learn more</a>
-        
-        <button class="bottom-sheet-close" id="closeBottomSheet" aria-label="Cancel">&#10005;</button>
-        
-        <button class="dismiss-btn" id="dismissBottomSheet" aria-label="Dismiss bottom sheet">Dismiss</button>
-    </div>
-    
-    <div class="wa-page-modal" id="appStoreModal" role="dialog" aria-modal="true" aria-labelledby="waPageTitle" hidden>
-        <header class="wa-app-header">
-            <button id="closeAppStoreTop" class="bottom-sheet-close" aria-label="Close" style="position:absolute;top:12px;right:12px;z-index:10;">&#10005;</button>
-            <div class="wa-app-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
-            </div>
-            <div class="wa-app-info">
-                <div class="wa-app-info-text" tabindex="0">
-                    <h2 id="waPageTitle">WhatsApp Messenger</h2>
-                    <p>WhatsApp Inc.</p>
-                    <span class="installed">INSTALLED</span>
+
+        <ul class="list">
+            <!-- User 1 -->
+            <li class="item">
+                <div class="avatar-btn" tabindex="0" aria-label="bingclawsby_dollypup Profile picture">
+                    <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23D4A574'/%3E%3C/svg%3E" alt="">
                 </div>
-            </div>
-        </header>
-        <nav class="wa-nav-bar" aria-label="WhatsApp website navigation">
-            <button aria-label="Open menu">&#9776;</button>
-            <div class="wa-logo" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771z"/></svg>
-                <span>WhatsApp</span>
-            </div>
-            <button aria-label="Download app">&#8595;</button>
-        </nav>
-        <article class="wa-page-content">
-            <span tabindex="0">Secure <em>by design</em></span>
-            <p tabindex="0">To keep you safe, we've designed a messaging and calling experience with world-class security, built innovative tools to put you in control, and we're there to support you when you need it.</p>
-            <figure class="wa-preview" tabindex="0" role="img" aria-label="Preview showing a secure chat with messages: Have fun and stay safe with a fox emoji at 11:59 with 3 heart eyes reactions, and a smiling emoji at 20:12 marked as read">
-                <div class="wa-preview-bg" aria-hidden="true"></div>
-                <div class="wa-preview-chat" aria-hidden="true">
-                    <div class="wa-preview-msg outgoing">
-                        Have fun, and stay safe &#129418;
-                        <div class="time">11:59</div>
-                        <div class="wa-preview-reaction">&#128525; 3</div>
-                    </div>
-                    <div class="wa-preview-msg wa-emoji-msg outgoing">
-                        &#128522;
-                        <div class="time">20:12 <span class="checks">&#10003;&#10003;</span></div>
+                <div class="info">
+                    <button class="uname-btn">bingclawsby_dollypup</button>
+                    <button class="dname-btn">Bing Clawsby and Dollypup</button>
+                    <span class="new" tabindex="0">1 new post<span class="dot" aria-hidden="true"></span></span>
+                </div>
+                <div class="actions">
+                    <button class="msg-btn" aria-label="Tap to message bingclawsby_dollypup">Message</button>
+                    <div class="more-wrap">
+                        <button class="more-btn" data-username="bingclawsby_dollypup" aria-label="More options for bingclawsby_dollypup">
+                            <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
+                            <button class="drop-item close-menu">Close</button>
+                         </div>
                     </div>
                 </div>
-            </figure>
-        </article>
-        <footer class="wa-safari-bar">
-            <button id="closeAppStore" aria-label="Go back to previous screen">&#8249;</button>
-            <div class="wa-safari-url" tabindex="0" role="text" aria-label="Current website: whatsapp.com, secure connection">
-                <span class="lock" aria-hidden="true">&#128274;</span>
-                <span>whatsapp.com</span>
-            </div>
-            <div style="display:flex;gap:16px;">
-                <button aria-label="Refresh page">&#8635;</button>
-                <button aria-label="More options">&#8943;</button>
-            </div>
-        </footer>
-    </div>
-    
-    <script>
-        const encryptionBannerButton = document.getElementById('encryptionBannerButton');
-        const closeBottomSheetBtn = document.getElementById('closeBottomSheet');
-        const dismissBottomSheetBtn = document.getElementById('dismissBottomSheet');
-        const bottomSheet = document.getElementById('encryptionBottomSheet');
-        const bottomSheetTitle = document.getElementById('bottomSheetTitle');
-        const overlay = document.getElementById('overlay');
-        const openAppStoreBtn = document.getElementById('openAppStore');
-        const closeAppStoreBtn = document.getElementById('closeAppStore');
-        const closeAppStoreTopBtn = document.getElementById('closeAppStoreTop');
-        const appStoreModal = document.getElementById('appStoreModal');
-        const messageInput = document.getElementById('messageInput');
-        
-        let previouslyFocusedElement = null;
+            </li>
 
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                messageInput.focus();
-            }, 100);
-        });
+            <!-- User 2 -->
+            <li class="item">
+                <button class="avatar-btn" aria-label="josephkhaterire Profile picture">
+                    <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%234A90D9'/%3E%3C/svg%3E" alt="">
+                </button>
+                <div class="info">
+                    <button class="uname-btn">josephkhaterire <svg class="verified" aria-label="Verified" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0095f6"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg></button>
+                    <button class="dname-btn">Joseph Khateri</button>
+                    <span class="new" tabindex="0">4 new posts<span class="dot" aria-hidden="true"></span></span>
+                </div>
+                <div class="actions">
+                    <button class="msg-btn" aria-label="Tap to message josephkhaterire">Message</button>
+                    <div class="more-wrap">
+                        <button class="more-btn" data-username="josephkhaterire" aria-label="More options for josephkhaterire">
+                            <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
+                            <button class="drop-item close-menu">Close</button>
+                         </div>
+                    </div>
+                </div>
+            </li>
 
-        function trapFocus(dialog) {
-            const focusableSelector = 'button, [href], a, input, select, textarea, [tabindex]:not([tabindex="-1"])';
-            dialog.addEventListener('keydown', function(e) {
-                if (e.key !== 'Tab') return;
-                const focusableElements = Array.from(dialog.querySelectorAll(focusableSelector)).filter(el => !el.closest('[hidden]'));
-                const firstElement = focusableElements[0];
-                const lastElement = focusableElements[focusableElements.length - 1];
-                if (e.shiftKey && document.activeElement === firstElement) {
-                    e.preventDefault();
-                    lastElement.focus();
-                } else if (!e.shiftKey && document.activeElement === lastElement) {
-                    e.preventDefault();
-                    firstElement.focus();
-                }
-            });
-        }
+            <!-- User 3 -->
+            <li class="item">
+                <button class="avatar-btn" aria-label="edgyalbert Profile picture">
+                    <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23E8A87C'/%3E%3C/svg%3E" alt="">
+                </button>
+                <div class="info">
+                    <button class="uname-btn">edgyalbert <svg class="verified" aria-label="Verified" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0095f6"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg></button>
+                    <button class="dname-btn">Albert Muzquiz</button>
+                    <span class="new" tabindex="0">1 new post<span class="dot" aria-hidden="true"></span></span>
+                </div>
+                <div class="actions">
+                    <button class="msg-btn" aria-label="Tap to message edgyalbert">Message</button>
+                    <div class="more-wrap">
+                        <button class="more-btn" data-username="edgyalbert" aria-label="More options for edgyalbert">
+                            <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
+                            <button class="drop-item close-menu">Close</button>
+                         </div>
+                    </div>
+                </div>
+            </li>
 
-        function openBottomSheet() {
-            previouslyFocusedElement = document.activeElement;
-            bottomSheet.removeAttribute('hidden');
-            bottomSheet.classList.add('active');
-            overlay.classList.add('active');
-            overlay.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-            setTimeout(function() {
-                bottomSheetTitle.focus();
-            }, 100);
-        }
+            <!-- User 4 -->
+            <li class="item">
+                <button class="avatar-btn" aria-label="somerville_theatre Profile picture">
+                    <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23C4A35A'/%3E%3C/svg%3E" alt="">
+                </button>
+                <div class="info">
+                    <button class="uname-btn">somerville_theatre</button>
+                    <button class="dname-btn">Somerville Theatre</button>
+                    <span class="new" tabindex="0">6 new posts<span class="dot" aria-hidden="true"></span></span>
+                </div>
+                <div class="actions">
+                    <button class="msg-btn" aria-label="Tap to message somerville_theatre">Message</button>
+                    <div class="more-wrap">
+                        <button class="more-btn" data-username="somerville_theatre" aria-label="More options for somerville_theatre">
+                            <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
+                            <button class="drop-item close-menu">Close</button>
+                         </div>
+                </div>
+            </li>
 
-        function closeBottomSheet() {
-            bottomSheet.classList.remove('active');
-            overlay.classList.remove('active');
-            overlay.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-            setTimeout(function() {
-                bottomSheet.setAttribute('hidden', '');
-            }, 300);
-            if (previouslyFocusedElement) {
-                previouslyFocusedElement.focus();
-            }
-        }
+            <!-- User 5 -->
+            <li class="item">
+                <button class="avatar-btn" aria-label="markmaggiori Profile picture">
+                    <img class="avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Ccircle cx='22' cy='22' r='22' fill='%23555'/%3E%3C/svg%3E" alt="">
+                </button>
+                <div class="info">
+                    <button class="uname-btn">markmaggiori <svg class="verified" aria-label="Verified" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0095f6"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/></svg></button>
+                    <button class="dname-btn">Mark Maggiori</button>
+                </div>
+                <div class="actions">
+                    <button class="msg-btn" aria-label="Tap to message markmaggiori">Message</button>
+                    <div class="more-wrap">
+                        <button class="more-btn" data-username="markmaggiori" aria-label="More options for markmaggiori">
+                            <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
+                            <button class="drop-item close-menu">Close</button>
+                         </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
+</div>
 
-        function openAppStore(e) {
-            e.preventDefault();
-            previouslyFocusedElement = document.activeElement;
-            appStoreModal.removeAttribute('hidden');
-            appStoreModal.classList.add('active');
-            setTimeout(function() {
-                closeAppStoreTopBtn.focus();
-            }, 100);
-        }
+</div>
 
-        function closeAppStore() {
-            appStoreModal.classList.remove('active');
-            setTimeout(function() {
-                appStoreModal.setAttribute('hidden', '');
-            }, 400);
-            if (previouslyFocusedElement) {
-                previouslyFocusedElement.focus();
-            }
-        }
+<div class="overlay" id="overlay"></div>
+<div id="modal-container" aria-hidden="true">
+    <div class="focus-guard focus-guard-start" tabindex="0" role="button" aria-label="Menu start"></div>
+    <div id="menu-slot"></div>
+    <div class="focus-guard focus-guard-end" tabindex="0" role="button" aria-label="Menu end"></div>
+</div>
 
-        encryptionBannerButton.addEventListener('click', openBottomSheet);
-        encryptionBannerButton.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                openBottomSheet();
-            }
-        });
-        
-        closeBottomSheetBtn.addEventListener('click', closeBottomSheet);
-        dismissBottomSheetBtn.addEventListener('click', closeBottomSheet);
-        overlay.addEventListener('click', closeBottomSheet);
-        openAppStoreBtn.addEventListener('click', openAppStore);
-        closeAppStoreBtn.addEventListener('click', closeAppStore);
-        closeAppStoreTopBtn.addEventListener('click', closeAppStore);
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const variant = parseInt(urlParams.get('variant')) || 1;
+document.querySelectorAll(".more-btn").forEach(btn => {
+    const username = btn.getAttribute("data-username");
+    let label;
+    switch(variant) {
+        case 1:
+            label = "More options";
+            break;
+        case 2:
+            label = "More options for user";
+            break;
+        case 3:
+        default:
+            label = "More options for " + username;
+            break;
+    }
+    btn.setAttribute("aria-label", label);
+});
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                if (!appStoreModal.hasAttribute('hidden')) {
-                    closeAppStore();
-                } else if (!bottomSheet.hasAttribute('hidden')) {
-                    closeBottomSheet();
-                }
-            }
-        });
 
-        trapFocus(bottomSheet);
-        trapFocus(appStoreModal);
-    </script>
+document.querySelectorAll(".more-btn").forEach(btn => {
+    const wrap = btn.closest(".more-wrap");
+    const menu = wrap.querySelector(".dropdown");
+    const items = menu.querySelectorAll(".drop-item");
+    const overlay = document.getElementById("overlay");
+    const modalContainer = document.getElementById("modal-container");
+    const container = document.querySelector(".container");
+    let originalParent = null;
+
+     function openMenu() {
+         originalParent = menu.parentElement;
+         
+         menu.classList.add("active");
+         menu.setAttribute("aria-hidden", "false");
+         overlay.classList.add("active");
+         container.setAttribute("aria-hidden", "true");
+         items[0].focus();
+     }
+
+    function closeMenu() {
+        // Restore page visibility
+        container.removeAttribute("aria-hidden");
+
+        menu.classList.remove("active");
+        menu.setAttribute("aria-hidden", "true");
+        overlay.classList.remove("active");
+        document.querySelectorAll('.header-container, .search-box, main').forEach(el => el.removeAttribute("aria-hidden"));
+        btn.focus();
+    }
+    // Focus guards - wrap navigation
+    menu.querySelector(".close-menu").addEventListener("click", closeMenu);
+
+
+    btn.addEventListener("click", e => {
+        e.stopPropagation();
+        document.querySelectorAll('.dropdown.active').forEach(m => m.classList.remove("active"));
+        menu.classList.contains("active") ? closeMenu() : openMenu();
+    });
+
+    menu.addEventListener("keydown", e => {
+        const idx = Array.from(items).indexOf(document.activeElement);
+        if (e.key === "Escape") closeMenu();
+        else if (e.key === "ArrowDown") { e.preventDefault(); items[(idx + 1) % items.length].focus(); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); items[(idx - 1 + items.length) % items.length].focus(); }
+        else if (e.key === "Tab") { e.preventDefault(); closeMenu(); }
+    });
+
+    overlay.addEventListener("click", () => {
+        document.querySelectorAll('.dropdown.active').forEach(m => m.classList.remove("active"));
+        overlay.classList.remove("active");
+    });
+});
+
+// Focus guard handlers (add after the forEach loop)
+document.querySelector('.focus-guard-start').addEventListener('focus', () => {
+    const activeMenu = document.querySelector('#menu-slot .dropdown.active');
+    if (activeMenu) {
+        const items = activeMenu.querySelectorAll('.drop-item');
+        items[items.length - 1].focus();
+    }
+});
+
+document.querySelector('.focus-guard-end').addEventListener('focus', () => {
+    const activeMenu = document.querySelector('#menu-slot .dropdown.active');
+    if (activeMenu) {
+        const items = activeMenu.querySelectorAll('.drop-item');
+        items[0].focus();
+    }
+});
+
+document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", "false"));
+        tab.setAttribute("aria-selected", "true");
+    });
+    tab.addEventListener("keydown", e => {
+        const tabs = Array.from(document.querySelectorAll(".tab"));
+        const idx = tabs.indexOf(tab);
+        if (e.key === "ArrowRight") { e.preventDefault(); tabs[(idx + 1) % tabs.length].focus(); tabs[(idx + 1) % tabs.length].click(); }
+        else if (e.key === "ArrowLeft") { e.preventDefault(); tabs[(idx - 1 + tabs.length) % tabs.length].focus(); tabs[(idx - 1 + tabs.length) % tabs.length].click(); }
+    });
+});
+
+const live = document.createElement("div");
+live.setAttribute("aria-live", "polite");
+live.classList.add("sr-only");
+document.body.appendChild(live);
+
+document.querySelectorAll(".drop-item").forEach(item => {
+    item.addEventListener("click", () => {
+        const action = item.textContent.trim();
+        const userBtn = item.closest(".item").querySelector(".uname-btn");
+        const user = userBtn.textContent.trim().split(" ")[0];
+        live.textContent = action + " for " + user;
+    });
+});
+</script>
 </body>
 </html>
