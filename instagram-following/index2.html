@@ -104,12 +104,11 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
     </div>
 </div>
 
+<!-- Search (outside main to avoid landmark announcement) -->
+<div class="search-box">
+    <input type="search" id="search" class="search-input" placeholder="Search">
+</div>
 <main id="main">
-    <!-- Search -->
-    <div class="search-box">
-        <input type="search" id="search" class="search-input" placeholder="Search" aria-label="Search">
-    </div>
-
     <!-- Sync section (hidden from screen readers) -->
     <section class="sync" aria-hidden="true">
         <div class="sync-icon">
