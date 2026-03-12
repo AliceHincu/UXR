@@ -12,7 +12,7 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
 .skip-link{position:absolute;top:-40px;left:0;background:var(--blue);color:#fff;padding:8px 16px;z-index:100;text-decoration:none}
 .skip-link:focus{top:10px;left:10px}
 .container{max-width:480px;margin:0 auto}
-.header-container{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg)}
+.header-container{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg);}
 .back-btn,.add-btn{background:none;border:none;color:var(--text);cursor:pointer;padding:8px;border-radius:50%;display:flex;align-items:center}
 .back-btn{margin-right:16px}
 .back-btn:focus,.add-btn:focus{outline:2px solid var(--blue);outline-offset:2px}
@@ -320,39 +320,15 @@ document.querySelectorAll(".more-btn").forEach(btn => {
 
      function openMenu() {
          originalParent = menu.parentElement;
-	 
-         // Position menu below the three dots button
-         const btnRect = btn.getBoundingClientRect();
-         menu.style.position = 'fixed';
-         menu.style.top = (btnRect.bottom + 4) + 'px';
-         menu.style.right = (window.innerWidth - btnRect.right) + 'px';
-         menu.style.left = 'auto';
-
-
-         document.getElementById('menu-slot').appendChild(menu);
-         modalContainer.setAttribute("aria-hidden", "false");
-         
-         container.setAttribute("aria-hidden", "true");
          
          menu.classList.add("active");
          menu.setAttribute("aria-hidden", "false");
          overlay.classList.add("active");
+         container.setAttribute("aria-hidden", "true");
          items[0].focus();
      }
 
     function closeMenu() {
-        // Move menu back to original location
-        if (originalParent) {
-            originalParent.appendChild(menu);
-        }
-        // Reset positioning
-        menu.style.position = '';
-        menu.style.top = '';
-        menu.style.right = '';
-        menu.style.left = '';
-
-        modalContainer.setAttribute("aria-hidden", "true");
-
         // Restore page visibility
         container.removeAttribute("aria-hidden");
 
