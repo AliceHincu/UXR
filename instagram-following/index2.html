@@ -162,10 +162,10 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
                         <button class="more-btn" data-username="bingclawsby_dollypup" aria-label="More options for bingclawsby_dollypup">
                             <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
                         </button>
-                        <div class="dropdown" role="menu" aria-hidden="true">
-                            <div class="drop-item danger" role="menuitem" tabindex="-1">Unfollow</div>
-                            <div class="drop-item" role="menuitem" tabindex="-1">See shared activity</div>
-                            <div class="drop-item" role="menuitem" tabindex="-1">Mute</div>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
                          </div>
                     </div>
                 </div>
@@ -187,10 +187,10 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
                         <button class="more-btn" data-username="josephkhaterire" aria-label="More options for josephkhaterire">
                             <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
                         </button>
-                        <div class="dropdown" role="menu" aria-hidden="true">
-                            <div class="drop-item danger" role="menuitem" tabindex="-1">Unfollow</div>
-                            <div class="drop-item" role="menuitem" tabindex="-1">See shared activity</div>
-                            <div class="drop-item" role="menuitem" tabindex="-1">Mute</div>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
                          </div>
                     </div>
                 </div>
@@ -212,10 +212,10 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
                         <button class="more-btn" data-username="edgyalbert" aria-label="More options for edgyalbert">
                             <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
                         </button>
-                        <div class="dropdown" role="menu" aria-hidden="true">
-                            <div class="drop-item danger" role="menuitem" tabindex="-1">Unfollow</div>
-                            <div class="drop-item" role="menuitem" tabindex="-1">See shared activity</div>
-                            <div class="drop-item" role="menuitem" tabindex="-1">Mute</div>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
                          </div>
                     </div>
                 </div>
@@ -237,10 +237,10 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
                         <button class="more-btn" data-username="somerville_theatre" aria-label="More options for somerville_theatre">
                             <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
                         </button>
-                        <div class="dropdown" role="menu" aria-hidden="true">
-                            <div class="drop-item danger" role="menuitem" tabindex="-1">Unfollow</div>
-                            <div class="drop-item" role="menuitem" tabindex="-1">See shared activity</div>
-                            <div class="drop-item" role="menuitem" tabindex="-1">Mute</div>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
                          </div>
                 </div>
             </li>
@@ -260,10 +260,10 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
                         <button class="more-btn" data-username="markmaggiori" aria-label="More options for markmaggiori">
                             <svg aria-hidden="true" width="24" height="24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
                         </button>
-                        <div class="dropdown" role="menu" aria-hidden="true">
-                            <div class="drop-item danger" role="menuitem" tabindex="-1">Unfollow</div>
-                            <div class="drop-item" role="menuitem" tabindex="-1">See shared activity</div>
-                            <div class="drop-item" role="menuitem" tabindex="-1">Mute</div>
+                        <div class="dropdown" aria-hidden="true">
+                            <button class="drop-item danger">Unfollow</button>
+                            <button class="drop-item">See shared activity</button>
+                            <button class="drop-item">Mute</button>
                          </div>
                     </div>
                 </div>
@@ -290,6 +290,8 @@ document.querySelectorAll(".more-btn").forEach(btn => {
     function openMenu() {
         menu.classList.add("active");
         menu.setAttribute("aria-hidden", "false");
+        menu.setAttribute("aria-modal", "true");
+        menu.setAttribute("role", "dialog");
         overlay.classList.add("active");
         items[0].focus();
     }
@@ -297,6 +299,8 @@ document.querySelectorAll(".more-btn").forEach(btn => {
     function closeMenu() {
         menu.classList.remove("active");
         menu.setAttribute("aria-hidden", "true");
+        menu.removeAttribute("aria-modal");
+        menu.removeAttribute("role");
         overlay.classList.remove("active");
         btn.focus();
     }
@@ -312,7 +316,7 @@ document.querySelectorAll(".more-btn").forEach(btn => {
         if (e.key === "Escape") closeMenu();
         else if (e.key === "ArrowDown") { e.preventDefault(); items[(idx + 1) % items.length].focus(); }
         else if (e.key === "ArrowUp") { e.preventDefault(); items[(idx - 1 + items.length) % items.length].focus(); }
-        else if (e.key === "Tab") closeMenu();
+        else if (e.key === "Tab") { e.preventDefault(); closeMenu(); }
     });
 
     overlay.addEventListener("click", () => {
