@@ -319,11 +319,24 @@ document.querySelectorAll(".more-btn").forEach(btn => {
     let originalParent = null;
 
 function openMenu() {
-     // Keep menu in original location, use CSS position: absolute
-     // Use inert attribute to trap focus for accessibility
+     originalParent = menu.parentElement;
      
+     // Get button position relative to document (not viewport)
+     const btnRect = btn.getBoundingClientRect();
+     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+     
+     // Move menu outside container (as sibling) so it's not affected by inert
+     document.body.appendChild(menu);
+     
+     // Position with absolute (scrolls with page)
+     menu.style.position = 'absolute';
+     menu.style.top = (btnRect.bottom + scrollTop + 4) + 'px';
+     menu.style.right = (document.documentElement.clientWidth - btnRect.right - scrollLeft) + 'px';
+     menu.style.left = 'auto';
+     
+     // Make container inert to trap focus
      container.setAttribute("inert", "");
-     wrap.removeAttribute("inert");
      
      menu.classList.add("active");
      menu.setAttribute("aria-hidden", "false");
@@ -334,6 +347,17 @@ function openMenu() {
  }
 
 function closeMenu() {
+    // Move menu back to original location
+    if (originalParent) {
+        originalParent.appendChild(menu);
+    }
+    
+    // Reset positioning
+    menu.style.position = '';
+    menu.style.top = '';
+    menu.style.right = '';
+    menu.style.left = '';
+    
     // Remove inert to restore interactivity
     container.removeAttribute("inert");
 
