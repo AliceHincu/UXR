@@ -326,15 +326,19 @@ function openMenu() {
      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
      
-     // Create focus guards to trap VoiceOver navigation
+     // Create focus guards visible to VoiceOver
      const guardStart = document.createElement('div');
      guardStart.className = 'menu-focus-guard-start';
      guardStart.setAttribute('tabindex', '0');
+     guardStart.setAttribute('role', 'button');
+     guardStart.setAttribute('aria-label', 'Return to menu end');
      guardStart.addEventListener('focus', () => items[items.length - 1].focus());
      
      const guardEnd = document.createElement('div');
      guardEnd.className = 'menu-focus-guard-end';
      guardEnd.setAttribute('tabindex', '0');
+     guardEnd.setAttribute('role', 'button');
+     guardEnd.setAttribute('aria-label', 'Return to menu start');
      guardEnd.addEventListener('focus', () => items[0].focus());
      
      // Move menu outside container with focus guards
@@ -348,8 +352,9 @@ function openMenu() {
      menu.style.right = (document.documentElement.clientWidth - btnRect.right - scrollLeft) + 'px';
      menu.style.left = 'auto';
      
-     // Make container inert to trap focus
+     // Make container inert AND aria-hidden to fully hide from VoiceOver
      container.setAttribute("inert", "");
+     container.setAttribute("aria-hidden", "true");
      
      menu.classList.add("active");
      menu.setAttribute("aria-hidden", "false");
@@ -357,7 +362,7 @@ function openMenu() {
      menu.setAttribute("aria-modal", "true");
      overlay.classList.add("active");
      items[0].focus();
- } 
+ }
 
 function closeMenu() {
     // Remove focus guards
