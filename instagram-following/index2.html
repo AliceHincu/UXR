@@ -318,30 +318,33 @@ document.querySelectorAll(".more-btn").forEach(btn => {
     const container = document.querySelector(".container");
     let originalParent = null;
 
-     function openMenu() {
-         originalParent = menu.parentElement;
-         
-         menu.classList.add("active");
-         menu.setAttribute("aria-hidden", "false");
-         menu.setAttribute("role", "dialog");
-         menu.setAttribute("aria-modal", "true");
-         overlay.classList.add("active");
-         container.setAttribute("aria-hidden", "true");
-         items[0].focus();
-     }
+function openMenu() {
+     // Keep menu in original location, use CSS position: absolute
+     // Use inert attribute to trap focus for accessibility
+     
+     container.setAttribute("inert", "");
+     wrap.removeAttribute("inert");
+     
+     menu.classList.add("active");
+     menu.setAttribute("aria-hidden", "false");
+     menu.setAttribute("role", "dialog");
+     menu.setAttribute("aria-modal", "true");
+     overlay.classList.add("active");
+     items[0].focus();
+ }
 
-    function closeMenu() {
-        // Restore page visibility
-        container.removeAttribute("aria-hidden");
+function closeMenu() {
+    // Remove inert to restore interactivity
+    container.removeAttribute("inert");
 
-        menu.classList.remove("active");
-        menu.setAttribute("aria-hidden", "true");
-        menu.removeAttribute("role");
-        menu.removeAttribute("aria-modal");
-        overlay.classList.remove("active");
-        document.querySelectorAll('.header-container, .search-box, main').forEach(el => el.removeAttribute("aria-hidden"));
-        btn.focus();
-    }
+    menu.classList.remove("active");
+    menu.setAttribute("aria-hidden", "true");
+    menu.removeAttribute("role");
+    menu.removeAttribute("aria-modal");
+    overlay.classList.remove("active");
+    btn.focus();
+}
+
     // Focus guards - wrap navigation
     menu.querySelector(".close-menu").addEventListener("click", closeMenu);
 
