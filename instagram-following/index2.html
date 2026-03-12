@@ -80,7 +80,6 @@ body{font-family:-apple-system,sans-serif;background:var(--bg);color:var(--text)
 </head>
 <body>
 <div class="variant-indicator" aria-hidden="true">Variant: <span id="variant-display">1</span></div>
-<a href="#main" class="skip-link">Skip to main content</a>
 <div class="container">
 
 <!-- Header: no landmark -->
@@ -289,18 +288,16 @@ document.querySelectorAll(".more-btn").forEach(btn => {
     function openMenu() {
         menu.classList.add("active");
         menu.setAttribute("aria-hidden", "false");
-        menu.setAttribute("aria-modal", "true");
-        menu.setAttribute("role", "dialog");
         overlay.classList.add("active");
+        document.querySelectorAll('.header-container, .search-box, main').forEach(el => el.setAttribute("aria-hidden", "true"));
         items[0].focus();
     }
 
     function closeMenu() {
         menu.classList.remove("active");
         menu.setAttribute("aria-hidden", "true");
-        menu.removeAttribute("aria-modal");
-        menu.removeAttribute("role");
         overlay.classList.remove("active");
+        document.querySelectorAll('.header-container, .search-box, main').forEach(el => el.removeAttribute("aria-hidden"));
         btn.focus();
     }
 
