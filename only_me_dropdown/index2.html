@@ -356,11 +356,10 @@
     </style>
 </head>
 <body>
-    <!-- Screen reader announcements -->
-    <div id="announce" class="sr-only" aria-live="polite"></div>
+    <!-- Hidden descriptions for aria-describedby -->
+    <div id="privacy-hint" class="sr-only">Double tap to change the audience of this section</div>
 
     <div class="container" id="main-container">
-        <!-- Header: using div instead of header to avoid "banner" landmark -->
         <div class="header">
             <!-- "Back, button" -->
             <button class="back-button" aria-label="Back">
@@ -368,18 +367,17 @@
             </button>
             
             <!-- "Edit links, heading" -->
-            <div class="title" role="heading" aria-level="1">Edit links</div>
+            <div class="title" role="heading" aria-roledescription="heading">Edit links</div>
             
             <!-- "Save, button" -->
             <button class="save-button">Save</button>
         </div>
 
-        <!-- Main content: using div to avoid "main" landmark -->
         <div>
             <div class="section">
                 <div class="section-header">
                     <!-- "Social links, heading" -->
-                    <div class="section-title" role="heading" aria-level="2">Social links</div>
+                    <div class="section-title" role="heading" aria-roledescription="heading">Social links</div>
                     
                     <!-- "Only me, button, Double tap to change the audience of this section" -->
                     <button 
@@ -387,7 +385,7 @@
                         class="privacy-button" 
                         id="social-links-privacy"
                         aria-label="Only me"
-                        aria-description="Double tap to change the audience of this section"
+                        aria-describedby="privacy-hint"
                         data-section="Social links"
                     >
                         <span class="privacy-icon" aria-hidden="true">🔒</span>
@@ -438,14 +436,14 @@
             <div class="section">
                 <div class="section-header">
                     <!-- "Websites, heading" -->
-                    <div class="section-title" role="heading" aria-level="2">Websites</div>
+                    <div class="section-title" role="heading" aria-roledescription="heading">Websites</div>
                     
                     <button 
                         type="button"
                         class="privacy-button" 
                         id="websites-privacy"
                         aria-label="Only me"
-                        aria-description="Double tap to change the audience of this section"
+                        aria-describedby="privacy-hint"
                         data-section="Websites"
                     >
                         <span class="privacy-icon" aria-hidden="true">🔒</span>
@@ -472,22 +470,21 @@
         </div>
     </div>
 
-    <!-- Bottom Sheet Modal -->
-    <div class="modal-bg" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <!-- Bottom Sheet - NO role="dialog" to avoid "web dialogue" announcement -->
+    <div class="modal-bg" id="modal" aria-hidden="true">
         <div class="modal">
-            <!-- "Close, button" -->
+            <!-- "Close, button" - this gets focus first -->
             <button class="modal-handle-btn" id="modal-close-handle" aria-label="Close">
                 <div class="modal-handle" aria-hidden="true"></div>
             </button>
             
             <!-- "Social links, heading" -->
-            <div class="modal-title" id="modal-title-text" role="heading" aria-level="1">Social links</div>
+            <div class="modal-title" id="modal-title-text" role="heading" aria-roledescription="heading">Social links</div>
             
-            <!-- Read as normal text -->
             <p class="modal-desc">Your links may show up in Feed, on your profile, in search results, and in Messenger</p>
             
-            <!-- Radio group -->
-            <div role="radiogroup" aria-label="Select who can see this">
+            <!-- NO role="radiogroup" to avoid "1 of 4" announcement -->
+            <div>
                 <!-- "Public, Anyone on or off Facebook, radio button, unchecked" -->
                 <div 
                     class="radio-opt" 
@@ -562,21 +559,16 @@
     <div class="variant-indicator" id="variant-indicator" aria-hidden="true"></div>
 
     <script>
-        // Elements
         const modal = document.getElementById('modal');
         const modalTitle = document.getElementById('modal-title-text');
         const container = document.getElementById('main-container');
-        const announce = document.getElementById('announce');
         const radioOpts = modal.querySelectorAll('.radio-opt[role="radio"]');
         
-        // Privacy buttons
         const socialPrivacyBtn = document.getElementById('social-links-privacy');
         const websitesPrivacyBtn = document.getElementById('websites-privacy');
         
-        // Track which button opened the modal
         let activePrivacyBtn = null;
 
-        // Privacy options config
         const privacyConfig = {
             'public': { icon: '🌐', label: 'Public' },
             'fof': { icon: '👥', label: 'Friends of friends' },
@@ -584,7 +576,6 @@
             'me': { icon: '🔒', label: 'Only me' }
         };
 
-        // Get current privacy value from button
         function getPrivacyValueFromBtn(btn) {
             const label = btn.getAttribute('aria-label');
             for (const [key, val] of Object.entries(privacyConfig)) {
@@ -593,15 +584,12 @@
             return 'me';
         }
 
-        // Open modal
         function openModal(btn) {
             activePrivacyBtn = btn;
             const sectionName = btn.dataset.section;
             
-            // Update modal title
             modalTitle.textContent = sectionName;
             
-            // Set the current selection
             const currentValue = getPrivacyValueFromBtn(btn);
             radioOpts.forEach(opt => {
                 const isSelected = opt.dataset.value === currentValue;
@@ -609,18 +597,18 @@
                 opt.querySelector('.radio-circle').classList.toggle('checked', isSelected);
             });
             
-            // Show modal
             modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
             container.setAttribute('aria-hidden', 'true');
             container.setAttribute('inert', '');
             
-            // Focus the close handle
+            // Focus the close button directly
             document.getElementById('modal-close-handle').focus();
         }
 
-        // Close modal
         function closeModal() {
             modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
             container.removeAttribute('aria-hidden');
             container.removeAttribute('inert');
             
@@ -629,7 +617,6 @@
             }
         }
 
-        // Select radio option
         function selectRadio(opt) {
             radioOpts.forEach(o => {
                 o.setAttribute('aria-checked', 'false');
@@ -639,7 +626,6 @@
             opt.querySelector('.radio-circle').classList.add('checked');
         }
 
-        // Update privacy button
         function updatePrivacyBtn(btn, value) {
             const config = privacyConfig[value];
             btn.querySelector('.privacy-icon').textContent = config.icon;
@@ -647,7 +633,6 @@
             btn.setAttribute('aria-label', config.label);
         }
 
-        // Radio option handlers
         radioOpts.forEach(opt => {
             opt.addEventListener('click', () => selectRadio(opt));
             opt.addEventListener('keydown', e => {
@@ -668,14 +653,11 @@
             });
         });
 
-        // Privacy button click handlers
         socialPrivacyBtn.addEventListener('click', () => openModal(socialPrivacyBtn));
         websitesPrivacyBtn.addEventListener('click', () => openModal(websitesPrivacyBtn));
 
-        // Modal close
         document.getElementById('modal-close-handle').addEventListener('click', closeModal);
 
-        // Done button
         document.getElementById('done-btn').addEventListener('click', () => {
             const selected = modal.querySelector('.radio-opt[aria-checked="true"]');
             const value = selected.dataset.value;
@@ -683,17 +665,14 @@
             closeModal();
         });
 
-        // Close on background click
         modal.addEventListener('click', e => {
             if (e.target === modal) closeModal();
         });
 
-        // Close on Escape
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
         });
 
-        // Focus trap
         modal.addEventListener('keydown', e => {
             if (e.key === 'Tab') {
                 const focusable = modal.querySelectorAll('button, [tabindex="0"]');
@@ -709,7 +688,6 @@
             }
         });
 
-        // Variant indicator
         const urlParams = new URLSearchParams(window.location.search);
         const variant = parseInt(urlParams.get('variant')) || 1;
         document.getElementById('variant-indicator').textContent = 'Variant: ' + variant;
