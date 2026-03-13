@@ -374,9 +374,9 @@
                         type="button"
                         class="privacy-button" 
                         id="social-links-privacy"
-                        aria-label="Only me"
                         title="Double tap to change the audience of this section"
                         data-section="Social links"
+                        data-section-key="social"
                     >
                         <span class="privacy-icon" aria-hidden="true">🔒</span>
                         <span class="privacy-label" aria-hidden="true">Only me</span>
@@ -430,9 +430,9 @@
                         type="button"
                         class="privacy-button" 
                         id="websites-privacy"
-                        aria-label="Only me"
                         title="Double tap to change the audience of this section"
                         data-section="Websites"
+                        data-section-key="websites"
                     >
                         <span class="privacy-icon" aria-hidden="true">🔒</span>
                         <span class="privacy-label" aria-hidden="true">Only me</span>
@@ -538,8 +538,6 @@
         </div>
     </div>
 
-    <div class="variant-indicator" id="variant-indicator" aria-hidden="true"></div>
-
     <script>
         const modal = document.getElementById('modal');
         const modalTitle = document.getElementById('modal-title-text');
@@ -551,6 +549,10 @@
         
         let activePrivacyBtn = null;
 
+        // Get variant from URL parameter (1, 2, or 3)
+        const urlParams = new URLSearchParams(window.location.search);
+        const variant = parseInt(urlParams.get('variant')) || 1;
+
         const privacyConfig = {
             'public': { icon: '🌐', label: 'Public' },
             'fof': { icon: '👥', label: 'Friends of friends' },
@@ -558,10 +560,38 @@
             'me': { icon: '🔒', label: 'Only me' }
         };
 
+        // Generate aria-label based on variant
+        function getAriaLabel(privacyLabel, sectionKey) {
+            switch (variant) {
+                case 1:
+                    // "Only me"
+                    return privacyLabel;
+                case 2:
+                    // "Only me, privacy audience"
+                    return `${privacyLabel}, privacy audience`;
+                case 3:
+                    // "Only me, privacy audience for social links" or "Only me, privacy audience for websites"
+                    const sectionName = sectionKey === 'social' ? 'social links' : 'websites';
+                    return `${privacyLabel}, privacy audience for ${sectionName}`;
+                default:
+                    return privacyLabel;
+            }
+        }
+
+        // Initialize aria-labels based on variant
+        function initAriaLabels() {
+            const buttons = [socialPrivacyBtn, websitesPrivacyBtn];
+            buttons.forEach(btn => {
+                const currentLabel = btn.querySelector('.privacy-label').textContent;
+                const sectionKey = btn.dataset.sectionKey;
+                btn.setAttribute('aria-label', getAriaLabel(currentLabel, sectionKey));
+            });
+        }
+
         function getPrivacyValueFromBtn(btn) {
-            const label = btn.getAttribute('aria-label');
+            const visualLabel = btn.querySelector('.privacy-label').textContent;
             for (const [key, val] of Object.entries(privacyConfig)) {
-                if (val.label === label) return key;
+                if (val.label === visualLabel) return key;
             }
             return 'me';
         }
@@ -611,7 +641,10 @@
             const config = privacyConfig[value];
             btn.querySelector('.privacy-icon').textContent = config.icon;
             btn.querySelector('.privacy-label').textContent = config.label;
-            btn.setAttribute('aria-label', config.label);
+            
+            // Update aria-label based on variant
+            const sectionKey = btn.dataset.sectionKey;
+            btn.setAttribute('aria-label', getAriaLabel(config.label, sectionKey));
         }
 
         radioOpts.forEach(opt => {
@@ -669,8 +702,8 @@
             }
         });
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const variant = parseInt(urlParams.get('variant')) || 1;
+        // Initialize
+        initAriaLabels();
         document.getElementById('variant-indicator').textContent = 'Variant: ' + variant;
     </script>
 </body>
