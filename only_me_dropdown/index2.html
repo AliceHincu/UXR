@@ -197,13 +197,11 @@
             font-size: 12px;
         }
 
-        /* Focus styles */
         *:focus {
             outline: 2px solid #0066cc;
             outline-offset: 2px;
         }
 
-        /* ========== BOTTOM SHEET STYLES ========== */
         .modal-bg {
             display: none;
             position: fixed;
@@ -356,36 +354,28 @@
     </style>
 </head>
 <body>
-    <!-- Hidden descriptions for aria-describedby -->
-    <div id="privacy-hint" class="sr-only">Double tap to change the audience of this section</div>
-
     <div class="container" id="main-container">
         <div class="header">
-            <!-- "Back, button" -->
             <button class="back-button" aria-label="Back">
                 <span aria-hidden="true">‹</span>
             </button>
             
-            <!-- "Edit links, heading" -->
             <div class="title" role="heading" aria-roledescription="heading">Edit links</div>
             
-            <!-- "Save, button" -->
             <button class="save-button">Save</button>
         </div>
 
         <div>
             <div class="section">
                 <div class="section-header">
-                    <!-- "Social links, heading" -->
                     <div class="section-title" role="heading" aria-roledescription="heading">Social links</div>
                     
-                    <!-- "Only me, button, Double tap to change the audience of this section" -->
                     <button 
                         type="button"
                         class="privacy-button" 
                         id="social-links-privacy"
                         aria-label="Only me"
-                        aria-describedby="privacy-hint"
+                        title="Double tap to change the audience of this section"
                         data-section="Social links"
                     >
                         <span class="privacy-icon" aria-hidden="true">🔒</span>
@@ -394,7 +384,6 @@
                     </button>
                 </div>
 
-                <!-- "Add social link, button" -->
                 <button class="add-button" type="button">Add social link</button>
 
                 <div class="link-list">
@@ -435,7 +424,6 @@
 
             <div class="section">
                 <div class="section-header">
-                    <!-- "Websites, heading" -->
                     <div class="section-title" role="heading" aria-roledescription="heading">Websites</div>
                     
                     <button 
@@ -443,7 +431,7 @@
                         class="privacy-button" 
                         id="websites-privacy"
                         aria-label="Only me"
-                        aria-describedby="privacy-hint"
+                        title="Double tap to change the audience of this section"
                         data-section="Websites"
                     >
                         <span class="privacy-icon" aria-hidden="true">🔒</span>
@@ -470,22 +458,17 @@
         </div>
     </div>
 
-    <!-- Bottom Sheet - NO role="dialog" to avoid "web dialogue" announcement -->
     <div class="modal-bg" id="modal" aria-hidden="true">
         <div class="modal">
-            <!-- "Close, button" - this gets focus first -->
             <button class="modal-handle-btn" id="modal-close-handle" aria-label="Close">
                 <div class="modal-handle" aria-hidden="true"></div>
             </button>
             
-            <!-- "Social links, heading" -->
             <div class="modal-title" id="modal-title-text" role="heading" aria-roledescription="heading">Social links</div>
             
             <p class="modal-desc">Your links may show up in Feed, on your profile, in search results, and in Messenger</p>
             
-            <!-- NO role="radiogroup" to avoid "1 of 4" announcement -->
             <div>
-                <!-- "Public, Anyone on or off Facebook, radio button, unchecked" -->
                 <div 
                     class="radio-opt" 
                     role="radio" 
@@ -551,7 +534,6 @@
                 </div>
             </div>
             
-            <!-- "Done, button" -->
             <button class="done-btn" id="done-btn">Done</button>
         </div>
     </div>
@@ -602,7 +584,6 @@
             container.setAttribute('aria-hidden', 'true');
             container.setAttribute('inert', '');
             
-            // Focus the close button directly
             document.getElementById('modal-close-handle').focus();
         }
 
