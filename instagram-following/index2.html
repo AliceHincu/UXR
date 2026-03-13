@@ -407,9 +407,14 @@ function closeMenu() {
     menu.addEventListener("keydown", e => {
         const idx = Array.from(items).indexOf(document.activeElement);
         if (e.key === "Escape") closeMenu();
-        else if (e.key === "ArrowDown") { e.preventDefault(); items[(idx + 1) % items.length].focus(); }
-        else if (e.key === "ArrowUp") { e.preventDefault(); items[(idx - 1 + items.length) % items.length].focus(); }
-        else if (e.key === "Tab") { e.preventDefault(); closeMenu(); }
+        else if (e.key === "ArrowDown" || (e.key === "Tab" && !e.shiftKey)) { 
+            e.preventDefault(); 
+            items[(idx + 1) % items.length].focus(); 
+        }
+        else if (e.key === "ArrowUp" || (e.key === "Tab" && e.shiftKey)) { 
+            e.preventDefault(); 
+            items[(idx - 1 + items.length) % items.length].focus(); 
+        }
     });
 
     overlay.addEventListener("click", () => {
