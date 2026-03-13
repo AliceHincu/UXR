@@ -47,7 +47,7 @@
             gap: 8px;
         }
 
-        .header h1 {
+        .title {
             font-size: 18px;
             font-weight: 600;
         }
@@ -73,7 +73,7 @@
             margin-bottom: 16px;
         }
 
-        .section-header h2 {
+        .section-title {
             font-size: 18px;
             font-weight: 600;
         }
@@ -256,7 +256,7 @@
             border-radius: 2px;
         }
 
-        .modal h2 {
+        .modal-title {
             text-align: center;
             font-size: 18px;
             font-weight: 600;
@@ -360,26 +360,28 @@
     <div id="announce" class="sr-only" aria-live="polite"></div>
 
     <div class="container" id="main-container">
-        <header class="header" role="banner">
+        <!-- Header: using div instead of header to avoid "banner" landmark -->
+        <div class="header">
             <!-- "Back, button" -->
             <button class="back-button" aria-label="Back">
                 <span aria-hidden="true">‹</span>
             </button>
             
             <!-- "Edit links, heading" -->
-            <h1>Edit links</h1>
+            <div class="title" role="heading" aria-level="1">Edit links</div>
             
             <!-- "Save, button" -->
-            <button class="save-button" aria-label="Save">Save</button>
-        </header>
+            <button class="save-button">Save</button>
+        </div>
 
-        <main role="main">
-            <section class="section" aria-labelledby="social-links-heading" role="region">
+        <!-- Main content: using div to avoid "main" landmark -->
+        <div>
+            <div class="section">
                 <div class="section-header">
                     <!-- "Social links, heading" -->
-                    <h2 id="social-links-heading">Social links</h2>
+                    <div class="section-title" role="heading" aria-level="2">Social links</div>
                     
-                    <!-- "Only me, Button, Double tap to change the audience of this section" -->
+                    <!-- "Only me, button, Double tap to change the audience of this section" -->
                     <button 
                         type="button"
                         class="privacy-button" 
@@ -395,50 +397,48 @@
                 </div>
 
                 <!-- "Add social link, button" -->
-                <button class="add-button" type="button" aria-label="Add social link">
-                    Add social link
-                </button>
+                <button class="add-button" type="button">Add social link</button>
 
-                <ul class="link-list" role="list" aria-label="Your social links">
-                    <li class="link-item" role="listitem">
+                <div class="link-list">
+                    <div class="link-item">
                         <div class="link-icon x-icon" aria-hidden="true">𝕏</div>
                         <div class="link-content">
-                            <div class="link-info" tabindex="0" role="group" aria-label="X account: example">
-                                <p class="link-username">example</p>
-                                <p class="link-platform">X</p>
+                            <div class="link-info" tabindex="0" aria-label="X account, example">
+                                <p class="link-username" aria-hidden="true">example</p>
+                                <p class="link-platform" aria-hidden="true">X</p>
                             </div>
-                            <button class="remove-button" type="button" aria-label="Remove X account example">Remove</button>
+                            <button class="remove-button" type="button">Remove</button>
                         </div>
-                    </li>
+                    </div>
 
-                    <li class="link-item" role="listitem">
+                    <div class="link-item">
                         <div class="link-icon tiktok-icon" aria-hidden="true">♪</div>
                         <div class="link-content">
-                            <div class="link-info" tabindex="0" role="group" aria-label="TikTok account: fikfok">
-                                <p class="link-username">fikfok</p>
-                                <p class="link-platform">TikTok</p>
+                            <div class="link-info" tabindex="0" aria-label="TikTok account, fikfok">
+                                <p class="link-username" aria-hidden="true">fikfok</p>
+                                <p class="link-platform" aria-hidden="true">TikTok</p>
                             </div>
-                            <button class="remove-button" type="button" aria-label="Remove TikTok account fikfok">Remove</button>
+                            <button class="remove-button" type="button">Remove</button>
                         </div>
-                    </li>
+                    </div>
 
-                    <li class="link-item" role="listitem">
+                    <div class="link-item">
                         <div class="link-icon linkedin-icon" aria-hidden="true">in</div>
                         <div class="link-content">
-                            <div class="link-info" tabindex="0" role="group" aria-label="LinkedIn account: michaelriccardi1">
-                                <p class="link-username">michaelriccardi1</p>
-                                <p class="link-platform">LinkedIn</p>
+                            <div class="link-info" tabindex="0" aria-label="LinkedIn account, michaelriccardi1">
+                                <p class="link-username" aria-hidden="true">michaelriccardi1</p>
+                                <p class="link-platform" aria-hidden="true">LinkedIn</p>
                             </div>
-                            <button class="remove-button" type="button" aria-label="Remove LinkedIn account michaelriccardi1">Remove</button>
+                            <button class="remove-button" type="button">Remove</button>
                         </div>
-                    </li>
-                </ul>
-            </section>
+                    </div>
+                </div>
+            </div>
 
-            <section class="section" aria-labelledby="websites-heading" role="region">
+            <div class="section">
                 <div class="section-header">
                     <!-- "Websites, heading" -->
-                    <h2 id="websites-heading">Websites</h2>
+                    <div class="section-title" role="heading" aria-level="2">Websites</div>
                     
                     <button 
                         type="button"
@@ -454,39 +454,37 @@
                     </button>
                 </div>
 
-                <button class="add-button" type="button" aria-label="Add website">
-                    Add website
-                </button>
+                <button class="add-button" type="button">Add website</button>
 
-                <ul class="link-list" role="list" aria-label="Your websites">
-                    <li class="link-item" role="listitem">
+                <div class="link-list">
+                    <div class="link-item">
                         <div class="link-icon website-icon" aria-hidden="true">🌐</div>
                         <div class="link-content">
-                            <div class="link-info" tabindex="0" role="group" aria-label="Website: ggoooo">
-                                <p class="link-username">ggoooo</p>
-                                <p class="link-platform">Website</p>
+                            <div class="link-info" tabindex="0" aria-label="Website, ggoooo">
+                                <p class="link-username" aria-hidden="true">ggoooo</p>
+                                <p class="link-platform" aria-hidden="true">Website</p>
                             </div>
-                            <button class="remove-button" type="button" aria-label="Remove website ggoooo">Remove</button>
+                            <button class="remove-button" type="button">Remove</button>
                         </div>
-                    </li>
-                </ul>
-            </section>
-        </main>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Bottom Sheet Modal -->
-    <div class="modal-bg" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div class="modal" role="document">
+    <div class="modal-bg" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+        <div class="modal">
             <!-- "Close, button" -->
             <button class="modal-handle-btn" id="modal-close-handle" aria-label="Close">
                 <div class="modal-handle" aria-hidden="true"></div>
             </button>
             
             <!-- "Social links, heading" -->
-            <h2 id="modal-title">Social links</h2>
+            <div class="modal-title" id="modal-title-text" role="heading" aria-level="1">Social links</div>
             
-            <!-- Read normally as text -->
-            <p class="modal-desc" id="modal-desc">Your links may show up in Feed, on your profile, in search results, and in Messenger</p>
+            <!-- Read as normal text -->
+            <p class="modal-desc">Your links may show up in Feed, on your profile, in search results, and in Messenger</p>
             
             <!-- Radio group -->
             <div role="radiogroup" aria-label="Select who can see this">
@@ -507,7 +505,6 @@
                     <span class="radio-circle" aria-hidden="true"></span>
                 </div>
                 
-                <!-- "Friends of friends, Your friends of friends, radio button, unchecked" -->
                 <div 
                     class="radio-opt" 
                     role="radio" 
@@ -524,7 +521,6 @@
                     <span class="radio-circle" aria-hidden="true"></span>
                 </div>
                 
-                <!-- "Friends, Your friends on Facebook, radio button, unchecked" -->
                 <div 
                     class="radio-opt" 
                     role="radio" 
@@ -541,7 +537,6 @@
                     <span class="radio-circle" aria-hidden="true"></span>
                 </div>
                 
-                <!-- "Only me, Only me, radio button, checked/unchecked" -->
                 <div 
                     class="radio-opt" 
                     role="radio" 
@@ -569,7 +564,7 @@
     <script>
         // Elements
         const modal = document.getElementById('modal');
-        const modalTitle = document.getElementById('modal-title');
+        const modalTitle = document.getElementById('modal-title-text');
         const container = document.getElementById('main-container');
         const announce = document.getElementById('announce');
         const radioOpts = modal.querySelectorAll('.radio-opt[role="radio"]');
@@ -588,12 +583,6 @@
             'friends': { icon: '👤', label: 'Friends' },
             'me': { icon: '🔒', label: 'Only me' }
         };
-
-        // Announce to screen readers
-        function say(message) {
-            announce.textContent = message;
-            setTimeout(() => announce.textContent = '', 1000);
-        }
 
         // Get current privacy value from button
         function getPrivacyValueFromBtn(btn) {
@@ -625,7 +614,7 @@
             container.setAttribute('aria-hidden', 'true');
             container.setAttribute('inert', '');
             
-            // Focus the close handle (grabber)
+            // Focus the close handle
             document.getElementById('modal-close-handle').focus();
         }
 
@@ -650,7 +639,7 @@
             opt.querySelector('.radio-circle').classList.add('checked');
         }
 
-        // Update privacy button display and aria-label
+        // Update privacy button
         function updatePrivacyBtn(btn, value) {
             const config = privacyConfig[value];
             btn.querySelector('.privacy-icon').textContent = config.icon;
@@ -658,7 +647,7 @@
             btn.setAttribute('aria-label', config.label);
         }
 
-        // Radio option click/keyboard handlers
+        // Radio option handlers
         radioOpts.forEach(opt => {
             opt.addEventListener('click', () => selectRadio(opt));
             opt.addEventListener('keydown', e => {
@@ -666,20 +655,15 @@
                     e.preventDefault();
                     selectRadio(opt);
                 }
-                // Arrow key navigation within radiogroup
                 if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
                     e.preventDefault();
                     const next = opt.nextElementSibling;
-                    if (next && next.classList.contains('radio-opt')) {
-                        next.focus();
-                    }
+                    if (next && next.classList.contains('radio-opt')) next.focus();
                 }
                 if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
                     e.preventDefault();
                     const prev = opt.previousElementSibling;
-                    if (prev && prev.classList.contains('radio-opt')) {
-                        prev.focus();
-                    }
+                    if (prev && prev.classList.contains('radio-opt')) prev.focus();
                 }
             });
         });
@@ -688,18 +672,14 @@
         socialPrivacyBtn.addEventListener('click', () => openModal(socialPrivacyBtn));
         websitesPrivacyBtn.addEventListener('click', () => openModal(websitesPrivacyBtn));
 
-        // Modal close handle
+        // Modal close
         document.getElementById('modal-close-handle').addEventListener('click', closeModal);
 
         // Done button
         document.getElementById('done-btn').addEventListener('click', () => {
             const selected = modal.querySelector('.radio-opt[aria-checked="true"]');
             const value = selected.dataset.value;
-            
-            if (activePrivacyBtn) {
-                updatePrivacyBtn(activePrivacyBtn, value);
-            }
-            
+            if (activePrivacyBtn) updatePrivacyBtn(activePrivacyBtn, value);
             closeModal();
         });
 
@@ -708,21 +688,17 @@
             if (e.target === modal) closeModal();
         });
 
-        // Close on Escape key
+        // Close on Escape
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal();
-            }
+            if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
         });
 
-        // Trap focus in modal
+        // Focus trap
         modal.addEventListener('keydown', e => {
             if (e.key === 'Tab') {
                 const focusable = modal.querySelectorAll('button, [tabindex="0"]');
                 const arr = Array.from(focusable);
-                const first = arr[0];
-                const last = arr[arr.length - 1];
-                
+                const first = arr[0], last = arr[arr.length - 1];
                 if (e.shiftKey && document.activeElement === first) {
                     e.preventDefault();
                     last.focus();
