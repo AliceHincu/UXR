@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .save-button {
+            background: none;
+            border: none;
+            color: #0066cc;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 12px;
+        }
+
+        .section {
+            padding: 20px 16px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .privacy-button {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .privacy-button:hover,
+        .privacy-button:focus {
+            background-color: #e0e0e0;
+            outline: 2px solid #0066cc;
+            outline-offset: 2px;
+        }
+
+        .add-button {
+            width: 100%;
+            padding: 14px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #1a1a1a;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+
+        .link-list {
+            list-style: none;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+        }
+
+        .link-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .link-icon.x-icon {
+            background: #000;
+            color: white;
+            font-weight: bold;
+        }
+
+        .link-icon.tiktok-icon {
+            background: #000;
+            color: white;
+        }
+
+        .link-icon.linkedin-icon {
+            background: #0077b5;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .link-icon.website-icon {
+            background: #666;
+            color: white;
+            font-size: 20px;
+        }
+
+        .link-content {
+            flex: 1;
+        }
+
+        .link-username {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .link-platform {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .remove-button {
+            width: 100%;
+            padding: 10px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #1a1a1a;
+            cursor: pointer;
+        }
+
+        .remove-button:hover {
+            background-color: #e8e8e8;
+        }
+
+        .variant-indicator {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* Focus styles */
+        *:focus {
+            outline: 2px solid #0066cc;
+            outline-offset: 2px;
+        }
+
+        /* ========== BOTTOM SHEET STYLES ========== */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-bg.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px 16px 0 0;
+            width: 100%;
+            max-width: 400px;
+            padding: 16px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-handle-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 8px 0 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+        }
+
+        .modal-handle-btn:hover .modal-handle {
+            background: #666;
+        }
+
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: #dadde1;
+            border-radius: 2px;
+        }
+
+        .modal h2 {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .modal-desc {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .radio-opt {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            gap: 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .radio-opt:hover {
+            background: #f5f5f5;
+        }
+
+        .radio-icon {
+            width: 40px;
+            height: 40px;
+            background: #e4e6eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .radio-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .radio-title {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .radio-sub {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .radio-circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #dadde1;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .radio-circle.checked {
+            border: 6px solid #0066cc;
+        }
+
+        .done-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0066cc;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+
+        .done-btn:hover {
+            background: #0055aa;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Screen reader announcements -->
+    <div id="announce" class="sr-only" aria-live="polite"></div>
+
+    <div class="container" id="main-container">
+        <header class="header" role="banner">
+            <!-- "Back, button" -->
+            <button class="back-button" aria-label="Back">
+                <span aria-hidden="true">‹</span>
+            </button>
+            
+            <!-- "Edit links, heading" -->
+            <h1>Edit links</h1>
+            
+            <!-- "Save, button" -->
+            <button class="save-button" aria-label="Save">Save</button>
+        </header>
+
+        <main role="main">
+            <section class="section" aria-labelledby="social-links-heading" role="region">
+                <div class="section-header">
+                    <!-- "Social links, heading" -->
+                    <h2 id="social-links-heading">Social links</h2>
+                    
+                    <!-- "Only me, Button, Double tap to change the audience of this section" -->
+                    <button 
+                        type="button"
+                        class="privacy-button" 
+                        id="social-links-privacy"
+                        aria-label="Only me"
+                        aria-description="Double tap to change the audience of this section"
+                        data-section="Social links"
+                    >
+                        <span class="privacy-icon" aria-hidden="true">🔒</span>
+                        <span class="privacy-label" aria-hidden="true">Only me</span>
+                        <span aria-hidden="true">▼</span>
+                    </button>
+                </div>
+
+                <!-- "Add social link, button" -->
+                <button class="add-button" type="button" aria-label="Add social link">
+                    Add social link
+                </button>
+
+                <ul class="link-list" role="list" aria-label="Your social links">
+                    <li class="link-item" role="listitem">
+                        <div class="link-icon x-icon" aria-hidden="true">𝕏</div>
+                        <div class="link-content">
+                            <div class="link-info" tabindex="0" role="group" aria-label="X account: example">
+                                <p class="link-username">example</p>
+                                <p class="link-platform">X</p>
+                            </div>
+                            <button class="remove-button" type="button" aria-label="Remove X account example">Remove</button>
+                        </div>
+                    </li>
+
+                    <li class="link-item" role="listitem">
+                        <div class="link-icon tiktok-icon" aria-hidden="true">♪</div>
+                        <div class="link-content">
+                            <div class="link-info" tabindex="0" role="group" aria-label="TikTok account: fikfok">
+                                <p class="link-username">fikfok</p>
+                                <p class="link-platform">TikTok</p>
+                            </div>
+                            <button class="remove-button" type="button" aria-label="Remove TikTok account fikfok">Remove</button>
+                        </div>
+                    </li>
+
+                    <li class="link-item" role="listitem">
+                        <div class="link-icon linkedin-icon" aria-hidden="true">in</div>
+                        <div class="link-content">
+                            <div class="link-info" tabindex="0" role="group" aria-label="LinkedIn account: michaelriccardi1">
+                                <p class="link-username">michaelriccardi1</p>
+                                <p class="link-platform">LinkedIn</p>
+                            </div>
+                            <button class="remove-button" type="button" aria-label="Remove LinkedIn account michaelriccardi1">Remove</button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="section" aria-labelledby="websites-heading" role="region">
+                <div class="section-header">
+                    <!-- "Websites, heading" -->
+                    <h2 id="websites-heading">Websites</h2>
+                    
+                    <button 
+                        type="button"
+                        class="privacy-button" 
+                        id="websites-privacy"
+                        aria-label="Only me"
+                        aria-description="Double tap to change the audience of this section"
+                        data-section="Websites"
+                    >
+                        <span class="privacy-icon" aria-hidden="true">🔒</span>
+                        <span class="privacy-label" aria-hidden="true">Only me</span>
+                        <span aria-hidden="true">▼</span>
+                    </button>
+                </div>
+
+                <button class="add-button" type="button" aria-label="Add website">
+                    Add website
+                </button>
+
+                <ul class="link-list" role="list" aria-label="Your websites">
+                    <li class="link-item" role="listitem">
+                        <div class="link-icon website-icon" aria-hidden="true">🌐</div>
+                        <div class="link-content">
+                            <div class="link-info" tabindex="0" role="group" aria-label="Website: ggoooo">
+                                <p class="link-username">ggoooo</p>
+                                <p class="link-platform">Website</p>
+                            </div>
+                            <button class="remove-button" type="button" aria-label="Remove website ggoooo">Remove</button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <!-- Bottom Sheet Modal -->
+    <div class="modal-bg" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal" role="document">
+            <!-- "Close, button" -->
+            <button class="modal-handle-btn" id="modal-close-handle" aria-label="Close">
+                <div class="modal-handle" aria-hidden="true"></div>
+            </button>
+            
+            <!-- "Social links, heading" -->
+            <h2 id="modal-title">Social links</h2>
+            
+            <!-- Read normally as text -->
+            <p class="modal-desc" id="modal-desc">Your links may show up in Feed, on your profile, in search results, and in Messenger</p>
+            
+            <!-- Radio group -->
+            <div role="radiogroup" aria-label="Select who can see this">
+                <!-- "Public, Anyone on or off Facebook, radio button, unchecked" -->
+                <div 
+                    class="radio-opt" 
+                    role="radio" 
+                    tabindex="0" 
+                    aria-checked="false" 
+                    data-value="public"
+                    aria-label="Public, Anyone on or off Facebook"
+                >
+                    <span class="radio-icon" aria-hidden="true">🌐</span>
+                    <span class="radio-text" aria-hidden="true">
+                        <span class="radio-title">Public</span>
+                        <span class="radio-sub">Anyone on or off Facebook</span>
+                    </span>
+                    <span class="radio-circle" aria-hidden="true"></span>
+                </div>
+                
+                <!-- "Friends of friends, Your friends of friends, radio button, unchecked" -->
+                <div 
+                    class="radio-opt" 
+                    role="radio" 
+                    tabindex="0" 
+                    aria-checked="false" 
+                    data-value="fof"
+                    aria-label="Friends of friends, Your friends of friends"
+                >
+                    <span class="radio-icon" aria-hidden="true">👥</span>
+                    <span class="radio-text" aria-hidden="true">
+                        <span class="radio-title">Friends of friends</span>
+                        <span class="radio-sub">Your friends of friends</span>
+                    </span>
+                    <span class="radio-circle" aria-hidden="true"></span>
+                </div>
+                
+                <!-- "Friends, Your friends on Facebook, radio button, unchecked" -->
+                <div 
+                    class="radio-opt" 
+                    role="radio" 
+                    tabindex="0" 
+                    aria-checked="false" 
+                    data-value="friends"
+                    aria-label="Friends, Your friends on Facebook"
+                >
+                    <span class="radio-icon" aria-hidden="true">👤</span>
+                    <span class="radio-text" aria-hidden="true">
+                        <span class="radio-title">Friends</span>
+                        <span class="radio-sub">Your friends on Facebook</span>
+                    </span>
+                    <span class="radio-circle" aria-hidden="true"></span>
+                </div>
+                
+                <!-- "Only me, Only me, radio button, checked/unchecked" -->
+                <div 
+                    class="radio-opt" 
+                    role="radio" 
+                    tabindex="0" 
+                    aria-checked="false" 
+                    data-value="me"
+                    aria-label="Only me, Only me"
+                >
+                    <span class="radio-icon" aria-hidden="true">🔒</span>
+                    <span class="radio-text" aria-hidden="true">
+                        <span class="radio-title">Only me</span>
+                        <span class="radio-sub">Only me</span>
+                    </span>
+                    <span class="radio-circle" aria-hidden="true"></span>
+                </div>
+            </div>
+            
+            <!-- "Done, button" -->
+            <button class="done-btn" id="done-btn">Done</button>
+        </div>
+    </div>
+
+    <div class="variant-indicator" id="variant-indicator" aria-hidden="true"></div>
+
+    <script>
+        // Elements
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const container = document.getElementById('main-container');
+        const announce = document.getElementById('announce');
+        const radioOpts = modal.querySelectorAll('.radio-opt[role="radio"]');
+        
+        // Privacy buttons
+        const socialPrivacyBtn = document.getElementById('social-links-privacy');
+        const websitesPrivacyBtn = document.getElementById('websites-privacy');
+        
+        // Track which button opened the modal
+        let activePrivacyBtn = null;
+
+        // Privacy options config
+        const privacyConfig = {
+            'public': { icon: '🌐', label: 'Public' },
+            'fof': { icon: '👥', label: 'Friends of friends' },
+            'friends': { icon: '👤', label: 'Friends' },
+            'me': { icon: '🔒', label: 'Only me' }
+        };
+
+        // Announce to screen readers
+        function say(message) {
+            announce.textContent = message;
+            setTimeout(() => announce.textContent = '', 1000);
+        }
+
+        // Get current privacy value from button
+        function getPrivacyValueFromBtn(btn) {
+            const label = btn.getAttribute('aria-label');
+            for (const [key, val] of Object.entries(privacyConfig)) {
+                if (val.label === label) return key;
+            }
+            return 'me';
+        }
+
+        // Open modal
+        function openModal(btn) {
+            activePrivacyBtn = btn;
+            const sectionName = btn.dataset.section;
+            
+            // Update modal title
+            modalTitle.textContent = sectionName;
+            
+            // Set the current selection
+            const currentValue = getPrivacyValueFromBtn(btn);
+            radioOpts.forEach(opt => {
+                const isSelected = opt.dataset.value === currentValue;
+                opt.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+                opt.querySelector('.radio-circle').classList.toggle('checked', isSelected);
+            });
+            
+            // Show modal
+            modal.classList.add('active');
+            container.setAttribute('aria-hidden', 'true');
+            container.setAttribute('inert', '');
+            
+            // Focus the close handle (grabber)
+            document.getElementById('modal-close-handle').focus();
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('active');
+            container.removeAttribute('aria-hidden');
+            container.removeAttribute('inert');
+            
+            if (activePrivacyBtn) {
+                activePrivacyBtn.focus();
+            }
+        }
+
+        // Select radio option
+        function selectRadio(opt) {
+            radioOpts.forEach(o => {
+                o.setAttribute('aria-checked', 'false');
+                o.querySelector('.radio-circle').classList.remove('checked');
+            });
+            opt.setAttribute('aria-checked', 'true');
+            opt.querySelector('.radio-circle').classList.add('checked');
+        }
+
+        // Update privacy button display and aria-label
+        function updatePrivacyBtn(btn, value) {
+            const config = privacyConfig[value];
+            btn.querySelector('.privacy-icon').textContent = config.icon;
+            btn.querySelector('.privacy-label').textContent = config.label;
+            btn.setAttribute('aria-label', config.label);
+        }
+
+        // Radio option click/keyboard handlers
+        radioOpts.forEach(opt => {
+            opt.addEventListener('click', () => selectRadio(opt));
+            opt.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectRadio(opt);
+                }
+                // Arrow key navigation within radiogroup
+                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    const next = opt.nextElementSibling;
+                    if (next && next.classList.contains('radio-opt')) {
+                        next.focus();
+                    }
+                }
+                if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const prev = opt.previousElementSibling;
+                    if (prev && prev.classList.contains('radio-opt')) {
+                        prev.focus();
+                    }
+                }
+            });
+        });
+
+        // Privacy button click handlers
+        socialPrivacyBtn.addEventListener('click', () => openModal(socialPrivacyBtn));
+        websitesPrivacyBtn.addEventListener('click', () => openModal(websitesPrivacyBtn));
+
+        // Modal close handle
+        document.getElementById('modal-close-handle').addEventListener('click', closeModal);
+
+        // Done button
+        document.getElementById('done-btn').addEventListener('click', () => {
+            const selected = modal.querySelector('.radio-opt[aria-checked="true"]');
+            const value = selected.dataset.value;
+            
+            if (activePrivacyBtn) {
+                updatePrivacyBtn(activePrivacyBtn, value);
+            }
+            
+            closeModal();
+        });
+
+        // Close on background click
+        modal.addEventListener('click', e => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Trap focus in modal
+        modal.addEventListener('keydown', e => {
+            if (e.key === 'Tab') {
+                const focusable = modal.querySelectorAll('button, [tabindex="0"]');
+                const arr = Array.from(focusable);
+                const first = arr[0];
+                const last = arr[arr.length - 1];
+                
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
+
+        // Variant indicator
+        const urlParams = new URLSearchParams(window.location.search);
+        const variant = parseInt(urlParams.get('variant')) || 1;
+        document.getElementById('variant-indicator').textContent = 'Variant: ' + variant;
+    </script>
+</body>
+</html>
