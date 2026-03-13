@@ -47,7 +47,7 @@
             gap: 8px;
         }
 
-        .header h1 {
+        .title {
             font-size: 18px;
             font-weight: 600;
         }
@@ -73,7 +73,7 @@
             margin-bottom: 16px;
         }
 
-        .section-header h2 {
+        .section-title {
             font-size: 18px;
             font-weight: 600;
         }
@@ -197,158 +197,514 @@
             font-size: 12px;
         }
 
-        /* Focus styles for non-interactive elements */
-        h1:focus,
-        h2:focus,
-        .link-info:focus {
+        *:focus {
             outline: 2px solid #0066cc;
             outline-offset: 2px;
-            border-radius: 4px;
         }
 
-        .link-info {
-            padding: 4px;
-            border-radius: 4px;
+        .modal-bg {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-bg.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px 16px 0 0;
+            width: 100%;
+            max-width: 400px;
+            padding: 16px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-handle-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 8px 0 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+        }
+
+        .modal-handle-btn:hover .modal-handle {
+            background: #666;
+        }
+
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: #dadde1;
+            border-radius: 2px;
+        }
+
+        .modal-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .modal-desc {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .radio-opt {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            gap: 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .radio-opt:hover {
+            background: #f5f5f5;
+        }
+
+        .radio-icon {
+            width: 40px;
+            height: 40px;
+            background: #e4e6eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .radio-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .radio-title {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .radio-sub {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .radio-circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #dadde1;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .radio-circle.checked {
+            border: 6px solid #0066cc;
+        }
+
+        .done-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0066cc;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+
+        .done-btn:hover {
+            background: #0055aa;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header" role="banner">
-            <button class="back-button" aria-label="Go back">
+    <div class="container" id="main-container">
+        <div class="header">
+            <button class="back-button" aria-label="Back">
                 <span aria-hidden="true">‹</span>
             </button>
-            <h1 tabindex="0">Edit links</h1>
+            
+            <div class="title" role="heading" aria-roledescription="heading">Edit links</div>
+            
             <button class="save-button">Save</button>
-        </header>
+        </div>
 
-        <main role="main">
-            <section class="section" aria-labelledby="social-links-heading" role="region">
+        <div>
+            <div class="section">
                 <div class="section-header">
-                    <h2 id="social-links-heading" tabindex="0">Social links</h2>
+                    <div class="section-title" role="heading" aria-roledescription="heading">Social links</div>
+                    
                     <button 
                         type="button"
                         class="privacy-button" 
-                        id="social-links-privacy" 
-                        aria-label="Only me"
-                        aria-haspopup="menu"
-                        aria-expanded="false"
+                        id="social-links-privacy"
+                        title="Double tap to change the audience of this section"
+                        data-section="Social links"
+                        data-section-key="social"
                     >
-                        <span aria-hidden="true">🔒</span>
-                        <span>Only me</span>
+                        <span class="privacy-icon" aria-hidden="true">🔒</span>
+                        <span class="privacy-label" aria-hidden="true">Only me</span>
                         <span aria-hidden="true">▼</span>
                     </button>
                 </div>
 
-                <button class="add-button" type="button" aria-label="Add social link">
-                    Add social link
-                </button>
+                <button class="add-button" type="button">Add social link</button>
 
-                <ul class="link-list" role="list" aria-label="Your social links">
-                    <li class="link-item" role="listitem">
+                <div class="link-list">
+                    <div class="link-item">
                         <div class="link-icon x-icon" aria-hidden="true">𝕏</div>
                         <div class="link-content">
-                            <div class="link-info" tabindex="0" aria-label="X account: example">
-                                <p class="link-username">example</p>
-                                <p class="link-platform">X</p>
+                            <div class="link-info" tabindex="0" aria-label="X account, example">
+                                <p class="link-username" aria-hidden="true">example</p>
+                                <p class="link-platform" aria-hidden="true">X</p>
                             </div>
-                            <button class="remove-button" type="button" aria-label="Remove X account: example">Remove</button>
+                            <button class="remove-button" type="button">Remove</button>
                         </div>
-                    </li>
+                    </div>
 
-                    <li class="link-item" role="listitem">
+                    <div class="link-item">
                         <div class="link-icon tiktok-icon" aria-hidden="true">♪</div>
                         <div class="link-content">
-                            <div class="link-info" tabindex="0" aria-label="TikTok account: fikfok">
-                                <p class="link-username">fikfok</p>
-                                <p class="link-platform">TikTok</p>
+                            <div class="link-info" tabindex="0" aria-label="TikTok account, fikfok">
+                                <p class="link-username" aria-hidden="true">fikfok</p>
+                                <p class="link-platform" aria-hidden="true">TikTok</p>
                             </div>
-                            <button class="remove-button" type="button" aria-label="Remove TikTok account: fikfok">Remove</button>
+                            <button class="remove-button" type="button">Remove</button>
                         </div>
-                    </li>
+                    </div>
 
-                    <li class="link-item" role="listitem">
+                    <div class="link-item">
                         <div class="link-icon linkedin-icon" aria-hidden="true">in</div>
                         <div class="link-content">
-                            <div class="link-info" tabindex="0" aria-label="LinkedIn account: michaelriccardi1">
-                                <p class="link-username">michaelriccardi1</p>
-                                <p class="link-platform">LinkedIn</p>
+                            <div class="link-info" tabindex="0" aria-label="LinkedIn account, michaelriccardi1">
+                                <p class="link-username" aria-hidden="true">michaelriccardi1</p>
+                                <p class="link-platform" aria-hidden="true">LinkedIn</p>
                             </div>
-                            <button class="remove-button" type="button" aria-label="Remove LinkedIn account: michaelriccardi1">Remove</button>
+                            <button class="remove-button" type="button">Remove</button>
                         </div>
-                    </li>
-                </ul>
-            </section>
+                    </div>
+                </div>
+            </div>
 
-            <section class="section" aria-labelledby="websites-heading" role="region">
+            <div class="section">
                 <div class="section-header">
-                    <h2 id="websites-heading" tabindex="0">Websites</h2>
+                    <div class="section-title" role="heading" aria-roledescription="heading">Websites</div>
+                    
                     <button 
                         type="button"
                         class="privacy-button" 
-                        id="websites-privacy" 
-                        aria-label="Only me"
-                        aria-haspopup="menu"
-                        aria-expanded="false"
+                        id="websites-privacy"
+                        title="Double tap to change the audience of this section"
+                        data-section="Websites"
+                        data-section-key="websites"
                     >
-                        <span aria-hidden="true">🔒</span>
-                        <span>Only me</span>
+                        <span class="privacy-icon" aria-hidden="true">🔒</span>
+                        <span class="privacy-label" aria-hidden="true">Only me</span>
                         <span aria-hidden="true">▼</span>
                     </button>
                 </div>
 
-                <button class="add-button" type="button" aria-label="Add website">
-                    Add website
-                </button>
+                <button class="add-button" type="button">Add website</button>
 
-                <ul class="link-list" role="list" aria-label="Your websites">
-                    <li class="link-item" role="listitem">
+                <div class="link-list">
+                    <div class="link-item">
                         <div class="link-icon website-icon" aria-hidden="true">🌐</div>
                         <div class="link-content">
-                            <div class="link-info" tabindex="0" aria-label="Website: ggoooo">
-                                <p class="link-username">ggoooo</p>
-                                <p class="link-platform">Website</p>
+                            <div class="link-info" tabindex="0" aria-label="Website, ggoooo">
+                                <p class="link-username" aria-hidden="true">ggoooo</p>
+                                <p class="link-platform" aria-hidden="true">Website</p>
                             </div>
-                            <button class="remove-button" type="button" aria-label="Remove website: ggoooo">Remove</button>
+                            <button class="remove-button" type="button">Remove</button>
                         </div>
-                    </li>
-                </ul>
-            </section>
-        </main>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="variant-indicator" id="variant-indicator" aria-hidden="true"></div>
+    <div class="modal-bg" id="modal" aria-hidden="true">
+        <div class="modal">
+            <button class="modal-handle-btn" id="modal-close-handle" aria-label="Close">
+                <div class="modal-handle" aria-hidden="true"></div>
+            </button>
+            
+            <div class="modal-title" id="modal-title-text" role="heading" aria-roledescription="heading">Social links</div>
+            
+            <p class="modal-desc">Your links may show up in Feed, on your profile, in search results, and in Messenger</p>
+            
+            <div>
+                <div 
+                    class="radio-opt" 
+                    role="radio" 
+                    tabindex="0" 
+                    aria-checked="false" 
+                    data-value="public"
+                    aria-label="Public, Anyone on or off Facebook"
+                >
+                    <span class="radio-icon" aria-hidden="true">🌐</span>
+                    <span class="radio-text" aria-hidden="true">
+                        <span class="radio-title">Public</span>
+                        <span class="radio-sub">Anyone on or off Facebook</span>
+                    </span>
+                    <span class="radio-circle" aria-hidden="true"></span>
+                </div>
+                
+                <div 
+                    class="radio-opt" 
+                    role="radio" 
+                    tabindex="0" 
+                    aria-checked="false" 
+                    data-value="fof"
+                    aria-label="Friends of friends, Your friends of friends"
+                >
+                    <span class="radio-icon" aria-hidden="true">👥</span>
+                    <span class="radio-text" aria-hidden="true">
+                        <span class="radio-title">Friends of friends</span>
+                        <span class="radio-sub">Your friends of friends</span>
+                    </span>
+                    <span class="radio-circle" aria-hidden="true"></span>
+                </div>
+                
+                <div 
+                    class="radio-opt" 
+                    role="radio" 
+                    tabindex="0" 
+                    aria-checked="false" 
+                    data-value="friends"
+                    aria-label="Friends, Your friends on Facebook"
+                >
+                    <span class="radio-icon" aria-hidden="true">👤</span>
+                    <span class="radio-text" aria-hidden="true">
+                        <span class="radio-title">Friends</span>
+                        <span class="radio-sub">Your friends on Facebook</span>
+                    </span>
+                    <span class="radio-circle" aria-hidden="true"></span>
+                </div>
+                
+                <div 
+                    class="radio-opt" 
+                    role="radio" 
+                    tabindex="0" 
+                    aria-checked="false" 
+                    data-value="me"
+                    aria-label="Only me, Only me"
+                >
+                    <span class="radio-icon" aria-hidden="true">🔒</span>
+                    <span class="radio-text" aria-hidden="true">
+                        <span class="radio-title">Only me</span>
+                        <span class="radio-sub">Only me</span>
+                    </span>
+                    <span class="radio-circle" aria-hidden="true"></span>
+                </div>
+            </div>
+            
+            <button class="done-btn" id="done-btn">Done</button>
+        </div>
+    </div>
 
     <script>
-        // Get variant from URL parameter, default to 1
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title-text');
+        const container = document.getElementById('main-container');
+        const radioOpts = modal.querySelectorAll('.radio-opt[role="radio"]');
+        
+        const socialPrivacyBtn = document.getElementById('social-links-privacy');
+        const websitesPrivacyBtn = document.getElementById('websites-privacy');
+        
+        let activePrivacyBtn = null;
+
+        // Get variant from URL parameter (1, 2, or 3)
         const urlParams = new URLSearchParams(window.location.search);
         const variant = parseInt(urlParams.get('variant')) || 1;
 
-        // Define aria-labels for each variant
-        const ariaLabels = {
-            1: {
-                social: 'Only me',
-                websites: 'Only me'
-            },
-            2: {
-                social: 'Only me, privacy audience',
-                websites: 'Only me, privacy audience'
-            },
-            3: {
-                social: 'Only me, privacy audience for social links',
-                websites: 'Only me, privacy audience for websites'
-            }
+        const privacyConfig = {
+            'public': { icon: '🌐', label: 'Public' },
+            'fof': { icon: '👥', label: 'Friends of friends' },
+            'friends': { icon: '👤', label: 'Friends' },
+            'me': { icon: '🔒', label: 'Only me' }
         };
 
-        // Get the current variant's labels (fallback to variant 1)
-        const currentLabels = ariaLabels[variant] || ariaLabels[1];
+        // Generate aria-label based on variant
+        function getAriaLabel(privacyLabel, sectionKey) {
+            switch (variant) {
+                case 1:
+                    // "Only me"
+                    return privacyLabel;
+                case 2:
+                    // "Only me, privacy audience"
+                    return `${privacyLabel}, privacy audience`;
+                case 3:
+                    // "Only me, privacy audience for social links" or "Only me, privacy audience for websites"
+                    const sectionName = sectionKey === 'social' ? 'social links' : 'websites';
+                    return `${privacyLabel}, privacy audience for ${sectionName}`;
+                default:
+                    return privacyLabel;
+            }
+        }
 
-        // Apply aria-labels to buttons
-        document.getElementById('social-links-privacy').setAttribute('aria-label', currentLabels.social);
-        document.getElementById('websites-privacy').setAttribute('aria-label', currentLabels.websites);
+        // Initialize aria-labels based on variant
+        function initAriaLabels() {
+            const buttons = [socialPrivacyBtn, websitesPrivacyBtn];
+            buttons.forEach(btn => {
+                const currentLabel = btn.querySelector('.privacy-label').textContent;
+                const sectionKey = btn.dataset.sectionKey;
+                btn.setAttribute('aria-label', getAriaLabel(currentLabel, sectionKey));
+            });
+        }
 
-        // Show current variant indicator
-        document.getElementById('variant-indicator').textContent = 'Variant: ' + (ariaLabels[variant] ? variant : '1 (default)');
+        function getPrivacyValueFromBtn(btn) {
+            const visualLabel = btn.querySelector('.privacy-label').textContent;
+            for (const [key, val] of Object.entries(privacyConfig)) {
+                if (val.label === visualLabel) return key;
+            }
+            return 'me';
+        }
+
+        function openModal(btn) {
+            activePrivacyBtn = btn;
+            const sectionName = btn.dataset.section;
+            
+            modalTitle.textContent = sectionName;
+            
+            const currentValue = getPrivacyValueFromBtn(btn);
+            radioOpts.forEach(opt => {
+                const isSelected = opt.dataset.value === currentValue;
+                opt.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+                opt.querySelector('.radio-circle').classList.toggle('checked', isSelected);
+            });
+            
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            container.setAttribute('aria-hidden', 'true');
+            container.setAttribute('inert', '');
+            
+            document.getElementById('modal-close-handle').focus();
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            container.removeAttribute('aria-hidden');
+            container.removeAttribute('inert');
+            
+            if (activePrivacyBtn) {
+                activePrivacyBtn.focus();
+            }
+        }
+
+        function selectRadio(opt) {
+            radioOpts.forEach(o => {
+                o.setAttribute('aria-checked', 'false');
+                o.querySelector('.radio-circle').classList.remove('checked');
+            });
+            opt.setAttribute('aria-checked', 'true');
+            opt.querySelector('.radio-circle').classList.add('checked');
+        }
+
+        function updatePrivacyBtn(btn, value) {
+            const config = privacyConfig[value];
+            btn.querySelector('.privacy-icon').textContent = config.icon;
+            btn.querySelector('.privacy-label').textContent = config.label;
+            
+            // Update aria-label based on variant
+            const sectionKey = btn.dataset.sectionKey;
+            btn.setAttribute('aria-label', getAriaLabel(config.label, sectionKey));
+        }
+
+        radioOpts.forEach(opt => {
+            opt.addEventListener('click', () => selectRadio(opt));
+            opt.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectRadio(opt);
+                }
+                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    const next = opt.nextElementSibling;
+                    if (next && next.classList.contains('radio-opt')) next.focus();
+                }
+                if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const prev = opt.previousElementSibling;
+                    if (prev && prev.classList.contains('radio-opt')) prev.focus();
+                }
+            });
+        });
+
+        socialPrivacyBtn.addEventListener('click', () => openModal(socialPrivacyBtn));
+        websitesPrivacyBtn.addEventListener('click', () => openModal(websitesPrivacyBtn));
+
+        document.getElementById('modal-close-handle').addEventListener('click', closeModal);
+
+        document.getElementById('done-btn').addEventListener('click', () => {
+            const selected = modal.querySelector('.radio-opt[aria-checked="true"]');
+            const value = selected.dataset.value;
+            if (activePrivacyBtn) updatePrivacyBtn(activePrivacyBtn, value);
+            closeModal();
+        });
+
+        modal.addEventListener('click', e => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+        });
+
+        modal.addEventListener('keydown', e => {
+            if (e.key === 'Tab') {
+                const focusable = modal.querySelectorAll('button, [tabindex="0"]');
+                const arr = Array.from(focusable);
+                const first = arr[0], last = arr[arr.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
+
+        // Initialize
+        initAriaLabels();
+        document.getElementById('variant-indicator').textContent = 'Variant: ' + variant;
     </script>
 </body>
 </html>
