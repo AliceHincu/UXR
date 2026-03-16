@@ -30,11 +30,17 @@
         .person-icon{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:36px;height:36px;background:#0866FF;border-radius:50%;display:flex;align-items:center;justify-content:center}
         .sheet-title{font-size:20px;font-weight:700;color:#050505;margin-bottom:12px}
         .sheet-title:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:4px}
-        .sheet-description{font-size:15px;color:#65676b;line-height:1.4;margin-bottom:20px;text-align:left}
+        .sheet-description-wrapper{margin-bottom:20px;text-align:left}
+        .sheet-description{font-size:15px;color:#65676b;line-height:1.4;display:inline}
         .sheet-description:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:4px}
-        .info-text:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:4px}
         .privacy-link{color:#0866ff;text-decoration:none}
         .privacy-link:hover{text-decoration:underline}
+        .privacy-link:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:4px}
+	.info-text:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:4px}
+        .privacy-link{color:#0866ff;text-decoration:none}
+        .privacy-link:hover{text-decoration:underline}
+        .privacy-link:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:4px}
+        .sheet-content > .privacy-link{display:block;text-align:left;margin-bottom:20px;font-size:15px}
         .info-cards{background:#f0f2f5;border-radius:12px;padding:16px;margin-bottom:20px}
         .info-card{display:flex;align-items:flex-start;gap:12px;text-align:left}
         .info-card:first-child{margin-bottom:16px}
@@ -64,8 +70,11 @@
         <button class="sheet-handle" aria-label="Close"></button>
         <div class="sheet-content">
             <div class="privacy-icon" aria-hidden="true"><div class="house-roof"></div><div class="house-body"></div><div class="person-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="8" r="4"/><path d="M12 14c-4 0-7 2-7 4v2h14v-2c0-2-3-4-7-4z"/></svg></div></div>
-            <h2 class="sheet-title" tabindex="0">Business chats and your privacy</h2>
-            <p class="sheet-description" tabindex="0">Business chats use data to improve your experience. Meta may use messages, actions and info you share in this chat to enable faster business response times, personalize ads and improve features such as translations and AI. <a href="#" class="privacy-link">See Privacy Policy</a></p>
+            <div class="sheet-title" tabindex="0" role="heading" data-voiceover="Business chats and your privacy, Heading">Business chats and your privacy</div>
+            <div class="sheet-description-wrapper">
+                <p class="sheet-description" tabindex="0">Business chats use data to improve your experience. Meta may use messages, actions and info you share in this chat to enable faster business response times, personalize ads and improve features such as translations and AI.</p>
+                <a href="#" class="privacy-link" tabindex="0">See Privacy Policy</a>
+            </div>
             <div class="info-cards">
                 <div class="info-card"><div class="info-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#65676B" stroke-width="1.5"/><path d="M11 5V11" stroke="#65676B" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="15" r="1.2" fill="#65676B"/></svg></div><p class="info-text" tabindex="0">Businesses can only message you once you interact with them.</p></div>
                 <div class="info-card"><div class="info-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#65676B" stroke-width="1.5"/><circle cx="11" cy="15" r="1" fill="#65676B"/><path d="M11 7v5" stroke="#65676B" stroke-width="1.5" stroke-linecap="round"/></svg></div><p class="info-text" tabindex="0">You can always block or report a business.</p></div>
