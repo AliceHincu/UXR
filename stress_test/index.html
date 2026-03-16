@@ -24,25 +24,7 @@
       color: #1c1e21;
     }
 
-    /* Skip link for keyboard users */
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: #1877f2;
-      color: white;
-      padding: 8px 16px;
-      z-index: 1000;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-
-    .skip-link:focus {
-      top: 10px;
-      left: 10px;
-    }
-
-    /* Modal dialog */
+    /* Modal container */
     .modal {
       background: white;
       border-radius: 12px;
@@ -71,6 +53,11 @@
       font-size: 1.125rem;
       font-weight: 600;
       text-align: center;
+    }
+
+    .modal-header h1:focus {
+      outline: 2px solid #1877f2;
+      outline-offset: 2px;
     }
 
     .close-button {
@@ -126,6 +113,11 @@
       flex-shrink: 0;
     }
 
+    .publisher-logo:focus {
+      outline: 2px solid #1877f2;
+      outline-offset: 2px;
+    }
+
     .publisher-info {
       flex: 1;
       min-width: 0;
@@ -153,6 +145,12 @@
       width: 16px;
       height: 16px;
       flex-shrink: 0;
+    }
+
+    .verified-badge:focus {
+      outline: 2px solid #1877f2;
+      outline-offset: 2px;
+      border-radius: 50%;
     }
 
     .publisher-category {
@@ -286,25 +284,6 @@
       margin-top: 2px;
     }
 
-    .info-subtitle a {
-      color: #1877f2;
-      text-decoration: none;
-    }
-
-    .info-subtitle a:hover,
-    .info-subtitle a:focus {
-      text-decoration: underline;
-    }
-
-    .info-item-link {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      text-decoration: none;
-      color: inherit;
-      flex: 1;
-    }
-
     .arrow-button {
       width: 36px;
       height: 36px;
@@ -418,6 +397,19 @@
       overflow: hidden;
     }
 
+    /* Visually hidden but accessible */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     /* Focus visible for better keyboard navigation */
     :focus-visible {
       outline: 2px solid #1877f2;
@@ -444,97 +436,109 @@
   </style>
 </head>
 <body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <div 
-    role="dialog" 
-    aria-modal="true" 
-    aria-labelledby="modal-title"
-    class="modal"
-  >
+  <div class="modal">
     <header class="modal-header">
-      <h1 id="modal-title" tabindex="0">About this content</h1>
+      <h1 id="modal-title" tabindex="0" role="heading" aria-level="1">About this content</h1>
       <button 
         type="button" 
         class="close-button" 
-        aria-label="Close dialog"
+        aria-label="Close"
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
         </svg>
       </button>
     </header>
 
-    <main id="main-content">
+    <main>
       <!-- Publisher Section -->
-      <section class="publisher-section" aria-labelledby="publisher-name">
+      <section class="publisher-section">
         <div class="publisher-header">
           <img 
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/CBC_Logo_1992-Present.svg/120px-CBC_Logo_1992-Present.svg.png" 
-            alt="CBC logo" 
+            alt="CBC's profile picture"
+            tabindex="0"
             class="publisher-logo"
           >
-          <div class="publisher-info" tabindex="0" role="group" aria-label="Publisher information">
+          <div 
+            class="publisher-info" 
+            tabindex="0" 
+            role="text"
+            aria-label="CBC, verified account, Media/News Company"
+          >
             <div class="publisher-name-row">
-              <span class="publisher-name" id="publisher-name">CBC</span>
-              <svg class="verified-badge" viewBox="0 0 16 16" role="img" aria-label="Verified account">
-                <title>Verified</title>
-                <circle cx="8" cy="8" r="8" fill="#1877f2"/>
-                <path d="M6.5 11.5L3.5 8.5L4.5 7.5L6.5 9.5L11.5 4.5L12.5 5.5L6.5 11.5Z" fill="white"/>
-              </svg>
+              <span class="publisher-name" aria-hidden="true">CBC</span>
+              <span class="verified-badge" tabindex="0" role="img" aria-label="Verified account">
+                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <circle cx="8" cy="8" r="8" fill="#1877f2"/>
+                  <path d="M6.5 11.5L3.5 8.5L4.5 7.5L6.5 9.5L11.5 4.5L12.5 5.5L6.5 11.5Z" fill="white"/>
+                </svg>
+              </span>
             </div>
-            <p class="publisher-category">Media/News Company</p>
+            <p class="publisher-category" aria-hidden="true">Media/News Company</p>
           </div>
           <button type="button" class="follow-button">
-            <svg viewBox="0 0 16 16" aria-hidden="true">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
               <path d="M8 1a2.5 2.5 0 0 0-2.5 2.5V5h5V3.5A2.5 2.5 0 0 0 8 1zM4.5 5V3.5a3.5 3.5 0 1 1 7 0V5h1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1z"/>
             </svg>
             Follow
           </button>
         </div>
 
-        <p class="description" tabindex="0">
+        <p class="description" tabindex="0" role="text">
           CBC News is the division of the Canadian Broadcasting Corporation responsible for the news gathering and production of news programs on the corporation's English-language operations, namely CBC Television, CBC Radio, CBC News Network, and CBC.ca.
         </p>
-        <p class="source-attribution" tabindex="0">
-          From <a href="https://en.wikipedia.org/wiki/CBC_News">Wikipedia</a> (<a href="https://creativecommons.org/licenses/">Creative Commons</a>)
+        <p class="source-attribution" tabindex="0" role="text">
+          From Wikipedia, Creative Commons
         </p>
       </section>
 
       <!-- Info List -->
-      <ul class="info-list" aria-label="Website information">
+      <ul class="info-list" role="list">
         <li class="info-item">
           <div class="info-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
+            <svg viewBox="0 0 24 24" focusable="false">
               <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
               <path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </div>
-          <div class="info-content" tabindex="0" role="group" aria-label="Domain registration information">
+          <div 
+            class="info-content" 
+            tabindex="0" 
+            role="text"
+          >
             <p class="info-title">
               <strong>cbc.ca</strong> registered:
             </p>
             <p class="info-subtitle">
-              More than 10 years ago | From <a href="https://who.is/whois/cbc.ca">WHOIS</a>
+              More than 10 years ago, from WHOIS
             </p>
           </div>
         </li>
 
         <li class="info-item">
           <div class="info-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
+            <svg viewBox="0 0 24 24" focusable="false">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="currentColor" stroke-width="2"/>
               <polyline points="14 2 14 8 20 8" fill="none" stroke="currentColor" stroke-width="2"/>
               <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/>
               <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/>
             </svg>
           </div>
-          <div class="info-content" tabindex="0" role="group" aria-label="Policies and ethics information">
+          <div 
+            class="info-content" 
+            tabindex="0" 
+            role="text"
+          >
             <p class="info-title">Policies and info: Ownership & funding and Ethics</p>
             <p class="info-subtitle">From CBC</p>
           </div>
-          <button type="button" class="arrow-button" aria-label="View ownership and funding policies from CBC">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+          <button 
+            type="button" 
+            class="arrow-button" 
+            aria-label="Learn more about Policies and info: Ownership & funding and Ethics"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
@@ -542,104 +546,94 @@
       </ul>
 
       <!-- More from this website -->
-      <section class="more-section" aria-labelledby="more-heading">
-        <h2 id="more-heading" tabindex="0">More from this website</h2>
+      <section class="more-section">
+        <h2 tabindex="0" role="heading">More from this website</h2>
         
-        <div class="articles-list" role="feed" aria-label="Related articles from CBC">
-          <article>
-            <a href="#article1" class="article-card" aria-label="temp title: A family from Grunthal, Man., adopted three siblings from Ukraine in February. Just days after they reached safety in Manitoba, Russia's invasion of Ukraine began.">
-              <img 
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e4e6eb' width='100' height='100'/%3E%3C/svg%3E" 
-                alt="" 
-                class="article-thumbnail"
-              >
-              <div class="article-content">
-                <p class="article-source">cbc.ca</p>
-                <h3 class="article-title">temp title</h3>
-                <p class="article-description">
-                  A family from Grunthal, Man., adopted three siblings from Ukraine in February. Just days after they reached safety in Manitoba, Russia's invasion of Ukraine began.
-                </p>
-              </div>
-            </a>
-          </article>
+        <div class="articles-list">
+          <a 
+            href="#article1" 
+            class="article-card" 
+            role="text"
+            aria-label="cbc.ca, temp title, A family from Grunthal, Man., adopted three siblings from Ukraine in February. Just days after they reached safety in Manitoba, Russia's invasion of Ukraine began."
+          >
+            <img 
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e4e6eb' width='100' height='100'/%3E%3C/svg%3E" 
+              alt="" 
+              aria-hidden="true"
+              class="article-thumbnail"
+            >
+            <div class="article-content" aria-hidden="true">
+              <p class="article-source">cbc.ca</p>
+              <h3 class="article-title">temp title</h3>
+              <p class="article-description">
+                A family from Grunthal, Man., adopted three siblings from Ukraine in February. Just days after they reached safety in Manitoba, Russia's invasion of Ukraine began.
+              </p>
+            </div>
+          </a>
 
-          <article>
-            <a href="#article2" class="article-card" aria-label="temp title: Juniper Balch from Lawrencetown is heading to Tofino, B.C., this week to represent Nova Scotia at a national competition. She'll be one of the only Black athletes...">
-              <img 
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e4e6eb' width='100' height='100'/%3E%3C/svg%3E" 
-                alt="" 
-                class="article-thumbnail"
-              >
-              <div class="article-content">
-                <p class="article-source">cbc.ca</p>
-                <h3 class="article-title">temp title</h3>
-                <p class="article-description">
-                  Juniper Balch from Lawrencetown is heading to Tofino, B.C., this week to represent Nova Scotia at a national competition. She'll be one of the only Black athletes...
-                </p>
-              </div>
-            </a>
-          </article>
+          <a 
+            href="#article2" 
+            class="article-card"
+            role="text" 
+            aria-label="cbc.ca, temp title, Juniper Balch from Lawrencetown is heading to Tofino, B.C., this week to represent Nova Scotia at a national competition. She'll be one of the only Black athletes..."
+          >
+            <img 
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e4e6eb' width='100' height='100'/%3E%3C/svg%3E" 
+              alt="" 
+              aria-hidden="true"
+              class="article-thumbnail"
+            >
+            <div class="article-content" aria-hidden="true">
+              <p class="article-source">cbc.ca</p>
+              <h3 class="article-title">temp title</h3>
+              <p class="article-description">
+                Juniper Balch from Lawrencetown is heading to Tofino, B.C., this week to represent Nova Scotia at a national competition. She'll be one of the only Black athletes...
+              </p>
+            </div>
+          </a>
 
-          <article>
-            <a href="#article3" class="article-card" aria-label="temp title: An extremely remote U.K. post office is hiring, and the winning candidates will spend five months on an Antarctic island surrounded by a handful of colleagues and...">
-              <img 
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e4e6eb' width='100' height='100'/%3E%3C/svg%3E" 
-                alt="" 
-                class="article-thumbnail"
-              >
-              <div class="article-content">
-                <p class="article-source">cbc.ca</p>
-                <h3 class="article-title">temp title</h3>
-                <p class="article-description">
-                  An extremely remote U.K. post office is hiring, and the winning candidates will spend five months on an Antarctic island surrounded by a handful of colleagues and...
-                </p>
-              </div>
-            </a>
-          </article>
+          <a 
+            href="#article3" 
+            class="article-card"
+            role="text" 
+            aria-label="cbc.ca, temp title, An extremely remote U.K. post office is hiring, and the winning candidates will spend five months on an Antarctic island surrounded by a handful of colleagues and..."
+          >
+            <img 
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e4e6eb' width='100' height='100'/%3E%3C/svg%3E" 
+              alt="" 
+              aria-hidden="true"
+              class="article-thumbnail"
+            >
+            <div class="article-content" aria-hidden="true">
+              <p class="article-source">cbc.ca</p>
+              <h3 class="article-title">temp title</h3>
+              <p class="article-description">
+                An extremely remote U.K. post office is hiring, and the winning candidates will spend five months on an Antarctic island surrounded by a handful of colleagues and...
+              </p>
+            </div>
+          </a>
         </div>
       </section>
     </main>
   </div>
 
   <script>
-    // Focus management for modal
+    // Focus the heading when page loads
     document.addEventListener('DOMContentLoaded', () => {
-      const modal = document.querySelector('.modal');
+      const heading = document.getElementById('modal-title');
+      heading.focus();
+
+      // Close button handler
       const closeButton = document.querySelector('.close-button');
-      const focusableElements = modal.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-      const firstFocusable = focusableElements[0];
-      const lastFocusable = focusableElements[focusableElements.length - 1];
+      closeButton.addEventListener('click', () => {
+        alert('Modal closed');
+      });
 
-      // Focus the close button when modal opens
-      closeButton.focus();
-
-      // Trap focus within modal
-      modal.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab') {
-          if (e.shiftKey) {
-            if (document.activeElement === firstFocusable) {
-              e.preventDefault();
-              lastFocusable.focus();
-            }
-          } else {
-            if (document.activeElement === lastFocusable) {
-              e.preventDefault();
-              firstFocusable.focus();
-            }
-          }
-        }
-
-        // Close on Escape
+      // Close on Escape key
+      document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           closeButton.click();
         }
-      });
-
-      // Close button handler
-      closeButton.addEventListener('click', () => {
-        alert('Modal closed (in a real app, this would close the dialog)');
       });
     });
   </script>
