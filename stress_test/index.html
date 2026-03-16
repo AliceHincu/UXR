@@ -49,13 +49,13 @@
       z-index: 10;
     }
 
-    .modal-header h1 {
+    .modal-title {
       font-size: 1.125rem;
       font-weight: 600;
       text-align: center;
     }
 
-    .modal-header h1:focus {
+    .modal-title:focus {
       outline: 2px solid #1877f2;
       outline-offset: 2px;
     }
@@ -216,16 +216,6 @@
       outline-offset: 2px;
     }
 
-    .source-attribution a {
-      color: #1877f2;
-      text-decoration: none;
-    }
-
-    .source-attribution a:hover,
-    .source-attribution a:focus {
-      text-decoration: underline;
-    }
-
     /* Info rows */
     .info-list {
       list-style: none;
@@ -321,7 +311,7 @@
       padding: 16px;
     }
 
-    .more-section h2 {
+    .more-heading {
       font-size: 1rem;
       font-weight: 600;
       margin-bottom: 12px;
@@ -329,7 +319,7 @@
       border-radius: 4px;
     }
 
-    .more-section h2:focus {
+    .more-heading:focus {
       outline: 2px solid #1877f2;
       outline-offset: 2px;
     }
@@ -397,19 +387,6 @@
       overflow: hidden;
     }
 
-    /* Visually hidden but accessible */
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
     /* Focus visible for better keyboard navigation */
     :focus-visible {
       outline: 2px solid #1877f2;
@@ -437,8 +414,14 @@
 </head>
 <body>
   <div class="modal">
-    <header class="modal-header">
-      <h1 id="modal-title" tabindex="0" role="heading" aria-level="1">About this content</h1>
+    <!-- Header - using div instead of header to avoid "banner, landmark" -->
+    <div class="modal-header" role="presentation">
+      <span 
+        class="modal-title" 
+        id="modal-title" 
+        tabindex="0" 
+        role="heading"
+      >About this content</span>
       <button 
         type="button" 
         class="close-button" 
@@ -448,35 +431,37 @@
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
         </svg>
       </button>
-    </header>
+    </div>
 
-    <main>
+    <!-- Main content - using div instead of main to avoid "main, landmark" -->
+    <div role="presentation">
       <!-- Publisher Section -->
-      <section class="publisher-section">
+      <div class="publisher-section">
         <div class="publisher-header">
           <img 
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/CBC_Logo_1992-Present.svg/120px-CBC_Logo_1992-Present.svg.png" 
             alt="CBC's profile picture"
             tabindex="0"
+            role="img"
             class="publisher-logo"
           >
-          <div 
+          <span 
             class="publisher-info" 
             tabindex="0" 
             role="text"
-            aria-label="CBC, verified account, Media/News Company"
           >
-            <div class="publisher-name-row">
-              <span class="publisher-name" aria-hidden="true">CBC</span>
-              <span class="verified-badge" tabindex="0" role="img" aria-label="Verified account">
+            <span class="publisher-name-row" aria-hidden="true">
+              <span class="publisher-name">CBC</span>
+              <span class="verified-badge">
                 <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                   <circle cx="8" cy="8" r="8" fill="#1877f2"/>
                   <path d="M6.5 11.5L3.5 8.5L4.5 7.5L6.5 9.5L11.5 4.5L12.5 5.5L6.5 11.5Z" fill="white"/>
                 </svg>
               </span>
-            </div>
-            <p class="publisher-category" aria-hidden="true">Media/News Company</p>
-          </div>
+            </span>
+            <span class="publisher-category" aria-hidden="true">Media/News Company</span>
+            <span class="visually-hidden">CBC, verified account, Media/News Company</span>
+          </span>
           <button type="button" class="follow-button">
             <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
               <path d="M8 1a2.5 2.5 0 0 0-2.5 2.5V5h5V3.5A2.5 2.5 0 0 0 8 1zM4.5 5V3.5a3.5 3.5 0 1 1 7 0V5h1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1z"/>
@@ -485,38 +470,31 @@
           </button>
         </div>
 
-        <p class="description" tabindex="0" role="text">
+        <span class="description" tabindex="0" role="text">
           CBC News is the division of the Canadian Broadcasting Corporation responsible for the news gathering and production of news programs on the corporation's English-language operations, namely CBC Television, CBC Radio, CBC News Network, and CBC.ca.
-        </p>
-        <p class="source-attribution" tabindex="0" role="text">
+        </span>
+        <span class="source-attribution" tabindex="0" role="text">
           From Wikipedia, Creative Commons
-        </p>
-      </section>
+        </span>
+      </div>
 
       <!-- Info List -->
-      <ul class="info-list" role="list">
-        <li class="info-item">
+      <div class="info-list" role="presentation">
+        <div class="info-item">
           <div class="info-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false">
               <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
               <path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </div>
-          <div 
+          <span 
             class="info-content" 
             tabindex="0" 
             role="text"
-          >
-            <p class="info-title">
-              <strong>cbc.ca</strong> registered:
-            </p>
-            <p class="info-subtitle">
-              More than 10 years ago, from WHOIS
-            </p>
-          </div>
-        </li>
+          >cbc.ca registered: More than 10 years ago, from WHOIS</span>
+        </div>
 
-        <li class="info-item">
+        <div class="info-item">
           <div class="info-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -525,14 +503,11 @@
               <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/>
             </svg>
           </div>
-          <div 
+          <span 
             class="info-content" 
             tabindex="0" 
             role="text"
-          >
-            <p class="info-title">Policies and info: Ownership & funding and Ethics</p>
-            <p class="info-subtitle">From CBC</p>
-          </div>
+          >Policies and info: Ownership & funding and Ethics, from CBC</span>
           <button 
             type="button" 
             class="arrow-button" 
@@ -542,19 +517,18 @@
               <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
-        </li>
-      </ul>
+        </div>
+      </div>
 
       <!-- More from this website -->
-      <section class="more-section">
-        <h2 tabindex="0" role="heading">More from this website</h2>
+      <div class="more-section">
+        <span class="more-heading" tabindex="0" role="heading">More from this website</span>
         
-        <div class="articles-list">
+        <div class="articles-list" role="presentation">
           <a 
             href="#article1" 
             class="article-card" 
             role="text"
-            aria-label="cbc.ca, temp title, A family from Grunthal, Man., adopted three siblings from Ukraine in February. Just days after they reached safety in Manitoba, Russia's invasion of Ukraine began."
           >
             <img 
               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e4e6eb' width='100' height='100'/%3E%3C/svg%3E" 
@@ -562,20 +536,20 @@
               aria-hidden="true"
               class="article-thumbnail"
             >
-            <div class="article-content" aria-hidden="true">
-              <p class="article-source">cbc.ca</p>
-              <h3 class="article-title">temp title</h3>
-              <p class="article-description">
+            <span class="article-content" aria-hidden="true">
+              <span class="article-source">cbc.ca</span>
+              <span class="article-title">temp title</span>
+              <span class="article-description">
                 A family from Grunthal, Man., adopted three siblings from Ukraine in February. Just days after they reached safety in Manitoba, Russia's invasion of Ukraine began.
-              </p>
-            </div>
+              </span>
+            </span>
+            <span class="visually-hidden">cbc.ca, temp title, A family from Grunthal, Man., adopted three siblings from Ukraine in February. Just days after they reached safety in Manitoba, Russia's invasion of Ukraine began.</span>
           </a>
 
           <a 
             href="#article2" 
             class="article-card"
-            role="text" 
-            aria-label="cbc.ca, temp title, Juniper Balch from Lawrencetown is heading to Tofino, B.C., this week to represent Nova Scotia at a national competition. She'll be one of the only Black athletes..."
+            role="text"
           >
             <img 
               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e4e6eb' width='100' height='100'/%3E%3C/svg%3E" 
@@ -583,20 +557,20 @@
               aria-hidden="true"
               class="article-thumbnail"
             >
-            <div class="article-content" aria-hidden="true">
-              <p class="article-source">cbc.ca</p>
-              <h3 class="article-title">temp title</h3>
-              <p class="article-description">
+            <span class="article-content" aria-hidden="true">
+              <span class="article-source">cbc.ca</span>
+              <span class="article-title">temp title</span>
+              <span class="article-description">
                 Juniper Balch from Lawrencetown is heading to Tofino, B.C., this week to represent Nova Scotia at a national competition. She'll be one of the only Black athletes...
-              </p>
-            </div>
+              </span>
+            </span>
+            <span class="visually-hidden">cbc.ca, temp title, Juniper Balch from Lawrencetown is heading to Tofino, B.C., this week to represent Nova Scotia at a national competition. She'll be one of the only Black athletes...</span>
           </a>
 
           <a 
             href="#article3" 
             class="article-card"
-            role="text" 
-            aria-label="cbc.ca, temp title, An extremely remote U.K. post office is hiring, and the winning candidates will spend five months on an Antarctic island surrounded by a handful of colleagues and..."
+            role="text"
           >
             <img 
               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e4e6eb' width='100' height='100'/%3E%3C/svg%3E" 
@@ -604,18 +578,34 @@
               aria-hidden="true"
               class="article-thumbnail"
             >
-            <div class="article-content" aria-hidden="true">
-              <p class="article-source">cbc.ca</p>
-              <h3 class="article-title">temp title</h3>
-              <p class="article-description">
+            <span class="article-content" aria-hidden="true">
+              <span class="article-source">cbc.ca</span>
+              <span class="article-title">temp title</span>
+              <span class="article-description">
                 An extremely remote U.K. post office is hiring, and the winning candidates will spend five months on an Antarctic island surrounded by a handful of colleagues and...
-              </p>
-            </div>
+              </span>
+            </span>
+            <span class="visually-hidden">cbc.ca, temp title, An extremely remote U.K. post office is hiring, and the winning candidates will spend five months on an Antarctic island surrounded by a handful of colleagues and...</span>
           </a>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   </div>
+
+  <style>
+    /* Visually hidden but accessible to screen readers */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 
   <script>
     // Focus the heading when page loads
