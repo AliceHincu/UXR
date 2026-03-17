@@ -573,6 +573,14 @@
                     // "Only me, privacy audience for social links" or "Only me, privacy audience for websites"
                     const sectionName = sectionKey === 'social' ? 'social links' : 'websites';
                     return `${privacyLabel}, privacy audience for ${sectionName}`;
+		case 4:
+		    // "Only me, social links"
+                    const sectionName = sectionKey === 'social' ? 'social links' : 'websites';
+                    return `${privacyLabel}, ${sectionName}`;
+		case 5:
+		    // "Only me, who can see your social links"
+                    const sectionName = sectionKey === 'social' ? 'social links' : 'websites';
+                    return `${privacyLabel}, who can see your ${sectionName}`;
                 default:
                     return privacyLabel;
             }
