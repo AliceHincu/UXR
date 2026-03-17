@@ -6,8 +6,9 @@
     <title>Business Chat - Navan</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
+        html,body{width:100%;max-width:100%;overflow-x:hidden}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#f0f2f5;min-height:100vh;display:flex;flex-direction:column}
-        .header{display:flex;align-items:center;padding:12px 16px;background:#fff;border-bottom:1px solid #e4e6eb;position:sticky;top:0;z-index:10}
+        .header{display:flex;align-items:center;padding:12px 16px;background:#fff;border-bottom:1px solid #e4e6eb;position:sticky;top:0;z-index:10;width:100%}
         .back-btn,.action-btn{background:none;border:none;cursor:pointer;padding:8px}
         .back-btn{margin-right:8px}
         .header-profile-btn{display:flex;align-items:center;flex:1;background:none;border:none;cursor:pointer;padding:0;text-align:left}
@@ -18,7 +19,7 @@
         .business-name{font-size:17px;font-weight:600;color:#050505}
         .business-type{font-size:13px;color:#65676b}
         .header-actions{display:flex;gap:8px}
-        .chat-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 20px;background:#f0f2f5}
+        .chat-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 20px;background:#f0f2f5;width:100%}
         .profile-card{display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px}
         .avatar-large-btn{background:none;border:none;cursor:pointer;padding:0;margin-bottom:16px}
         .avatar-large-btn:focus{outline:2px solid #0866ff;outline-offset:4px;border-radius:50%}
@@ -35,7 +36,7 @@
         .profile-action-btn:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:8px}
         .profile-action-icon{width:48px;height:48px;background:#e4e6eb;border-radius:50%;display:flex;align-items:center;justify-content:center}
         .profile-action-label{font-size:13px;color:#050505;font-weight:500}
-        .chat-input-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#fff;border-top:1px solid #e4e6eb}
+        .chat-input-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#fff;border-top:1px solid #e4e6eb;width:100%}
         .chat-input-btn{background:none;border:none;cursor:pointer;padding:8px;color:#0866ff;display:flex;align-items:center;justify-content:center}
         .chat-input-btn:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:50%}
         .chat-input-field{flex:1;background:#f0f2f5;border:none;border-radius:20px;padding:10px 16px;font-size:15px;color:#050505;outline:none}
@@ -45,7 +46,7 @@
         .send-btn:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:50%}
         .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:100;display:none}
         .modal-overlay.active{display:block}
-        .bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;z-index:101;padding:12px 20px 34px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.3s ease-out}
+        .bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;z-index:101;padding:12px 20px 34px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.3s ease-out;width:100%}
         .bottom-sheet.active{transform:translateY(0)}
         .sheet-handle{width:36px;height:4px;background:#c4c4c4;border-radius:2px;margin:0 auto 20px;display:block}
         .sheet-handle-decorative{border:none;padding:0;cursor:default}
@@ -102,18 +103,15 @@
 
     <div class="chat-area" id="chat-area">
         <div class="profile-card">
-            <!-- "Navan's profile picture, button, double-tap to see Navan's profile" -->
             <button class="avatar-large-btn" aria-label="Navan's profile picture, double-tap to see Navan's profile">
-                <div class="avatar-large" aria-hidden="true">navan<div class="online-indicator"></div></div>
+                <span class="avatar-large" aria-hidden="true">navan<span class="online-indicator"></span></span>
             </button>
             
-            <!-- "Navan, verified, button" -->
             <button class="profile-name-btn" aria-label="Navan, verified">
                 <span aria-hidden="true">Navan</span>
                 <span class="verified-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></span>
             </button>
             
-            <!-- Static text -->
             <p class="profile-followers">119K people follow this</p>
             <p class="profile-category">Travel Company</p>
             
@@ -131,7 +129,6 @@
     </div>
 
     <div class="chat-input-bar" id="chat-input-bar">
-        <button class="chat-input-btn" aria-label="Camera"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="#0866FF" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="#0866FF" stroke-width="2"/></svg></button>
         <button class="chat-input-btn" aria-label="Photo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#0866FF" stroke-width="2"/><circle cx="8.5" cy="10.5" r="1.5" fill="#0866FF"/><path d="M21 17l-5-5-3 3-2-2-8 8" stroke="#0866FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="chat-input-btn" aria-label="Voice message"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 1a4 4 0 00-4 4v6a4 4 0 008 0V5a4 4 0 00-4-4z" stroke="#0866FF" stroke-width="2"/><path d="M19 10v1a7 7 0 01-14 0v-1M12 19v4M8 23h8" stroke="#0866FF" stroke-width="2" stroke-linecap="round"/></svg></button>
         <input type="text" class="chat-input-field" aria-label="type a message" title="type a message">
