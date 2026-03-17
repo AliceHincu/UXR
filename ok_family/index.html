@@ -78,6 +78,7 @@
         .btn-secondary{width:100%;padding:14px 20px;background:#e4e6eb;color:#050505;border:none;border-radius:20px;font-size:15px;font-weight:600;cursor:pointer;transition:background 0.2s}
         .btn-secondary:hover{background:#d8dadf}
         .btn-secondary:focus{outline:2px solid #0866ff;outline-offset:2px}
+        .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
         @media(min-width:480px){.bottom-sheet{max-width:420px;left:50%;transform:translateX(-50%) translateY(100%)}.bottom-sheet.active{transform:translateX(-50%) translateY(0)}}
     </style>
 </head>
@@ -154,6 +155,8 @@
             </div>
             <div class="sheet-buttons">
                 <button class="btn-primary" id="primary-cta">Acknowledge</button>
+                <!-- Hidden hint text for V5 accessibility -->
+                <span id="v5-hint" class="visually-hidden">acknowledge and close privacy disclosure</span>
                 <button class="btn-secondary" id="close-btn" style="display:none;">Close</button>
             </div>
         </div>
@@ -213,12 +216,13 @@
                     hasShownPrivacySheet = true;
                     openBottomSheet();
                 } else {
-                    // Handle actual send message logic here
                     console.log('Sending message:', messageInput.value);
                 }
             });
 
             // Configure grabber based on variant
+            // V1: Not focusable (decorative)
+            // V2, V3, V4, V5: Focusable, labeled "Close"
             if (variant === 1) {
                 grabberContainer.setAttribute('aria-hidden', 'true');
                 grabberContainer.setAttribute('role', 'presentation');
@@ -231,16 +235,23 @@
                 grabberContainer.parentNode.replaceChild(grabberButton, grabberContainer);
             }
 
-            // Close button visibility: V1 and V4
+            // Close button visibility: V1 and V4 only
             if (variant === 1 || variant === 4) {
                 closeBtn.style.display = 'block';
             }
 
-            // Update labels for V3 and V4
+            // Primary CTA configuration based on variant
             if (variant === 3 || variant === 4) {
+                // V3 & V4: "Acknowledge business chats and privacy policy"
                 primaryCta.textContent = 'Acknowledge business chats and privacy policy';
                 primaryCta.setAttribute('aria-label', 'Acknowledge business chats and privacy policy');
+            } else if (variant === 5) {
+                // V5: "Acknowledge" with hint "acknowledge and close privacy disclosure"
+                primaryCta.textContent = 'Acknowledge';
+                primaryCta.setAttribute('aria-label', 'Acknowledge');
+                primaryCta.setAttribute('aria-describedby', 'v5-hint');
             }
+            // V1 & V2: Default "Acknowledge" (no changes needed)
 
             // Close handlers
             primaryCta.addEventListener('click', closeBottomSheet);
