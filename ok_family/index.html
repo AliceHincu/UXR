@@ -24,7 +24,8 @@
         .avatar-large-btn:focus{outline:2px solid #0866ff;outline-offset:4px;border-radius:50%}
         .avatar-large{width:100px;height:100px;background:#1c1e21;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;color:#fff;font-size:22px;font-weight:600;text-transform:lowercase}
         .online-indicator{position:absolute;bottom:4px;right:4px;width:20px;height:20px;background:#31a24c;border-radius:50%;border:3px solid #f0f2f5}
-        .profile-name{font-size:20px;font-weight:700;color:#050505;margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:6px}
+        .profile-name-btn{background:none;border:none;cursor:pointer;padding:4px 8px;font-size:20px;font-weight:700;color:#050505;margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:6px}
+        .profile-name-btn:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:4px}
         .verified-badge{width:18px;height:18px;background:#0866ff;border-radius:50%;display:flex;align-items:center;justify-content:center}
         .verified-badge svg{width:12px;height:12px}
         .profile-followers{font-size:14px;color:#65676b;margin-bottom:2px}
@@ -101,24 +102,21 @@
 
     <div class="chat-area" id="chat-area">
         <div class="profile-card">
-            <!-- 1. Profile picture button - "Navan's profile picture, button, double-tap to see Navan's profile" -->
+            <!-- "Navan's profile picture, button, double-tap to see Navan's profile" -->
             <button class="avatar-large-btn" aria-label="Navan's profile picture, double-tap to see Navan's profile">
                 <div class="avatar-large" aria-hidden="true">navan<div class="online-indicator"></div></div>
             </button>
             
-            <!-- 2. Static text: "Navan, verified" (NOT a button) -->
-            <p class="profile-name">
-                <span>Navan</span>
-                <span class="verified-badge" role="img" aria-label="verified"><svg viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></span>
-            </p>
+            <!-- "Navan, verified, button" -->
+            <button class="profile-name-btn" aria-label="Navan, verified">
+                <span aria-hidden="true">Navan</span>
+                <span class="verified-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></span>
+            </button>
             
-            <!-- 3. Static text: "119K people follow this" -->
+            <!-- Static text -->
             <p class="profile-followers">119K people follow this</p>
-            
-            <!-- 4. Static text: "Travel Company" -->
             <p class="profile-category">Travel Company</p>
             
-            <!-- 5 & 6. Buttons -->
             <div class="profile-actions">
                 <button class="profile-action-btn" aria-label="Follow Page">
                     <div class="profile-action-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="#050505"/></svg></div>
