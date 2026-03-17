@@ -243,10 +243,10 @@
                 primaryCta.setAttribute('aria-label', 'Acknowledge business chats and privacy policy');
             } else if (variant === 5) {
                 // V5: "Acknowledge" with hint included in aria-label
-                // VoiceOver will read: "Acknowledge, button, acknowledge and close privacy disclosure"
+                // VoiceOver will read: "Acknowledge, button, double-tap to acknowledge and close privacy disclosure"
                 primaryCta.textContent = 'Acknowledge';
                 primaryCta.setAttribute('aria-label', 'Acknowledge');
-                primaryCta.setAttribute('title', 'acknowledge and close privacy disclosure');
+                primaryCta.setAttribute('title', 'Double-tap to acknowledge and close privacy disclosure');
             }
 
             primaryCta.addEventListener('click', closeBottomSheet);
