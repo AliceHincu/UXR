@@ -561,24 +561,23 @@
         };
 
         // Generate aria-label based on variant
-        function getAriaLabel(privacyLabel, sectionKey) {
-    const sectionName = sectionKey === 'social' ? 'social links' : 'websites';
+	function getAriaLabel(privacyLabel, sectionKey) {
+    		var sectionName = sectionKey === 'social' ? 'social links' : 'websites';
     
-    switch (variant) {
-        case 1:
-            return privacyLabel;
-        case 2:
-            return `${privacyLabel}, privacy audience`;
-        case 3:
-            return `${privacyLabel}, privacy audience for ${sectionName}`;
-        case 4:
-            return `${privacyLabel}, ${sectionName}`;
-        case 5:
-            return `${privacyLabel}, who can see your ${sectionName}`;
-        default:
-            return privacyLabel;
-    }
-}
+    		if (variant === 1) {
+        		return privacyLabel;
+    		} else if (variant === 2) {
+        		return privacyLabel + ', privacy audience';
+    		} else if (variant === 3) {
+        		return privacyLabel + ', privacy audience for ' + sectionName;
+    		} else if (variant === 4) {
+        		return privacyLabel + ', ' + sectionName;
+    		} else if (variant === 5) {
+        		return privacyLabel + ', who can see your ' + sectionName;
+   		} else {
+        		return privacyLabel;
+    		}
+	}
 
         // Initialize aria-labels based on variant
         function initAriaLabels() {
