@@ -9,16 +9,16 @@
         html,body{width:100%;max-width:100%;overflow-x:hidden}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#f0f2f5;min-height:100vh;display:flex;flex-direction:column}
         .header{display:flex;align-items:center;padding:12px 16px;background:#fff;border-bottom:1px solid #e4e6eb;position:sticky;top:0;z-index:10;width:100%}
-        .back-btn,.action-btn{background:none;border:none;cursor:pointer;padding:8px}
+        .back-btn,.action-btn{background:none;border:none;cursor:pointer;padding:8px;flex-shrink:0}
         .back-btn{margin-right:8px}
-        .header-profile-btn{display:flex;align-items:center;flex:1;background:none;border:none;cursor:pointer;padding:0;text-align:left}
+        .header-profile-btn{display:flex;align-items:center;flex:1;min-width:0;background:none;border:none;cursor:pointer;padding:0;text-align:left}
         .header-profile-btn:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:4px}
-        .avatar-small{width:40px;height:40px;background:#1c1e21;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:12px;position:relative;color:#fff;font-size:10px;font-weight:600;text-transform:lowercase}
+        .avatar-small{width:40px;height:40px;background:#1c1e21;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:12px;position:relative;color:#fff;font-size:10px;font-weight:600;text-transform:lowercase;flex-shrink:0}
         .avatar-small::after{content:'';position:absolute;bottom:0;right:0;width:12px;height:12px;background:#31a24c;border-radius:50%;border:2px solid #fff}
-        .header-info{flex:1}
-        .business-name{font-size:17px;font-weight:600;color:#050505}
+        .header-info{flex:1;min-width:0;overflow:hidden}
+        .business-name{font-size:17px;font-weight:600;color:#050505;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .business-type{font-size:13px;color:#65676b}
-        .header-actions{display:flex;gap:8px}
+        .header-actions{display:flex;gap:8px;flex-shrink:0}
         .chat-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 20px;background:#f0f2f5;width:100%}
         .profile-card{display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px}
         .avatar-large-btn{background:none;border:none;cursor:pointer;padding:0;margin-bottom:16px}
@@ -27,7 +27,7 @@
         .online-indicator{position:absolute;bottom:4px;right:4px;width:20px;height:20px;background:#31a24c;border-radius:50%;border:3px solid #f0f2f5}
         .profile-name-btn{background:none;border:none;cursor:pointer;padding:4px 8px;font-size:20px;font-weight:700;color:#050505;margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:6px}
         .profile-name-btn:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:4px}
-        .verified-badge{width:18px;height:18px;background:#0866ff;border-radius:50%;display:flex;align-items:center;justify-content:center}
+        .verified-badge{width:18px;height:18px;background:#0866ff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .verified-badge svg{width:12px;height:12px}
         .profile-followers{font-size:14px;color:#65676b;margin-bottom:2px}
         .profile-category{font-size:14px;color:#65676b;margin-bottom:20px}
@@ -36,13 +36,13 @@
         .profile-action-btn:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:8px}
         .profile-action-icon{width:48px;height:48px;background:#e4e6eb;border-radius:50%;display:flex;align-items:center;justify-content:center}
         .profile-action-label{font-size:13px;color:#050505;font-weight:500}
-        .chat-input-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#fff;border-top:1px solid #e4e6eb;width:100%}
-        .chat-input-btn{background:none;border:none;cursor:pointer;padding:8px;color:#0866ff;display:flex;align-items:center;justify-content:center}
+        .chat-input-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#fff;border-top:1px solid #e4e6eb;width:100%;max-width:100%;overflow:hidden}
+        .chat-input-btn{background:none;border:none;cursor:pointer;padding:8px;color:#0866ff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .chat-input-btn:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:50%}
-        .chat-input-field{flex:1;background:#f0f2f5;border:none;border-radius:20px;padding:10px 16px;font-size:15px;color:#050505;outline:none}
+        .chat-input-field{flex:1;min-width:0;background:#f0f2f5;border:none;border-radius:20px;padding:10px 16px;font-size:15px;color:#050505;outline:none}
         .chat-input-field::placeholder{color:#65676b}
         .chat-input-field:focus{box-shadow:0 0 0 2px #0866ff}
-        .send-btn{background:none;border:none;cursor:pointer;padding:8px;color:#65676b;display:flex;align-items:center;justify-content:center}
+        .send-btn{background:none;border:none;cursor:pointer;padding:8px;color:#65676b;display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .send-btn:focus{outline:2px solid #0866ff;outline-offset:2px;border-radius:50%}
         .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:100;display:none}
         .modal-overlay.active{display:block}
@@ -131,7 +131,7 @@
     <div class="chat-input-bar" id="chat-input-bar">
         <button class="chat-input-btn" aria-label="Photo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#0866FF" stroke-width="2"/><circle cx="8.5" cy="10.5" r="1.5" fill="#0866FF"/><path d="M21 17l-5-5-3 3-2-2-8 8" stroke="#0866FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="chat-input-btn" aria-label="Voice message"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 1a4 4 0 00-4 4v6a4 4 0 008 0V5a4 4 0 00-4-4z" stroke="#0866FF" stroke-width="2"/><path d="M19 10v1a7 7 0 01-14 0v-1M12 19v4M8 23h8" stroke="#0866FF" stroke-width="2" stroke-linecap="round"/></svg></button>
-        <input type="text" class="chat-input-field" aria-label="type a message" title="type a message">
+        <input type="text" class="chat-input-field" aria-label="type a message">
         <button class="chat-input-btn" aria-label="Emoji"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="#0866FF" stroke-width="2"/><path d="M8 14s1.5 2 4 2 4-2 4-2" stroke="#0866FF" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="9" r="1" fill="#0866FF"/><circle cx="15" cy="9" r="1" fill="#0866FF"/></svg></button>
         <button class="send-btn" aria-label="Send"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="#65676B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
