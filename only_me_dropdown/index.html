@@ -562,29 +562,23 @@
 
         // Generate aria-label based on variant
         function getAriaLabel(privacyLabel, sectionKey) {
-            switch (variant) {
-                case 1:
-                    // "Only me"
-                    return privacyLabel;
-                case 2:
-                    // "Only me, privacy audience"
-                    return `${privacyLabel}, privacy audience`;
-                case 3:
-                    // "Only me, privacy audience for social links" or "Only me, privacy audience for websites"
-                    const sectionName = sectionKey === 'social' ? 'social links' : 'websites';
-                    return `${privacyLabel}, privacy audience for ${sectionName}`;
-		case 4:
-		    // "Only me, social links"
-                    const sectionName = sectionKey === 'social' ? 'social links' : 'websites';
-                    return `${privacyLabel}, ${sectionName}`;
-		case 5:
-		    // "Only me, who can see your social links"
-                    const sectionName = sectionKey === 'social' ? 'social links' : 'websites';
-                    return `${privacyLabel}, who can see your ${sectionName}`;
-                default:
-                    return privacyLabel;
-            }
-        }
+    const sectionName = sectionKey === 'social' ? 'social links' : 'websites';
+    
+    switch (variant) {
+        case 1:
+            return privacyLabel;
+        case 2:
+            return `${privacyLabel}, privacy audience`;
+        case 3:
+            return `${privacyLabel}, privacy audience for ${sectionName}`;
+        case 4:
+            return `${privacyLabel}, ${sectionName}`;
+        case 5:
+            return `${privacyLabel}, who can see your ${sectionName}`;
+        default:
+            return privacyLabel;
+    }
+}
 
         // Initialize aria-labels based on variant
         function initAriaLabels() {
