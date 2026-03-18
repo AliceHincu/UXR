@@ -119,7 +119,7 @@
     <main id="main-content" role="none">
         <div class="encryption-banner" 
              tabindex="0" 
-             aria-label="Messages and calls are end-to-end encrypted. Only people in this chat can read, listen, or share them. Learn more.Tap for more information."
+             aria-label="Messages and calls are end-to-end encrypted. Only people in this chat can read, listen, or share them. Learn more."
              id="encryptionBannerButton">
             <p style="display:inline;" aria-hidden="true">
                 <span aria-hidden="true">&#128274;</span> 
@@ -230,18 +230,18 @@
             switch(variant) {
                 case '2':
                     // Link text "Learn more" + aria label "Learn more about end-to-end encrypted messages"
-                    banner.setAttribute('aria-label', baseMessage + ' Learn more about end-to-end encrypted messages. Tap for more information');
+                    banner.setAttribute('aria-label', baseMessage + ' Learn more about end-to-end encrypted messages.');
                     learnMoreText.textContent = 'Learn more';
                     break;
                 case '3':
                     // Link text & aria label "Learn more about end-to-end encrypted messages"
-                    banner.setAttribute('aria-label', baseMessage + ' Learn more about end-to-end encrypted messages. Tap for more information');
+                    banner.setAttribute('aria-label', baseMessage + ' Learn more about end-to-end encrypted messages.');
                     learnMoreText.textContent = 'Learn more about end-to-end encrypted messages';
                     break;
                 case '1':
                 default:
                     // Link text "Learn more" + aria label "Learn more"
-                    banner.setAttribute('aria-label', baseMessage + ' Learn more. Tap for more information');
+                    banner.setAttribute('aria-label', baseMessage + ' Learn more.');
                     learnMoreText.textContent = 'Learn more';
                     break;
             }
